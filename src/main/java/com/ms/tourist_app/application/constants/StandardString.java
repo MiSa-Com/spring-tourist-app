@@ -6,16 +6,16 @@ public class StandardString {
     public static String undefinedError = "Undefined error";
 
     /* =============== SIGN IN CLIENT ================ */
+    public static String signInLabel = "Sign In";
     public static String username = "Username";
     public static String password = "Password";
-    public static String signInEvent = "Sign in";
-    public static String signInSuccess = "Sign in successfully";
-    public static String signInFailed = "Fail to sign in";
-    public static String wrongUsernameOrPassword = "Username or password is wrong";
     public static String forgotPassword = "Forgot your password?";
     public static String signInButton = "SIGN IN";
+    public static String signInSuccess = "Sign in successfully";
+    public static String signInFailed = "Fail to sign in";
 
     /* ================== SIGN UP CLIENT ================== */
+    public static String signUpLabel = "Sign Up";
     public static String firstName = "First name";
     public static String lastName = "Last name";
     public static String emailAddress = "Email Address";
@@ -29,7 +29,15 @@ public class StandardString {
     public static String genderOther = "Other";
     public static String signUpButton = "SIGN UP";
     public static String alreadyHaveAnAccount = "Already have an account?";
+    public static String signUpSuccess = "Your account is successfully created";
+    public static String weakPassword = "Your password does not have minimum 8 characters";
 
     /* ================== RESET YOUR PASSWORD ================== */
+    public static String resetYourPasswordLabel = "Reset Your Password";
+    public static String resetYourPasswordButton = "RESET YOUR PASSWORD";
+    public static String resetYourPasswordSuccess = "Reset your password successfully";
+
+    /* ======================== MAIN SCREEN DESTINATION ============================= */
+    public static String mainScreenLabel = "Enjoy your destination!";
 
 }
