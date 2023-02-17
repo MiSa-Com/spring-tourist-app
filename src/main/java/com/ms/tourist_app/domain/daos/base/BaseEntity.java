@@ -10,7 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-public abstract class AbstractAuditingEntity {
+public abstract class BaseEntity {
     @JsonProperty("id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
