@@ -1,4 +1,4 @@
-package com.ms.tourist_app.bases.base;
+package com.ms.tourist_app.adapter.base;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -11,18 +11,14 @@ public class RestData<T> {
     private Integer httpStatus;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private ResMessage userMessage;
+    private String message;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String devMessage;
+    private Reason reason;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
-    public RestData(Integer httpStatus, ResMessage userMessage, T data) {
-        this.httpStatus = httpStatus;
-        this.userMessage = userMessage;
-        this.data = data;
-    }
+
 
 }
