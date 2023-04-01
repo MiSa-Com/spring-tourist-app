@@ -6,9 +6,13 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.*;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.ms.tourist_app.application.constants.AppConst;
 =======
 >>>>>>> 59eea36 (search theo address: gan Done)
+=======
+import com.ms.tourist_app.application.constants.AppConst;
+>>>>>>> 291b8a6 (Modify in GoogleMapApi to review)
 
 public class GoogleMapApi {
     private static final String KEY_MAP_API = "YOUR_KEY_HERE";
@@ -25,6 +29,7 @@ public class GoogleMapApi {
     }
 
     public static double toRad(double angleInDegree) {
+<<<<<<< HEAD
 <<<<<<< HEAD
         return angleInDegree * Math.PI / AppConst.unitRad;
     }
@@ -48,23 +53,33 @@ public class GoogleMapApi {
         return Math.round(distance * 1000.0) / 1000.0;
 =======
         return angleInDegree * Math.PI / 180.0;
+=======
+        return angleInDegree * Math.PI / AppConst.unitRad;
+>>>>>>> 291b8a6 (Modify in GoogleMapApi to review)
     }
 
+    /**
+     * @param origin
+     * @param destination
+     * @return Distance in km
+     */
     public static double getFlightDistanceInKm(LatLng origin, LatLng destination) {
-        // From: http://www.movable-type.co.uk/scripts/latlong.html
-        double R = 6371.0; // Average radius of Earth (km)
-        double dLat = toRad(destination.lat - origin.lat);
+        double dLat = toRad(destination.lat - origin.lat); // deg2rad below From: http://www.movable-type.co.uk/scripts/latlong.html
         double dLon = toRad(destination.lng - origin.lng);
-        double lat1 = toRad(origin.lat);
-        double lat2 = toRad(destination.lat);
+        double latOrigin = toRad(origin.lat);
+        double latDest = toRad(destination.lat);
 
-        double a = Math.sin(dLat / 2.0) * Math.sin(dLat / 2.0)
-                + Math.sin(dLon / 2.0) * Math.sin(dLon / 2.0) * Math.cos(lat1) * Math.cos(lat2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1.0 - a));
-        double d = R * c;
+        double alpha = Math.sin(dLat / 2.0) * Math.sin(dLat / 2.0)
+                + Math.sin(dLon / 2.0) * Math.sin(dLon / 2.0) * Math.cos(latOrigin) * Math.cos(latDest);
+        double angleInRad = 2 * Math.atan2(Math.sqrt(alpha), Math.sqrt(1.0 - alpha));
+        double distance = AppConst.radiusEarth * angleInRad;
 
+<<<<<<< HEAD
         return Math.round(d * 1000.0) / 1000.0;
 >>>>>>> 59eea36 (search theo address: gan Done)
+=======
+        return Math.round(distance * 1000.0) / 1000.0;
+>>>>>>> 291b8a6 (Modify in GoogleMapApi to review)
     }
 
     public static Double getTripDurationByBicycleInMinute(LatLng origin, LatLng destination, LatLng... steps) {
