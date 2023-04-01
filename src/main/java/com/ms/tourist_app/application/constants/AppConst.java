@@ -6,4 +6,10 @@ public class AppConst {
         }
         public static final Integer bearerSubstring = 7;
     }
+
+    public static final double unitRad = 180.0;
+
+    public static final double radiusEarth = 6371.0; // Average radius of Earth (km)
+
+
 }
