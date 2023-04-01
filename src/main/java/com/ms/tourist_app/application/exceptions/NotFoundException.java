@@ -1,7 +1,0 @@
-package com.ms.tourist_app.application.exceptions;
-
-public class NotFoundException extends RuntimeException{
-    public NotFoundException(String message) {
-        super(message);
-    }
-}
