@@ -1,5 +1,7 @@
 package com.ms.tourist_app.application.service.imp;
 
+import com.github.slugify.Slugify;
+import com.google.maps.model.LatLng;
 import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.application.dai.AddressRepository;
 import com.ms.tourist_app.application.dai.UserRepository;
@@ -10,6 +12,7 @@ import com.ms.tourist_app.application.mapper.AddressMapper;
 import com.ms.tourist_app.application.output.addresses.AddressDataOutput;
 import com.ms.tourist_app.application.service.AddressService;
 import com.ms.tourist_app.application.service.UserService;
+import com.ms.tourist_app.application.utils.GoogleMapApi;
 import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.config.exception.NotFoundException;
 import com.ms.tourist_app.domain.entity.Address;
@@ -25,13 +28,15 @@ import java.util.Optional;
 
 @Service
 public class AddressServiceImp implements AddressService {
+    private Slugify slugify;
 
     private final AddressMapper addressMapper = Mappers.getMapper(AddressMapper.class);
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
     private final UserService userService;
     final JwtUtil jwtUtil;
-    public AddressServiceImp(AddressRepository addressRepository, UserRepository userRepository, UserService userService, JwtUtil jwtUtil) {
+    public AddressServiceImp(Slugify slugify, AddressRepository addressRepository, UserRepository userRepository, UserService userService, JwtUtil jwtUtil) {
+        this.slugify = slugify;
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
         this.userService = userService;
@@ -46,12 +51,19 @@ public class AddressServiceImp implements AddressService {
     @Override
     @Transactional
     public AddressDataOutput createAddress(AddressDataInput input) {
-        //convert xong check long lat
-//        if (checkCoordinate(input.get)){
-//            throw new BadRequestException(AppStr.Address.address+AppStr.Base.whiteSpace+AppStr.Exception.duplicate);
-//        }
+        LatLng latLng = GoogleMapApi.getLatLng(input.getDetailAddress() + input.getProvince());
+        if (latLng == null) {
+            throw new NotFoundException(AppStr.Address.address+AppStr.Base.whiteSpace+AppStr.Exception.notFound);
+        }
+        if (this.checkCoordinate(latLng.lng,latLng.lat)){
+            throw new NotFoundException(AppStr.Address.address+AppStr.Base.whiteSpace+AppStr.Exception.duplicate);
+        }
         // taọ mới address và convert ừ address input sang address
         Address address = addressMapper.toAddress(input,null);
+        address.setLongitude(latLng.lng);
+        address.setLatitude(latLng.lat);
+        slugify = slugify.withTransliterator(true);
+        address.setOther(slugify.slugify(input.getDetailAddress() + input.getProvince()));
         addressRepository.save(address);
 
         // convert tuwf address sang output
@@ -95,6 +107,10 @@ public class AddressServiceImp implements AddressService {
         List<Address> addresses = addressRepository.search(input.getKeyword().trim(), PageRequest.of(input.getPage(), input.getSize()));
 
         List<AddressDataOutput> addressDataOutputs = new ArrayList<>();
+        /**
+         * Neu address empty thi tim goi y tren Google Map
+         */
+
         for (Address address :
                 addresses) {
             AddressDataOutput addressDataOutput = addressMapper.toAddressDataOutput(address);

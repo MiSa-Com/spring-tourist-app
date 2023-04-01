@@ -1,6 +1,6 @@
 spring:
   jackson:
-    time-zone: GMT+7
+    time-zone: GMT+2
   servlet:
     multipart:
       file-size-threshold: 2KB
@@ -14,7 +14,7 @@ spring:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     url: jdbc:sqlserver://localhost:1433;databaseName=dulich1;encrypt=true;trustServerCertificate=true;
     username: sa
-    password: Abc123!@#
+    password: 123
     tomcat:
       connection-properties: useUnicode=true
       characterEncoding: utf-8

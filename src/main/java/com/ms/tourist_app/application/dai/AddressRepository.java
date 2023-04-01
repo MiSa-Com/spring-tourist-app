@@ -18,8 +18,10 @@ public interface AddressRepository extends JpaRepository<Address,Long> {
     Address findByLongitudeAndLatitude(Double longitude, Double latitude);
 
     @Query("select a from Address a " +
-            "where (:keyword is null or upper(a.province) like upper(concat('%', :keyword, '%')) and upper(a.detailAddress) like upper(concat('%', :keyword, '%')))")
-    List<Address> search(@Param("keyword") String keyword,Pageable pageable);
+            "where (:keyword is null or a.province like concat('%', :keyword, '%') " +
+            "or a.detailAddress like concat('%', :keyword, '%'))" +
+            "or a.other like concat('%', :keyword, '%')")
+    List<Address> search(@Param("keyword") String keyword, Pageable pageable);
 
 
 }
