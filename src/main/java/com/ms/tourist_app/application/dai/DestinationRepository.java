@@ -21,5 +21,4 @@ public interface DestinationRepository extends JpaRepository<Destination,Long> {
             "where (:address is null or d.address = :address) and(:destinationType is null or d.destinationType = :destinationType)")
     List<Destination> filter(@Param("address") Address address, @Param("destinationType") DestinationType destinationType, Pageable pageable);
 
-
 }

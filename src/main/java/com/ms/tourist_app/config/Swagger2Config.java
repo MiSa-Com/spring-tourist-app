@@ -17,7 +17,7 @@ public class Swagger2Config {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).select()
-                .apis(RequestHandlerSelectors.basePackage("com.hit.base_1.adapter.web.v1.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.ms.tourist_app.adapter.web.v1.controller"))
                 .paths(PathSelectors.regex("/.*"))
                 .build()
                 .apiInfo(apiEndPointsInfo());

@@ -11,5 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AddressDataInput {
     private String province;
-    private Double detailAddress;
+    private String detailAddress;
+
 }
