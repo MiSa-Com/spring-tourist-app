@@ -5,7 +5,10 @@ import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.*;
+<<<<<<< HEAD
 import com.ms.tourist_app.application.constants.AppConst;
+=======
+>>>>>>> 59eea36 (search theo address: gan Done)
 
 public class GoogleMapApi {
     private static final String KEY_MAP_API = "YOUR_KEY_HERE";
@@ -22,6 +25,7 @@ public class GoogleMapApi {
     }
 
     public static double toRad(double angleInDegree) {
+<<<<<<< HEAD
         return angleInDegree * Math.PI / AppConst.unitRad;
     }
 
@@ -42,6 +46,25 @@ public class GoogleMapApi {
         double distance = AppConst.radiusEarth * angleInRad;
 
         return Math.round(distance * 1000.0) / 1000.0;
+=======
+        return angleInDegree * Math.PI / 180.0;
+    }
+
+    public static double getFlightDistanceInKm(LatLng origin, LatLng destination) {
+        // From: http://www.movable-type.co.uk/scripts/latlong.html
+        double R = 6371.0; // Average radius of Earth (km)
+        double dLat = toRad(destination.lat - origin.lat);
+        double dLon = toRad(destination.lng - origin.lng);
+        double lat1 = toRad(origin.lat);
+        double lat2 = toRad(destination.lat);
+
+        double a = Math.sin(dLat / 2.0) * Math.sin(dLat / 2.0)
+                + Math.sin(dLon / 2.0) * Math.sin(dLon / 2.0) * Math.cos(lat1) * Math.cos(lat2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1.0 - a));
+        double d = R * c;
+
+        return Math.round(d * 1000.0) / 1000.0;
+>>>>>>> 59eea36 (search theo address: gan Done)
     }
 
     public static Double getTripDurationByBicycleInMinute(LatLng origin, LatLng destination, LatLng... steps) {
