@@ -4,6 +4,7 @@ import com.github.slugify.Slugify;
 import com.google.maps.model.LatLng;
 import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.application.dai.AddressRepository;
+import com.ms.tourist_app.application.dai.DestinationRepository;
 import com.ms.tourist_app.application.dai.UserRepository;
 import com.ms.tourist_app.application.input.addresses.AddressDataInput;
 import com.ms.tourist_app.application.input.addresses.GetListAddressInput;
@@ -16,6 +17,7 @@ import com.ms.tourist_app.application.utils.GoogleMapApi;
 import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.config.exception.NotFoundException;
 import com.ms.tourist_app.domain.entity.Address;
+import com.ms.tourist_app.domain.entity.Destination;
 import com.ms.tourist_app.domain.entity.User;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
@@ -35,12 +37,16 @@ public class AddressServiceImp implements AddressService {
     private final UserRepository userRepository;
     private final UserService userService;
     final JwtUtil jwtUtil;
-    public AddressServiceImp(Slugify slugify, AddressRepository addressRepository, UserRepository userRepository, UserService userService, JwtUtil jwtUtil) {
+    private final DestinationRepository destinationRepository;
+
+    public AddressServiceImp(Slugify slugify, AddressRepository addressRepository, UserRepository userRepository, UserService userService, JwtUtil jwtUtil,
+                             DestinationRepository destinationRepository) {
         this.slugify = slugify;
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
         this.userService = userService;
         this.jwtUtil = jwtUtil;
+        this.destinationRepository = destinationRepository;
     }
     private boolean checkCoordinate(Double longitude,Double latitude){
         Address address = addressRepository.findByLongitudeAndLatitude(longitude,latitude);
@@ -63,7 +69,7 @@ public class AddressServiceImp implements AddressService {
         address.setLongitude(latLng.lng);
         address.setLatitude(latLng.lat);
         slugify = slugify.withTransliterator(true);
-        address.setOther(slugify.slugify(input.getDetailAddress() + input.getProvince()));
+        address.setOther(slugify.slugify(input.getDetailAddress() +AppStr.Base.dash +input.getProvince()));
         addressRepository.save(address);
 
         // convert tuwf address sang output
@@ -132,6 +138,11 @@ public class AddressServiceImp implements AddressService {
                 users) {
             UserDataInput userDataInput = new UserDataInput(u.getFirstName(),u.getLastName(),u.getDateOfBirth().toString(),null,u.getTelephone(),u.getEmail(),u.getPassword());
             userService.editUser(u.getId(),userDataInput);
+        }
+        List<Destination> destinations = destinationRepository.findAllByAddress(address.get());
+        for (Destination d :
+                destinations) {
+            d.setAddress(null);
         }
         //=======
         addressRepository.delete(address.get());

@@ -15,6 +15,7 @@ public class AppStr {
 
     public static final class Base {
         public static final String whiteSpace = " ";
+        public static final String dash = "-";
         public static final String id = "id";
         public static final String createBy = "createBy";
         public static final String createAt = "createAt";

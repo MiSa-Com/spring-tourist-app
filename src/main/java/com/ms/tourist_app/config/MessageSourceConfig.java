@@ -1,5 +1,6 @@
 package com.ms.tourist_app.config;
 
+import com.ms.tourist_app.application.constants.AppEnv;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,8 +13,8 @@ public class MessageSourceConfig {
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:i18n/messages");
-        messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setBasename(AppEnv.MessageSourceConfig.baseName);
+        messageSource.setDefaultEncoding(AppEnv.MessageSourceConfig.utf8);
         return messageSource;
     }
 

@@ -1,5 +1,6 @@
 package com.ms.tourist_app.config;
 
+import com.ms.tourist_app.application.constants.AppEnv;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -17,19 +18,19 @@ public class Swagger2Config {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).select()
-                .apis(RequestHandlerSelectors.basePackage("com.ms.tourist_app.adapter.web.v1.controller"))
-                .paths(PathSelectors.regex("/.*"))
+                .apis(RequestHandlerSelectors.basePackage(AppEnv.Swagger.basePackage))
+                .paths(PathSelectors.regex(AppEnv.Swagger.pathRegex))
                 .build()
                 .apiInfo(apiEndPointsInfo());
     }
 
     private ApiInfo apiEndPointsInfo() {
-        return new ApiInfoBuilder().title("Ngo Ngoc Sang")
-                .description("TouristApp")
-                .contact(new Contact("Sáng", "...", "ngocsangair01@gmail.com"))
-                .license("Apache 2.0")
-                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
-                .version("1.0.0")
+        return new ApiInfoBuilder().title(AppEnv.Swagger.title)
+                .description(AppEnv.Swagger.description)
+                .contact(new Contact(AppEnv.Swagger.nameContact, AppEnv.Swagger.urlContact, AppEnv.Swagger.emailContact))
+                .license(AppEnv.Swagger.license)
+                .licenseUrl(AppEnv.Swagger.licenseUrl)
+                .version(AppEnv.Swagger.version)
                 .build();
     }
 }

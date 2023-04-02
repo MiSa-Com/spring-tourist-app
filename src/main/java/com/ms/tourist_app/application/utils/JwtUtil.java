@@ -1,5 +1,6 @@
 package com.ms.tourist_app.application.utils;
 
+import com.ms.tourist_app.application.constants.AppEnv;
 import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.application.dai.UserRepository;
 import com.ms.tourist_app.domain.entity.User;
@@ -16,9 +17,9 @@ import java.util.Map;
 @Service
 public class JwtUtil {
 
-    private final String SECRET_KEY = "1231231";
+    private final String SECRET_KEY = AppEnv.JwtConfig.secretKey;
 
-    private final Integer TIME_EXPIRATION = 864000;
+    private final Integer TIME_EXPIRATION = AppEnv.JwtConfig.timeExpiration;
 
     private final UserRepository userRepository;
 

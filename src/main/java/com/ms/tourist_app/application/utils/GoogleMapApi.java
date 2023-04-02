@@ -8,11 +8,20 @@ import com.google.maps.model.*;
 <<<<<<< HEAD
 <<<<<<< HEAD
 import com.ms.tourist_app.application.constants.AppConst;
+<<<<<<< HEAD
 =======
 >>>>>>> 59eea36 (search theo address: gan Done)
 =======
 import com.ms.tourist_app.application.constants.AppConst;
 >>>>>>> 291b8a6 (Modify in GoogleMapApi to review)
+=======
+import com.ms.tourist_app.application.constants.AppEnv;
+import org.hibernate.cfg.Environment;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+>>>>>>> 4f2e8a9 (push code without local env)
 
 public class GoogleMapApi {
     private static final String KEY_MAP_API = "YOUR_KEY_HERE";
@@ -22,7 +31,7 @@ public class GoogleMapApi {
         try {
             GeocodingResult[] results = GeocodingApi.geocode(MY_API_CONTEXT, address).await();
 
-            return results[0].geometry.location;
+            return results[AppConst.MapApi.defaultIndex].geometry.location;
         } catch (Exception ex) {
             return null;
         }
@@ -31,7 +40,11 @@ public class GoogleMapApi {
     public static double toRad(double angleInDegree) {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         return angleInDegree * Math.PI / AppConst.unitRad;
+=======
+        return angleInDegree * Math.PI / AppConst.MapApi.unitRad;
+>>>>>>> 4f2e8a9 (push code without local env)
     }
 
     /**
@@ -48,7 +61,7 @@ public class GoogleMapApi {
         double alpha = Math.sin(dLat / 2.0) * Math.sin(dLat / 2.0)
                 + Math.sin(dLon / 2.0) * Math.sin(dLon / 2.0) * Math.cos(latOrigin) * Math.cos(latDest);
         double angleInRad = 2 * Math.atan2(Math.sqrt(alpha), Math.sqrt(1.0 - alpha));
-        double distance = AppConst.radiusEarth * angleInRad;
+        double distance = AppConst.MapApi.radiusEarth * angleInRad;
 
         return Math.round(distance * 1000.0) / 1000.0;
 =======
@@ -99,7 +112,7 @@ public class GoogleMapApi {
         if (steps.length > 0) {
 
             String[] stringSteps = new String[steps.length];
-            for (int i = 0; i < steps.length; i++) {
+            for (int i = AppConst.MapApi.defaultIndex; i < steps.length; i++) {
                 stringSteps[i] = steps[i].toString();
             }
 
@@ -113,10 +126,10 @@ public class GoogleMapApi {
             DirectionsResult result = request.await();
             DirectionsRoute[] directions = result.routes;
 
-            for (int legIndex = 0; legIndex < directions[0].legs.length; legIndex++) {
+            for (int legIndex = AppConst.MapApi.defaultIndex; legIndex < directions[AppConst.MapApi.defaultIndex].legs.length; legIndex++) {
 
-                cumulDistance += directions[0].legs[legIndex].distance.inMeters / 1000.0;
-                cumulDuration += Math.ceil(directions[0].legs[legIndex].duration.inSeconds / 60.0);
+                cumulDistance += directions[AppConst.MapApi.defaultIndex].legs[legIndex].distance.inMeters / 1000.0;
+                cumulDuration += Math.ceil(directions[AppConst.MapApi.defaultIndex].legs[legIndex].duration.inSeconds / 60.0);
             }
 
         } catch (Exception ex) {
