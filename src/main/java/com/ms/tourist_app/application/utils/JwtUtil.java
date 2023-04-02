@@ -18,9 +18,9 @@ import java.util.Map;
 @Service
 public class JwtUtil {
 
-    private final String SECRET_KEY = AppEnv.JwtConfig.secretKey;
+    private final String SECRET_KEY = AppEnv.jwtConfigSecretKey;
 
-    private final Integer TIME_EXPIRATION = AppEnv.JwtConfig.timeExpiration;
+    private final Integer TIME_EXPIRATION = AppEnv.jwtConfigTimeExpiration;
 
     private final UserRepository userRepository;
     private static HttpServletRequest httpServletRequest ;
@@ -31,7 +31,7 @@ public class JwtUtil {
     }
 
     public String extractUsername(String token){
-        Claims claims = Jwts.parser().setSigningKey(AppEnv.JwtConfig.secretKey).parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parser().setSigningKey(AppEnv.jwtConfigSecretKey).parseClaimsJws(token).getBody();
         return claims.get("username").toString();
     }
 
@@ -49,7 +49,7 @@ public class JwtUtil {
     }
     public Long getUserIdFromToken() {
         String jwt = httpServletRequest.getHeader(AppStr.Auth.authorization).replace(AppStr.Auth.bearer.concat(AppStr.Base.whiteSpace), "");
-        Claims claims = Jwts.parser().setSigningKey(AppEnv.JwtConfig.secretKey).parseClaimsJws(jwt).getBody();
+        Claims claims = Jwts.parser().setSigningKey(AppEnv.jwtConfigSecretKey).parseClaimsJws(jwt).getBody();
         return Long.parseLong(claims.get("id").toString());
     }
 

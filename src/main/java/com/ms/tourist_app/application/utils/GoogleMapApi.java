@@ -9,7 +9,7 @@ import com.ms.tourist_app.application.constants.AppConst;
 import com.ms.tourist_app.application.constants.AppEnv;
 
 public class GoogleMapApi {
-    private static final String KEY_MAP_API = AppEnv.ApiGoogle.key;
+    private static final String KEY_MAP_API = AppEnv.keyGoogleMap;
     private static final GeoApiContext MY_API_CONTEXT = new GeoApiContext.Builder().apiKey(KEY_MAP_API).build();
 
     public static LatLng getLatLng(String address) {
@@ -94,6 +94,6 @@ public class GoogleMapApi {
     }
 
     public static boolean hasInvalidApiKey() {
-        return KEY_MAP_API.startsWith(AppEnv.ApiGoogle.key);
+        return KEY_MAP_API.startsWith(AppEnv.keyGoogleMap);
     }
 }

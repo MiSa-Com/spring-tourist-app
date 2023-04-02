@@ -1,21 +1,68 @@
 package com.ms.tourist_app.application.constants;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+@Component
+@PropertySource("classpath:environment.properties")
 public class AppEnv {
-    public static final class ApiGoogle{
-        public ApiGoogle() {
-        }
-        public static final String key = "AIzaSyBXCkYs1GIH1MRBU0dAPMCyG37TFPXfwAM";
+
+    public static String keyGoogleMap;
+
+    public static String cloudinaryCloudName;
+
+    public static String cloudinaryApiKey;
+
+    public static String cloudinaryApiSecret;
+
+    public static String jwtConfigSecretKey;
+
+    public static Integer jwtConfigTimeExpiration;
+
+
+    @Value("${cloudinary.api.secret}")
+    public void setCloudinaryApiSecret(String cloudinaryApiSecret) {
+        AppEnv.cloudinaryApiSecret = cloudinaryApiSecret;
     }
-    public static final class Cloudinary{
-        public Cloudinary() {
-        }
-        public static final String cloudName = "none01";
-        public static final String apiKey = "975898585293148";
-        public static final String apiSecret = "JJqFPcPDDF08WM4hL-K4ysUbXzo";
+
+    @Value("${cloudinary.cloud.name}")
+    public void setCloudinaryCloudName(String value){
+        cloudinaryCloudName = value;
     }
-    public static final class Swagger{
+
+    @Value("${api.google.key}")
+    public void setKeyGoogleMap(String keyGoogleMap) {
+        AppEnv.keyGoogleMap = keyGoogleMap;
+    }
+
+    @Value("${cloudinary.api.key}")
+    public void setCloudinaryApiKey(String cloudinaryApiKey) {
+        AppEnv.cloudinaryApiKey = cloudinaryApiKey;
+    }
+
+
+    @Value("${jwt.config.secret.key}")
+    public void setJwtConfigSecretKey(String jwtConfigSecretKey) {
+        AppEnv.jwtConfigSecretKey = jwtConfigSecretKey;
+    }
+
+
+    @Value("${jwt.config.time.expiration}")
+    public void setJwtConfigTimeExpiration(Integer jwtConfigTimeExpiration) {
+        AppEnv.jwtConfigTimeExpiration = jwtConfigTimeExpiration;
+    }
+
+
+
+
+    public static final class Swagger {
         public Swagger() {
         }
+
         public static final String pathRegex = "/.*";
         public static final String basePackage = "com.ms.tourist_app.adapter.web.v1.controller";
         public static final String title = "Ngo Ngoc Sang";
@@ -27,12 +74,10 @@ public class AppEnv {
         public static final String licenseUrl = "";
         public static final String version = "1.0.0";
     }
-    public static final class MessageSourceConfig{
+
+    public static final class MessageSourceConfig {
         public static final String baseName = "classpath:i18n/messages";
         public static final String utf8 = "UTF-8";
     }
-    public static final class JwtConfig{
-        public static final String secretKey = "1231231";
-        public static final Integer timeExpiration = 864000000;
-    }
+
 }

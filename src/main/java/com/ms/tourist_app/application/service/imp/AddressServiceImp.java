@@ -20,13 +20,10 @@ import com.ms.tourist_app.config.exception.NotFoundException;
 import com.ms.tourist_app.domain.entity.Address;
 import com.ms.tourist_app.domain.entity.Destination;
 import com.ms.tourist_app.domain.entity.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
