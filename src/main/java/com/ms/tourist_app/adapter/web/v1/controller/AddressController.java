@@ -12,6 +12,7 @@ import com.ms.tourist_app.application.output.addresses.AddressDataOutput;
 import com.ms.tourist_app.application.service.imp.AddressServiceImp;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,7 +30,7 @@ public class AddressController {
     }
 
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(UrlConst.Address.address)
     public ResponseEntity<?> createAddress(@Valid @RequestBody AddressDataParameter parameter){
         AddressDataInput addressDataInput = addressMapper.createAddressInput(parameter);

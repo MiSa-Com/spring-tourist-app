@@ -2,6 +2,7 @@ package com.ms.tourist_app.application.service.imp;
 
 import com.github.slugify.Slugify;
 import com.google.maps.model.LatLng;
+import com.ms.tourist_app.application.constants.AppEnv;
 import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.application.dai.AddressRepository;
 import com.ms.tourist_app.application.dai.DestinationRepository;
@@ -19,10 +20,13 @@ import com.ms.tourist_app.config.exception.NotFoundException;
 import com.ms.tourist_app.domain.entity.Address;
 import com.ms.tourist_app.domain.entity.Destination;
 import com.ms.tourist_app.domain.entity.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,10 +68,11 @@ public class AddressServiceImp implements AddressService {
         if (this.checkCoordinate(latLng.lng,latLng.lat)){
             throw new NotFoundException(AppStr.Address.address+AppStr.Base.whiteSpace+AppStr.Exception.duplicate);
         }
-        // taọ mới address và convert ừ address input sang address
         Address address = addressMapper.toAddress(input,null);
         address.setLongitude(latLng.lng);
         address.setLatitude(latLng.lat);
+        Long idCreate = jwtUtil.getUserIdFromToken();
+        address.setCreateBy(idCreate);
         slugify = slugify.withTransliterator(true);
         address.setOther(slugify.slugify(input.getDetailAddress() +AppStr.Base.dash +input.getProvince()));
         addressRepository.save(address);
@@ -101,6 +106,7 @@ public class AddressServiceImp implements AddressService {
             throw new NotFoundException(AppStr.Address.address+AppStr.Base.whiteSpace+AppStr.Exception.notFound);
         }
         Address address = addressMapper.toAddress(input, id);
+        address.setUpdateBy(jwtUtil.getUserIdFromToken());
         addressRepository.save(address);
         AddressDataOutput addressDataOutput = addressMapper.toAddressDataOutput(address);
         return addressDataOutput;
