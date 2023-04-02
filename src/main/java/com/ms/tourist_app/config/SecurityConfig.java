@@ -24,9 +24,9 @@ import org.springframework.web.cors.CorsConfiguration;
         jsr250Enabled = true)
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private MyUserDetailService myUserDetailsService;
+    private final MyUserDetailService myUserDetailsService;
 
-    private JwtRequestFilter jwtRequestFilter;
+    private final JwtRequestFilter jwtRequestFilter;
 
     public SecurityConfig(MyUserDetailService myUserDetailsService, JwtRequestFilter jwtRequestFilter) {
         this.myUserDetailsService = myUserDetailsService;

@@ -5,26 +5,11 @@ import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.*;
-<<<<<<< HEAD
-<<<<<<< HEAD
 import com.ms.tourist_app.application.constants.AppConst;
-<<<<<<< HEAD
-=======
->>>>>>> 59eea36 (search theo address: gan Done)
-=======
-import com.ms.tourist_app.application.constants.AppConst;
->>>>>>> 291b8a6 (Modify in GoogleMapApi to review)
-=======
 import com.ms.tourist_app.application.constants.AppEnv;
-import org.hibernate.cfg.Environment;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
->>>>>>> 4f2e8a9 (push code without local env)
 
 public class GoogleMapApi {
-    private static final String KEY_MAP_API = "YOUR_KEY_HERE";
+    private static final String KEY_MAP_API = AppEnv.ApiGoogle.key;
     private static final GeoApiContext MY_API_CONTEXT = new GeoApiContext.Builder().apiKey(KEY_MAP_API).build();
 
     public static LatLng getLatLng(String address) {
@@ -38,13 +23,7 @@ public class GoogleMapApi {
     }
 
     public static double toRad(double angleInDegree) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        return angleInDegree * Math.PI / AppConst.unitRad;
-=======
         return angleInDegree * Math.PI / AppConst.MapApi.unitRad;
->>>>>>> 4f2e8a9 (push code without local env)
     }
 
     /**
@@ -64,35 +43,6 @@ public class GoogleMapApi {
         double distance = AppConst.MapApi.radiusEarth * angleInRad;
 
         return Math.round(distance * 1000.0) / 1000.0;
-=======
-        return angleInDegree * Math.PI / 180.0;
-=======
-        return angleInDegree * Math.PI / AppConst.unitRad;
->>>>>>> 291b8a6 (Modify in GoogleMapApi to review)
-    }
-
-    /**
-     * @param origin
-     * @param destination
-     * @return Distance in km
-     */
-    public static double getFlightDistanceInKm(LatLng origin, LatLng destination) {
-        double dLat = toRad(destination.lat - origin.lat); // deg2rad below From: http://www.movable-type.co.uk/scripts/latlong.html
-        double dLon = toRad(destination.lng - origin.lng);
-        double latOrigin = toRad(origin.lat);
-        double latDest = toRad(destination.lat);
-
-        double alpha = Math.sin(dLat / 2.0) * Math.sin(dLat / 2.0)
-                + Math.sin(dLon / 2.0) * Math.sin(dLon / 2.0) * Math.cos(latOrigin) * Math.cos(latDest);
-        double angleInRad = 2 * Math.atan2(Math.sqrt(alpha), Math.sqrt(1.0 - alpha));
-        double distance = AppConst.radiusEarth * angleInRad;
-
-<<<<<<< HEAD
-        return Math.round(d * 1000.0) / 1000.0;
->>>>>>> 59eea36 (search theo address: gan Done)
-=======
-        return Math.round(distance * 1000.0) / 1000.0;
->>>>>>> 291b8a6 (Modify in GoogleMapApi to review)
     }
 
     public static Double getTripDurationByBicycleInMinute(LatLng origin, LatLng destination, LatLng... steps) {
@@ -144,6 +94,6 @@ public class GoogleMapApi {
     }
 
     public static boolean hasInvalidApiKey() {
-        return KEY_MAP_API.startsWith("YOUR_KEY_HERE");
+        return KEY_MAP_API.startsWith(AppEnv.ApiGoogle.key);
     }
 }
