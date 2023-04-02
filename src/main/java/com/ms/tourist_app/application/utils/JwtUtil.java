@@ -10,6 +10,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,13 +23,16 @@ public class JwtUtil {
     private final Integer TIME_EXPIRATION = AppEnv.JwtConfig.timeExpiration;
 
     private final UserRepository userRepository;
+    private static HttpServletRequest httpServletRequest ;
 
-    public JwtUtil(UserRepository userRepository) {
+    public JwtUtil(UserRepository userRepository, HttpServletRequest httpServletRequest) {
         this.userRepository = userRepository;
+        JwtUtil.httpServletRequest = httpServletRequest;
     }
 
     public String extractUsername(String token){
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
+        Claims claims = Jwts.parser().setSigningKey(AppEnv.JwtConfig.secretKey).parseClaimsJws(token).getBody();
+        return claims.get("username").toString();
     }
 
     public Date extractExpiration(String token){
@@ -43,9 +47,10 @@ public class JwtUtil {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())&& !isTokenExpired(token));
     }
-    public Long getUserIdFromToken(String token) {
-        Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-        return Long.parseLong(claims.getSubject());
+    public Long getUserIdFromToken() {
+        String jwt = httpServletRequest.getHeader(AppStr.Auth.authorization).replace(AppStr.Auth.bearer.concat(AppStr.Base.whiteSpace), "");
+        Claims claims = Jwts.parser().setSigningKey(AppEnv.JwtConfig.secretKey).parseClaimsJws(jwt).getBody();
+        return Long.parseLong(claims.get("id").toString());
     }
 
     public String generateToken(UserDetails userDetails){

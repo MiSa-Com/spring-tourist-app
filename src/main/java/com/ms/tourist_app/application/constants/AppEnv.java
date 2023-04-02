@@ -4,6 +4,7 @@ public class AppEnv {
     public static final class ApiGoogle{
         public ApiGoogle() {
         }
+        public static final String key = "AIzaSyBXCkYs1GIH1MRBU0dAPMCyG37TFPXfwAM";
     }
     public static final class Cloudinary{
         public Cloudinary() {
@@ -32,6 +33,6 @@ public class AppEnv {
     }
     public static final class JwtConfig{
         public static final String secretKey = "1231231";
-        public static final Integer timeExpiration = 864000;
+        public static final Integer timeExpiration = 864000000;
     }
 }

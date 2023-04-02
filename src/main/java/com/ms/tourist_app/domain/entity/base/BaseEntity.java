@@ -24,13 +24,13 @@ public class BaseEntity implements Serializable {
     private Long id;
 
     @JsonProperty(AppStr.Base.createBy)
-    private Long createBy;
+    private Long createBy ;
 
     @JsonProperty(AppStr.Base.createAt)
     private LocalDateTime createAt = LocalDateTime.now();
 
     @JsonProperty(AppStr.Base.updateBy)
-    private Long updateBy;
+    private Long updateBy ;
 
 
     @JsonProperty(AppStr.Base.updateAt)
