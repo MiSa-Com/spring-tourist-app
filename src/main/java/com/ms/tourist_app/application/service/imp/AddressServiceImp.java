@@ -121,11 +121,11 @@ public class AddressServiceImp implements AddressService {
             // search text google map
             addresses.addAll( GoogleMapApi.findAddressFromText(input.getKeyword(), AppConst.MapApi.defaultNbResult) );
 
-            // charge into database
-            //for (Address address : addresses) {
-            //    AddressDataParameter addressDataParameter = new AddressDataParameter(address.getProvince(), address.getDetailAddress());
-            //    this.createAddress(addressMapper.createAddressInput(addressDataParameter));
-            //}
+             // charge into database
+//            for (Address address : addresses) {
+//                AddressDataParameter addressDataParameter = new AddressDataParameter(address.getProvince(), address.getDetailAddress());
+//                this.createAddress(addressMapper.createAddressInput(addressDataParameter));
+//            }
         }
 
         for (Address address : addresses) {
