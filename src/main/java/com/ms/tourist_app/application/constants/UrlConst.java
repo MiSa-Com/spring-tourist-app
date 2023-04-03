@@ -35,4 +35,9 @@ public class UrlConst {
         public static final String destination = "destinations";
         public static final String getDestinationId = destination+idLink;
     }
+
+    public static final class Hotel{
+        public static final String hotel = "hotels";
+        public static final String getHotelById = hotel+idLink;
+    }
 }

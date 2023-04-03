@@ -37,7 +37,7 @@ public class AddressServiceImp implements AddressService {
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
     private final UserService userService;
-    final JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
     private final DestinationRepository destinationRepository;
 
     public AddressServiceImp(Slugify slugify, AddressRepository addressRepository, UserRepository userRepository, UserService userService, JwtUtil jwtUtil,
