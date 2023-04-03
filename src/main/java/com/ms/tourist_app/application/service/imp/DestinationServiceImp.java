@@ -1,15 +1,18 @@
 package com.ms.tourist_app.application.service.imp;
 
+import com.google.maps.model.LatLng;
 import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.application.dai.AddressRepository;
 import com.ms.tourist_app.application.dai.DestinationRepository;
 import com.ms.tourist_app.application.dai.DestinationTypeRepository;
 import com.ms.tourist_app.application.dai.ImageDestinationRepository;
 import com.ms.tourist_app.application.input.destinations.DestinationDataInput;
+import com.ms.tourist_app.application.input.destinations.GetListDestinationCenterRadiusInput;
 import com.ms.tourist_app.application.input.destinations.GetListDestinationInput;
 import com.ms.tourist_app.application.mapper.DestinationMapper;
 import com.ms.tourist_app.application.output.destinations.DestinationDataOutput;
 import com.ms.tourist_app.application.service.DestinationService;
+import com.ms.tourist_app.application.utils.GoogleMapApi;
 import com.ms.tourist_app.application.utils.UploadFile;
 import com.ms.tourist_app.config.exception.NotFoundException;
 import com.ms.tourist_app.domain.entity.Address;
@@ -87,6 +90,33 @@ public class DestinationServiceImp implements DestinationService {
                 imageDestinationOutputs.add(imageDestinationOutput);
             }
             destinationDataOutput.setImages(imageDestinationOutputs);
+        }
+        return destinationDataOutputs;
+    }
+
+    @Override
+    @Transactional
+    public List<DestinationDataOutput> getListDestinationCenterRadius(GetListDestinationCenterRadiusInput input) {
+        List<Destination> allDestinations = destinationRepository.findAllDestinations();
+        List<Destination> searchDestinations = new ArrayList<>();
+        LatLng center = GoogleMapApi.getLatLng(input.getKeyword());
+        for (int i = 0 ; i < allDestinations.size() ; i++) {
+            if ( i < input.getPage() * input.getSize() ) {
+                continue;
+            }
+            if ( i >= (input.getPage()+1) * input.getSize() ) {
+                break;
+            }
+            LatLng latLngDest = new LatLng(allDestinations.get(i).getAddress().getLatitude(), allDestinations.get(i).getAddress().getLongitude());
+            if (GoogleMapApi.getFlightDistanceInKm(center, latLngDest) <= input.getRadius()) {
+                searchDestinations.add(allDestinations.get(i));
+            }
+        }
+        List<DestinationDataOutput> destinationDataOutputs = new ArrayList<>();
+
+        for (Destination destination : searchDestinations) {
+            DestinationDataOutput destinationDataOutput = destinationMapper.toDestinationDataOutput(destination);
+            destinationDataOutputs.add(destinationDataOutput);
         }
         return destinationDataOutputs;
     }
