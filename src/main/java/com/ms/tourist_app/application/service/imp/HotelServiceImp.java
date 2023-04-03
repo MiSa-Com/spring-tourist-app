@@ -18,6 +18,8 @@ import com.ms.tourist_app.domain.entity.Hotel;
 import com.ms.tourist_app.domain.entity.ImageHotel;
 import com.ms.tourist_app.domain.entity.User;
 import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -90,7 +92,26 @@ public class HotelServiceImp implements HotelService {
 
     @Override
     public List<HotelDataOutput> getListHotel(GetListHotelDataInput getListHotelDataInput) {
-        return null;
+
+        List<Address> addresses = addressRepository.search(getListHotelDataInput.getKeyword(), PageRequest.of(getListHotelDataInput.getPage(), getListHotelDataInput.getSize()));
+        if (addresses.isEmpty()){
+            throw new NotFoundException(AppStr.Address.address+AppStr.Base.whiteSpace+AppStr.Exception.notFound);
+        }
+        List<Hotel> hotels = new ArrayList<>();
+        for (Address address :
+                addresses) {
+            hotels = hotelRepository.findAllByNameIsContainingIgnoreCaseAndAddress(getListHotelDataInput.getKeyword(),address);
+        }
+        List<HotelDataOutput> hotelDataOutputs = new ArrayList<>();
+        for (Hotel hotel :
+                hotels) {
+            HotelDataOutput hotelDataOutput = hotelMapper.toHotelDataOutput(hotel);
+            hotelDataOutput.setAddress(hotel.getAddress());
+            hotelDataOutput.setUser(hotel.getUser());
+            hotelDataOutput.setCommentHotel(hotel.getCommentHotels());
+            hotelDataOutputs.add(hotelDataOutput);
+        }
+        return hotelDataOutputs;
     }
 
     @Override

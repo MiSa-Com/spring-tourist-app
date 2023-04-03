@@ -12,5 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class GetListHotelDataInput {
     private String keyword;
-    private Address address;
+    private Integer page;
+    private Integer size;
 }
