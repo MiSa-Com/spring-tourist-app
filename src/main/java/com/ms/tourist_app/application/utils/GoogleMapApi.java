@@ -59,7 +59,7 @@ public class GoogleMapApi {
 
         DirectionsApiRequest request = DirectionsApi.getDirections(MY_API_CONTEXT, origin.toString(), destination.toString());
         request.mode(mode);
-        request.region("fr");
+        request.region("vn");
 
         if (steps.length > 0) {
 

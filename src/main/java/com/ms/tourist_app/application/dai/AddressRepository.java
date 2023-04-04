@@ -12,8 +12,6 @@ import java.util.List;
 @Repository
 public interface AddressRepository extends JpaRepository<Address,Long> {
 
-
-
     @Query("select a from Address a where a.longitude = ?1 and a.latitude = ?2")
     Address findByLongitudeAndLatitude(Double longitude, Double latitude);
 

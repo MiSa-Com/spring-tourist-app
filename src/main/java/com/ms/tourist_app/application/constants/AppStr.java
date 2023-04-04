@@ -42,6 +42,7 @@ public class AppStr {
         public static final String password = "password";
         public static final String joinTableUser = "user";
         public static final String idAddress = "id_address";
+        public static final String favoriteRoad = "favorite_road";
     }
 
     public static final class Hotel {
@@ -120,6 +121,16 @@ public class AppStr {
         public static final String link = "link";
         public static final String idUser = "id_user";
         public static final String idHotel = "id_hotel";
+    }
+
+    public static final class Road {
+        public Road() {
+        }
+
+        public static final String tableRoad = "road";
+        public static final String road = "road";
+        public static final String idUser = "id_user";
+
     }
 
     public static final class Address {

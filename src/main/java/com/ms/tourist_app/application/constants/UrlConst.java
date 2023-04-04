@@ -27,6 +27,9 @@ public class UrlConst {
         public static final String address = "/addresses";
         public static final String getAddressId = address+idLink;
     }
+    public static final class Road{
+        public static final String road = "/roads";
+    }
     public static final class DestinationType{
         public static final String destinationType = "/destination-types";
         public static final String getDestinationTypeId = destinationType+idLink;
