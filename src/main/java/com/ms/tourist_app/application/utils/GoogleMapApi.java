@@ -1,12 +1,14 @@
 package com.ms.tourist_app.application.utils;
 
-import com.google.maps.DirectionsApi;
-import com.google.maps.DirectionsApiRequest;
-import com.google.maps.GeoApiContext;
-import com.google.maps.GeocodingApi;
+import com.github.slugify.Slugify;
+import com.google.maps.*;
 import com.google.maps.model.*;
 import com.ms.tourist_app.application.constants.AppConst;
 import com.ms.tourist_app.application.constants.AppEnv;
+import com.ms.tourist_app.domain.entity.Address;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GoogleMapApi {
     private static final String KEY_MAP_API = AppEnv.keyGoogleMap;
@@ -90,6 +92,26 @@ public class GoogleMapApi {
             return cumulDuration;
         } else {
             return cumulDistance;
+        }
+    }
+
+    public static List<Address> findAddressFromText(String address, int nbResult) {
+        Slugify slugify = new Slugify();
+        try {
+            TextSearchRequest searchRequest = new TextSearchRequest(MY_API_CONTEXT);
+            PlacesSearchResponse searchResponse = searchRequest.query(address).await();
+            List<Address> resultAdds = new ArrayList<>();
+            for (int i = AppConst.MapApi.defaultIndex; i < nbResult && i < searchResponse.results.length; i++) {
+                Address addressToAdd = new Address();
+                addressToAdd.setLatitude(searchResponse.results[i].geometry.location.lat);
+                addressToAdd.setLongitude(searchResponse.results[i].geometry.location.lng);
+                slugify = slugify.withTransliterator(true);
+                addressToAdd.setOther(slugify.slugify(searchResponse.results[i].formattedAddress));
+                resultAdds.add(addressToAdd);
+            }
+            return resultAdds;
+        } catch (Exception ex) {
+            return null;
         }
     }
 

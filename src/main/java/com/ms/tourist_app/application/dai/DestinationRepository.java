@@ -13,7 +13,8 @@ import java.util.List;
 
 @Repository
 public interface DestinationRepository extends JpaRepository<Destination,Long> {
-
+    @Query("select d from Destination d")
+    List<Destination> findAllDestinations();
     @Query("select d from Destination d where d.destinationType = ?1")
     List<Destination> findAllByDestinationType(DestinationType destinationType, Pageable pageable);
 
