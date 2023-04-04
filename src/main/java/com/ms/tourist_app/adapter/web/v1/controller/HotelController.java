@@ -12,8 +12,7 @@ import com.ms.tourist_app.application.output.hotels.HotelDataOutput;
 import com.ms.tourist_app.application.service.HotelService;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -41,6 +40,25 @@ public class HotelController {
         List<HotelDataOutput> hotelDataOutputs = hotelService.getListHotel(hotelDataInput);
         return ResponseUtil.restSuccess(hotelDataOutputs);
 
+    }
+
+    @GetMapping(UrlConst.Hotel.getHotelById)
+    public ResponseEntity<?> getDataHotel(@PathVariable("id")Long id){
+        HotelDataOutput hotelDataOutput = hotelService.viewHotelDetail(id);
+        return ResponseUtil.restSuccess(hotelDataOutput);
+    }
+
+    @PutMapping(UrlConst.Hotel.getHotelById)
+    public ResponseEntity<?> editHotel(@PathVariable("id")Long id, @Valid HotelDataParameter hotelDataParameter){
+        HotelDataInput hotelDataInput = hotelMapper.createHotelDataInput(hotelDataParameter);
+        HotelDataOutput hotelDataOutput = hotelService.editHotel(id,hotelDataInput);
+        return ResponseUtil.restSuccess(hotelDataOutput);
+    }
+
+    @DeleteMapping(UrlConst.Hotel.getHotelById)
+    public ResponseEntity<?> deleteHotel(@PathVariable("id")Long id){
+        HotelDataOutput hotelDataOutput = hotelService.deleteHotel(id);
+        return ResponseUtil.restSuccess(hotelDataOutput);
     }
 
 }

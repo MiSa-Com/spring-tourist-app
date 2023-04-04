@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface HotelService {
     HotelDataOutput createHotel(HotelDataInput hotelDataInput);
-    HotelDataOutput editHotel(HotelDataInput hotelDataInput);
+    HotelDataOutput editHotel(Long id, HotelDataInput hotelDataInput);
     List<HotelDataOutput> getListHotel(GetListHotelDataInput getListHotelDataInput);
     HotelDataOutput viewHotelDetail(Long id);
     HotelDataOutput deleteHotel(Long id);

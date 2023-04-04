@@ -86,8 +86,40 @@ public class HotelServiceImp implements HotelService {
     }
 
     @Override
-    public HotelDataOutput editHotel(HotelDataInput hotelDataInput) {
-        return null;
+    public HotelDataOutput editHotel(Long id, HotelDataInput hotelDataInput) {
+        Optional<Address> address = addressRepository.findById(hotelDataInput.getIdAddress());
+        if (address.isEmpty()){
+            throw new NotFoundException(AppStr.Address.address+AppStr.Base.whiteSpace+AppStr.Exception.notFound);
+        }
+        Optional<User> user = userRepository.findById(hotelDataInput.getIdUser());
+        if (user.isEmpty()){
+            throw new NotFoundException(AppStr.User.user+AppStr.Base.whiteSpace+AppStr.Exception.notFound);
+        }
+        Hotel checkTelephone = hotelRepository.findAllByTelephone(hotelDataInput.getTelephone());
+        if (checkTelephone != null){
+            throw new NotFoundException(AppStr.Hotel.telephone+AppStr.Base.whiteSpace+AppStr.Exception.duplicate);
+        }
+        Hotel hotel = hotelMapper.toHotel(hotelDataInput,id);
+        hotel.setAddress(address.get());
+        hotel.setUser(user.get());
+        List<ImageHotel> imageHotels = new ArrayList<>();
+        List<String> links = uploadFile.getMultiUrl(hotelDataInput.getImages());
+        for (String link :
+                links) {
+            ImageHotel imageHotel = new ImageHotel();
+            imageHotel.setLink(link);
+            imageHotel.setHotel(hotel);
+            imageHotels.add(imageHotel);
+        }
+        hotel.setImageHotels(imageHotels);
+        hotelRepository.save(hotel);
+        imageHotelRepository.saveAll(imageHotels);
+        //Hotel data ouput
+        HotelDataOutput hotelDataOutput = hotelMapper.toHotelDataOutput(hotel);
+        hotelDataOutput.setCommentHotel(null);
+        hotelDataOutput.setAddress(address.get());
+        hotelDataOutput.setUser(user.get());
+        return hotelDataOutput;
     }
 
     @Override
@@ -116,11 +148,28 @@ public class HotelServiceImp implements HotelService {
 
     @Override
     public HotelDataOutput viewHotelDetail(Long id) {
-        return null;
+        Optional<Hotel> hotel = hotelRepository.findById(id);
+        if (hotel.isEmpty()){
+            throw new NotFoundException(AppStr.Hotel.tableHotel+AppStr.Base.whiteSpace+AppStr.Exception.notFound);
+        }
+        HotelDataOutput hotelDataOutput = hotelMapper.toHotelDataOutput(hotel.get());
+        hotelDataOutput.setAddress(hotel.get().getAddress());
+        hotelDataOutput.setUser(hotel.get().getUser());
+        hotelDataOutput.setCommentHotel(hotel.get().getCommentHotels());
+        return hotelDataOutput;
     }
 
     @Override
     public HotelDataOutput deleteHotel(Long id) {
-        return null;
+        Optional<Hotel> hotel = hotelRepository.findById(id);
+        if (hotel.isEmpty()){
+            throw new NotFoundException(AppStr.Hotel.tableHotel+AppStr.Base.whiteSpace+AppStr.Exception.notFound);
+        }
+        hotelRepository.delete(hotel.get());
+        HotelDataOutput hotelDataOutput = hotelMapper.toHotelDataOutput(hotel.get());
+        hotelDataOutput.setAddress(hotel.get().getAddress());
+        hotelDataOutput.setUser(hotel.get().getUser());
+        hotelDataOutput.setCommentHotel(hotel.get().getCommentHotels());
+        return hotelDataOutput;
     }
 }
