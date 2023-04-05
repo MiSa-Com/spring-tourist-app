@@ -2,6 +2,7 @@ package com.ms.tourist_app.application.service.imp;
 
 import com.github.slugify.Slugify;
 import com.google.maps.model.LatLng;
+import com.ms.tourist_app.application.constants.AppConst;
 import com.ms.tourist_app.application.constants.AppEnv;
 import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.application.dai.AddressRepository;
@@ -115,12 +116,18 @@ public class AddressServiceImp implements AddressService {
         List<Address> addresses = addressRepository.search(input.getKeyword().trim(), PageRequest.of(input.getPage(), input.getSize()));
 
         List<AddressDataOutput> addressDataOutputs = new ArrayList<>();
-        /**
-         * Neu address empty thi tim goi y tren Google Map
-         */
+        if (addresses.isEmpty()){
+            // search text google map
+            addresses.addAll( GoogleMapApi.findAddressFromText(input.getKeyword(), AppConst.MapApi.defaultNbResult) );
 
-        for (Address address :
-                addresses) {
+             // charge into database
+//            for (Address address : addresses) {
+//                AddressDataParameter addressDataParameter = new AddressDataParameter(address.getProvince(), address.getDetailAddress());
+//                this.createAddress(addressMapper.createAddressInput(addressDataParameter));
+//            }
+        }
+
+        for (Address address : addresses) {
             AddressDataOutput addressDataOutput = addressMapper.toAddressDataOutput(address);
             addressDataOutputs.add(addressDataOutput);
         }
