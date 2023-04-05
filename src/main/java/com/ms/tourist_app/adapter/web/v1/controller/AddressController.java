@@ -30,7 +30,7 @@ public class AddressController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping(UrlConst.Address.address)
     public ResponseEntity<?> createAddress(@Valid @RequestBody AddressDataParameter parameter){
         AddressDataInput addressDataInput = addressMapper.createAddressInput(parameter);

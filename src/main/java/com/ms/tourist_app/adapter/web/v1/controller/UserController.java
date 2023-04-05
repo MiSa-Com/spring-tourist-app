@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping(UrlConst.User.users)
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createUser(@Valid @RequestBody UserDataParameter parameter) {
         UserDataInput input = userMapper.createUserInput(parameter);
 

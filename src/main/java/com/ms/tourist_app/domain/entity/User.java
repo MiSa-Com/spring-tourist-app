@@ -19,16 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = AppStr.User.tableUser)
-//@NamedNativeQuery(name = "User.findByEmail2",
-//        query = "SELECT u.first_name as firstName, u.last_name as lastName FROM users u WHERE u.email = :hello",
-//resultSetMapping = "userMapp")
-//@SqlResultSetMapping(name = "userMapp", classes = @ConstructorResult(
-//        targetClass = UserDTO.class,
-//        columns = {
-//                @ColumnResult(name = "firstName", type = String.class),
-//                @ColumnResult(name = "lastName", type = String.class)
-//        }
-//))
 public class User extends BaseEntity {
 
     @Column(name = AppStr.User.firstName)
@@ -79,4 +69,8 @@ public class User extends BaseEntity {
     @JoinColumn(name = AppStr.User.idAddress)
     @JsonIgnore
     private Address address;
+
+    @OneToMany(mappedBy = AppStr.User.joinTableUser)
+    @JsonIgnore
+    private List<Road> favoriteRoad;
 }
