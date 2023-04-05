@@ -2,6 +2,7 @@ package com.ms.tourist_app.application.output.hotels;
 
 import com.ms.tourist_app.domain.entity.Address;
 import com.ms.tourist_app.domain.entity.CommentHotel;
+import com.ms.tourist_app.domain.entity.ImageHotel;
 import com.ms.tourist_app.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class HotelDataOutput {
     private String telephone;
     private Address address;
     private User user;
+    private List<ImageHotel> images;
     private List<CommentHotel> commentHotel;
 
 

@@ -1,6 +1,5 @@
-package com.ms.tourist_app.adapter.web.v1.transfer.parameter.hotels;
+package com.ms.tourist_app.application.input.provinces;
 
-import com.ms.tourist_app.domain.entity.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,9 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetListHotelDataParameter {
+public class GetListProvinceDataInput {
     private String keyword;
     private Integer page;
-    private Long idProvince;
     private Integer size;
 }

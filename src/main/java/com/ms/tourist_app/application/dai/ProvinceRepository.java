@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface ProvinceRepository extends JpaRepository<Province,Long> {
-    @Query("select p from Province p where p.name = :name")
-    List<Province> findAllByName(@Param("name") String name, Pageable pageable);
+    @Query("select p from Province p where(:name is null or upper(p.name) like upper(concat('%', :name, '%')))")
+    List<Province> findAllByNameContainingIgnoreCase(@Param("name") String name, Pageable pageable);
+    Province findByNameContainingIgnoreCase(String name);
 }

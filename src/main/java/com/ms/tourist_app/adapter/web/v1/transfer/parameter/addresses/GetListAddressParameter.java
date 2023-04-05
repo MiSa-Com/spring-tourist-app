@@ -12,5 +12,6 @@ import lombok.Setter;
 public class GetListAddressParameter {
     private Integer page;
     private Integer size;
+    private Long idProvince;
     private String keyword;
 }

@@ -1,5 +1,6 @@
 package com.ms.tourist_app.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.domain.entity.base.BaseEntity;
 import lombok.AllArgsConstructor;
@@ -34,6 +35,7 @@ public class Address extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = AppStr.Address.idProvince)
+    @JsonIgnore
     private Province province;
 
 

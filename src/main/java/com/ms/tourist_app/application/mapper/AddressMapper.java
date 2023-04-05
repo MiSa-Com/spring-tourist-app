@@ -12,7 +12,6 @@ import org.mapstruct.Mappings;
 public interface AddressMapper {
 
     @Mappings({
-            @Mapping(target = "province",source = "input.province"),
             @Mapping(target = "detailAddress",source = "input.detailAddress"),
             @Mapping(target = "id",source = "id")
     })
@@ -26,7 +25,6 @@ public interface AddressMapper {
             @Mapping(target = "createAt",source = "address.createAt"),
             @Mapping(target = "updateBy",source = "address.updateBy"),
             @Mapping(target = "updateAt",source = "address.updateAt"),
-            @Mapping(target = "province",source = "address.province"),
             @Mapping(target = "detailAddress",source = "address.detailAddress"),
             @Mapping(target = "longitude",source = "address.longitude"),
             @Mapping(target = "latitude",source = "address.latitude")

@@ -10,6 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddressDataParameter {
-    private String province;
+    private Long idProvince;
     private String detailAddress;
 }

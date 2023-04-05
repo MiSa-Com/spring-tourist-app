@@ -36,7 +36,7 @@ public class HotelController {
 
     @GetMapping(UrlConst.Hotel.hotel)
     public ResponseEntity<?> getListHotel(@Valid GetListHotelDataParameter parameter){
-        GetListHotelDataInput hotelDataInput = new GetListHotelDataInput(parameter.getKeyword(), parameter.getPage(), parameter.getSize());
+        GetListHotelDataInput hotelDataInput = new GetListHotelDataInput(parameter.getKeyword(), parameter.getPage(), parameter.getIdProvince(), parameter.getSize());
         List<HotelDataOutput> hotelDataOutputs = hotelService.getListHotel(hotelDataInput);
         return ResponseUtil.restSuccess(hotelDataOutputs);
 

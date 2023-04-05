@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddressDataInput {
-    private String province;
+    private Long idProvince;
     private String detailAddress;
 
 }

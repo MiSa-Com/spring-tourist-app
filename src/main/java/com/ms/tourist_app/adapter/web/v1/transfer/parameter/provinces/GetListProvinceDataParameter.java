@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetListProvinceDataInput {
+public class GetListProvinceDataParameter {
     private String keyword;
     private Integer page;
     private Integer size;

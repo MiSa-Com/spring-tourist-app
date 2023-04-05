@@ -40,4 +40,8 @@ public class UrlConst {
         public static final String hotel = "hotels";
         public static final String getHotelById = hotel+idLink;
     }
+    public static final class Province{
+        public static final String province = "provinces";
+        public static final String getProvinceById = province+idLink;
+    }
 }

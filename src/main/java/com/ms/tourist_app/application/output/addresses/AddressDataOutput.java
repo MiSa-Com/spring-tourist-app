@@ -1,5 +1,6 @@
 package com.ms.tourist_app.application.output.addresses;
 
+import com.ms.tourist_app.application.output.provinces.ProvinceDataOutput;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,6 @@ public class AddressDataOutput {
     private String other;
     private Double longitude;
     private Double latitude;
-    private String province;
+    private ProvinceDataOutput province;
     private String detailAddress;
 }

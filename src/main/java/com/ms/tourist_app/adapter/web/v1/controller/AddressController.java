@@ -41,7 +41,7 @@ public class AddressController {
 //    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping(UrlConst.Address.address)
     public ResponseEntity<?> getListAddress(@Valid GetListAddressParameter parameter){
-        GetListAddressInput getListAddressInput = new GetListAddressInput(parameter.getPage(), parameter.getSize(), parameter.getKeyword());
+        GetListAddressInput getListAddressInput = new GetListAddressInput(parameter.getPage(), parameter.getSize(), parameter.getIdProvince(), parameter.getKeyword());
         List<AddressDataOutput> addressDataOutput = addressService.getListAddressDataOutput(getListAddressInput);
         return ResponseUtil.restSuccess(addressDataOutput);
     }

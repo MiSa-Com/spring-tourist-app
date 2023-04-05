@@ -39,7 +39,7 @@ public class Hotel extends BaseEntity {
     @JoinColumn(name = AppStr.Hotel.idUser)
     private User user;
 
-    @OneToMany(mappedBy = AppStr.Hotel.tableHotel)
+    @OneToMany(mappedBy = AppStr.Hotel.tableHotel,cascade = CascadeType.ALL)
     @JsonIgnore
     private List<ImageHotel> imageHotels;
 
