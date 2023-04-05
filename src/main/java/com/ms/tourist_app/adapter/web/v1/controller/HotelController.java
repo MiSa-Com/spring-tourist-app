@@ -60,5 +60,4 @@ public class HotelController {
         HotelDataOutput hotelDataOutput = hotelService.deleteHotel(id);
         return ResponseUtil.restSuccess(hotelDataOutput);
     }
-
 }

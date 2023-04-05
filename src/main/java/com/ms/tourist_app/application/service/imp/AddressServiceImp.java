@@ -81,7 +81,6 @@ public class AddressServiceImp implements AddressService {
                                                                     address.getLatitude(), address.getProvince(),
                                                                     address.getDetailAddress());
         return addressDataOutput;
-
     }
 
     @Override

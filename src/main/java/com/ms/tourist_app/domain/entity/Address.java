@@ -19,10 +19,6 @@ import javax.persistence.*;
 public class Address extends BaseEntity {
 
 
-    @Column(name = AppStr.Address.province)
-    @Nationalized
-    private String province;
-
     @Column(name = AppStr.Address.detailAddress)
     @Nationalized
     private String detailAddress;
@@ -34,6 +30,11 @@ public class Address extends BaseEntity {
 
     @Column(name = AppStr.Address.longitude)
     private Double longitude;
+
+
+    @ManyToOne
+    @JoinColumn(name = AppStr.Address.idProvince)
+    private Province province;
 
 
     @Column(name = AppStr.Address.latitude)

@@ -131,7 +131,7 @@ public class AppStr {
         public static final String latitude = "latitude";
         public static final String other = "other";
         public static final String address = "address";
-        public static final String province = "province";
+        public static final String idProvince = "id_province";
         public static final String detailAddress = "detail_address";
     }
 
@@ -215,7 +215,13 @@ public class AppStr {
         public static final String destinationType = "destinationType";
 
     }
+    public static final class Province{
+        public Province() {
+        }
+        public static final String tableProvince = "province";
+        public static final String name = "name";
 
+    }
     public static final class CloudImage{
         public CloudImage() {
         }
