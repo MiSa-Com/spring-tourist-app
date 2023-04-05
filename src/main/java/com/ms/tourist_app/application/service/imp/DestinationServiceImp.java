@@ -136,28 +136,28 @@ public class DestinationServiceImp implements DestinationService {
         }
         destination.setDestinationType(destinationType.get());
         destination.setAddress(address.get());
-//        List<ImageDestination> imageDestinations = new ArrayList<>();
-//        List<String> links = uploadFile.getMultiUrl(input.getImages());
-//        for (String link:
-//             links) {
-//            ImageDestination imageDestination = new ImageDestination();
-//            imageDestination.setLink(link);
-//            imageDestination.setDestination(destination);
-//            imageDestinations.add(imageDestination);
-//        }
-//        destination.setImageDestinations(imageDestinations);
+        List<ImageDestination> imageDestinations = new ArrayList<>();
+        List<String> links = uploadFile.getMultiUrl(input.getImages());
+        for (String link:
+             links) {
+            ImageDestination imageDestination = new ImageDestination();
+            imageDestination.setLink(link);
+            imageDestination.setDestination(destination);
+            imageDestinations.add(imageDestination);
+        }
+        destination.setImageDestinations(imageDestinations);
         destinationRepository.save(destination);
-//        imageDestinationRepository.saveAll(imageDestinations);
+        imageDestinationRepository.saveAll(imageDestinations);
         DestinationDataOutput output = destinationMapper.toDestinationDataOutput(destination);
         output.setDestinationType(destination.getDestinationType());
         output.setAddress(destination.getAddress());
-//        List<String> linkImageDestination = new ArrayList<>();
-//        List<ImageDestination> imageDestinationList = imageDestinationRepository.findAllByDestination(destination);
-//        for (ImageDestination imageDestination :
-//                imageDestinationList ) {
-//            linkImageDestination.add(imageDestination.getLink());
-//        }
-//        output.setImages(linkImageDestination);
+        List<String> linkImageDestination = new ArrayList<>();
+        List<ImageDestination> imageDestinationList = imageDestinationRepository.findAllByDestination(destination);
+        for (ImageDestination imageDestination :
+                imageDestinationList ) {
+            linkImageDestination.add(imageDestination.getLink());
+        }
+        output.setImages(linkImageDestination);
         return output;
     }
 

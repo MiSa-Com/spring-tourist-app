@@ -1,22 +1,24 @@
 package com.ms.tourist_app.application.service.tsp;
 
 import com.google.maps.model.TravelMode;
+import com.ms.tourist_app.application.constants.AppConst;
 import com.ms.tourist_app.application.service.dijkstra.Dijkstra;
-import com.ms.tourist_app.domain.entity.Destination;
+import com.ms.tourist_app.domain.entity.Address;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class CompleteGraph implements Graph {
-    private static final int MAX_COST = 40;
-    private static final int MIN_COST = 10;
+
     int nbVertices;
     double[][] cost;
     double minCost;
 
-    public CompleteGraph(List<Destination> listDestination, TravelMode mode, boolean isDuration) {
-        Double[][] timeInMinutes = Dijkstra.calculateTimeInMinutes(listDestination, mode, isDuration);
+    public CompleteGraph(List<Address> listAddress, TravelMode mode, boolean isDuration) {
+        Double[][] timeInMinutes = Dijkstra.calculateTimeInMinutes(listAddress, mode, isDuration);
         this.nbVertices = timeInMinutes.length;
+        if (this.nbVertices > AppConst.TSP.MAX_COST) {
+            throw new IllegalArgumentException("Too many vertices: " + this.nbVertices);
+        }
         this.cost = new double[this.nbVertices][this.nbVertices];
         this.minCost = Double.MAX_VALUE;
 

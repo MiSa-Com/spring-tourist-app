@@ -29,6 +29,7 @@ public class UrlConst {
     }
     public static final class Road{
         public static final String road = "/roads";
+        public static final String bestroad = "/bestroad";
     }
     public static final class DestinationType{
         public static final String destinationType = "/destination-types";

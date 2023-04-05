@@ -20,6 +20,5 @@ public class Road extends BaseEntity {
     private String road;
     @ManyToOne
     @JoinColumn(name = AppStr.Road.idUser)
-    @JsonIgnore
     private User user;
 }

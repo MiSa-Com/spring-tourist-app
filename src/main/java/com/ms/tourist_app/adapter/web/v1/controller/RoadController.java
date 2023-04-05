@@ -2,6 +2,7 @@ package com.ms.tourist_app.adapter.web.v1.controller;
 
 import com.ms.tourist_app.adapter.web.base.ResponseUtil;
 import com.ms.tourist_app.adapter.web.base.RestApiV1;
+import com.ms.tourist_app.adapter.web.v1.transfer.parameter.roads.FindBestRoadFromHotelParameter;
 import com.ms.tourist_app.adapter.web.v1.transfer.parameter.roads.RoadDataParameter;
 import com.ms.tourist_app.application.constants.UrlConst;
 import com.ms.tourist_app.application.input.roads.RoadDataInput;
@@ -21,17 +22,14 @@ public class RoadController {
         this.roadService = roadService;
     }
 
-
-    //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping(UrlConst.Road.road)
     public ResponseEntity<?> createRoad(@Valid @RequestBody RoadDataParameter parameter){
-        RoadDataInput roadDataInput = new RoadDataInput();
-        roadDataInput.setIdUser(parameter.getIdUser());
-        String listIds = "";
-        for (Long idDest : parameter.getListIdDestination()) {
-            listIds += (idDest + ",");
+        String road = "Hotel " + parameter.getIdHotel() + " - " + parameter.getListTime().get(0) + " | ";
+        for (int i = 0 ; i < parameter.getListIdDestination().size() ; i++) {
+            road += (parameter.getListIdDestination().get(i) + " - " +
+                    parameter.getListTime().get(i+1) + " | ");
         }
-        roadDataInput.setRoad(listIds);
+        RoadDataInput roadDataInput = new RoadDataInput(road, parameter.getIdUser());
         RoadDataOutput roadDataOutput = roadService.createRoad(roadDataInput);
         return ResponseUtil.restSuccess(roadDataOutput);
     }

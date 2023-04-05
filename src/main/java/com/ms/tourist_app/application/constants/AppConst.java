@@ -16,7 +16,13 @@ public class AppConst {
         public static final int defaultNbResult = 5;
     }
 
+    public static final class TSP{
+        public TSP() {
+        }
+        public static final int MAX_COST = 40;
 
+        public static final int TIME_LIMIT = 5000; // 5 seconds
+    }
 
 
 }

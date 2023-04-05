@@ -1,6 +1,5 @@
-package com.ms.tourist_app.application.output.roads;
+package com.ms.tourist_app.application.input.roads;
 
-import com.ms.tourist_app.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoadDataOutput {
+public class FindBestRoadFromHotelInput {
     private String road;
-    private User user;
 }

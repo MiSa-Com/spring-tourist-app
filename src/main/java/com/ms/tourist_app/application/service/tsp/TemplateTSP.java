@@ -81,7 +81,7 @@ public abstract class TemplateTSP implements TSP {
     private void branchAndBound(int currentVertex, ArrayList<Integer> unvisited,
                                 Collection<Integer> visited, double currentCost) {
         if (System.currentTimeMillis() - startTime > timeLimit) {
-            return;
+            throw new RuntimeException("Time limit exceeded");
         }
         if (unvisited.size() == 0) {
             if (g.isArc(currentVertex, 0)) {

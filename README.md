@@ -1,4 +1,4 @@
-<h1>Project base for Java web HIT 2022</h1>
+<h1>MiSa-Com: TouristApp</h1>
 
 <h2>I. Các package</h2>
 <h3>1. adapter: cho web, app...</h3>
@@ -49,6 +49,3 @@ output</p>
 <p>- Tạo các annotation validate param</p>
 <p>- Đoạn nào xử lý logic nhiều class dùng lại thì cho vào util</p>
 <p>- Dùng map struct để map các class</p>
-
-<br/>
-<b>====> Đây là project viết theo ý cá nhân, nên tham khảo. Tránh chê :v</b>

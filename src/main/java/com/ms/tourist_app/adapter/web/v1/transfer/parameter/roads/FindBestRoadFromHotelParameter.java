@@ -11,9 +11,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoadDataParameter {
-    private Long idUser;
+public class FindBestRoadFromHotelParameter {
     private Long idHotel;
     private List<Long> listIdDestination;
-    private List<Double> listTime;
+
 }

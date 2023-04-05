@@ -9,11 +9,10 @@ import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
 public interface RoadMapper {
-
     @Mappings({
-            @Mapping(target = "id",source = "id"),
-            @Mapping(target = "road",source = "road"),
-            @Mapping(target = "user",source = "user")
+        @Mapping(target = "road", source = "road.road"),
+        @Mapping(target = "user", source = "road.user")
     })
     RoadDataOutput toRoadDataOutput(Road road);
+
 }
