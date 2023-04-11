@@ -85,9 +85,9 @@ public abstract class TemplateTSP implements TSP {
         }
         if (unvisited.size() == 0) {
             if (g.isArc(currentVertex, 0)) {
-                if (currentCost + g.getCost(currentVertex, 0) < bestSolCost) {
+                if (currentCost + g.getCost(currentVertex, 0, false) < bestSolCost) {
                     visited.toArray(bestSol);
-                    bestSolCost = currentCost + g.getCost(currentVertex, 0);
+                    bestSolCost = currentCost + g.getCost(currentVertex, 0, false);
                 }
             }
         } else if (currentCost + bound(currentVertex, unvisited) < bestSolCost) {
@@ -97,7 +97,7 @@ public abstract class TemplateTSP implements TSP {
                 visited.add(nextVertex);
                 unvisited.remove(nextVertex);
                 branchAndBound(nextVertex, unvisited, visited,
-                        currentCost + g.getCost(currentVertex, nextVertex));
+                        currentCost + g.getCost(currentVertex, nextVertex, false));
                 visited.remove(nextVertex);
                 unvisited.add(nextVertex);
             }

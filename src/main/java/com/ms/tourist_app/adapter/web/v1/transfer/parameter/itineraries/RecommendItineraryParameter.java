@@ -1,4 +1,4 @@
-package com.ms.tourist_app.adapter.web.v1.transfer.parameter.roads;
+package com.ms.tourist_app.adapter.web.v1.transfer.parameter.itineraries;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,8 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FindBestRoadFromHotelParameter {
-    private Long idHotel;
-    private List<Long> listIdDestination;
-
+public class RecommendItineraryParameter {
+    private String address;
+    private String travelMode;
 }

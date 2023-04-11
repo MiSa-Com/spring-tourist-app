@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 @Getter
 @Setter
@@ -14,4 +15,6 @@ public class GetListDestinationCenterRadiusInput {
     private Integer size;
     private String keyword;
     private Double radius; // in km
+    @Nullable
+    private int maxResult;
 }

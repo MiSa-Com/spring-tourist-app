@@ -123,13 +123,14 @@ public class AppStr {
         public static final String idHotel = "id_hotel";
     }
 
-    public static final class Road {
-        public Road() {
+    public static final class Itinerary {
+        public Itinerary() {
         }
 
-        public static final String tableRoad = "road";
-        public static final String road = "road";
+        public static final String tableItinerary = "itineraries";
+        public static final String itinerary = "itinerary";
         public static final String idUser = "id_user";
+        public static final String travelMode = "travel_mode";
 
     }
 

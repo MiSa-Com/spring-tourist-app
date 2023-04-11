@@ -36,7 +36,8 @@ public class DestinationController {
 
     @GetMapping(UrlConst.Destination.destination)
     public ResponseEntity<?> getListDestinationCenterRadius(@Valid GetListDestinationCenterRadiusParameter parameter) {
-        GetListDestinationCenterRadiusInput input = new GetListDestinationCenterRadiusInput(parameter.getPage(),parameter.getSize(), parameter.getKeyword(), parameter.getRadius());
+        GetListDestinationCenterRadiusInput input = new GetListDestinationCenterRadiusInput(parameter.getPage(),parameter.getSize(), parameter.getKeyword(),
+                                            parameter.getRadius(), parameter.getMaxResult());
         List<DestinationDataOutput> outputs = destinationService.getListDestinationCenterRadius(input);
         return ResponseUtil.restSuccess(outputs);
     }

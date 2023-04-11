@@ -72,5 +72,5 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = AppStr.User.joinTableUser)
     @JsonIgnore
-    private List<Road> favoriteRoad;
+    private List<Itinerary> favoriteItinerary;
 }
