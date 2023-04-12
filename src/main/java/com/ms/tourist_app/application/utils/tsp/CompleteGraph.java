@@ -1,8 +1,8 @@
-package com.ms.tourist_app.application.service.tsp;
+package com.ms.tourist_app.application.utils.tsp;
 
 import com.google.maps.model.TravelMode;
 import com.ms.tourist_app.application.constants.AppConst;
-import com.ms.tourist_app.application.service.dijkstra.Dijkstra;
+import com.ms.tourist_app.application.utils.dijkstra.Dijkstra;
 import com.ms.tourist_app.domain.entity.Address;
 
 import java.util.List;

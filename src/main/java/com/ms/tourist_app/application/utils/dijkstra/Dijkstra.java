@@ -1,4 +1,4 @@
-package com.ms.tourist_app.application.service.dijkstra;
+package com.ms.tourist_app.application.utils.dijkstra;
 
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;

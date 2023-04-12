@@ -1,4 +1,4 @@
-package com.ms.tourist_app.application.service.tsp;
+package com.ms.tourist_app.application.utils.tsp;
 
 import java.util.ArrayList;
 import java.util.Collection;

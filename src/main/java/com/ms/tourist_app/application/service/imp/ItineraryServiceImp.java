@@ -15,12 +15,11 @@ import com.ms.tourist_app.application.input.itineraries.FindBestItineraryFromHot
 import com.ms.tourist_app.application.input.itineraries.ItineraryDataInput;
 import com.ms.tourist_app.application.mapper.DestinationMapper;
 import com.ms.tourist_app.application.mapper.ItineraryMapper;
-import com.ms.tourist_app.application.output.destinations.DestinationDataOutput;
 import com.ms.tourist_app.application.output.itineraries.FindBestItineraryFromHotelOutput;
 import com.ms.tourist_app.application.output.itineraries.ItineraryDataOutput;
 import com.ms.tourist_app.application.output.itineraries.RecommendItineraryOutput;
-import com.ms.tourist_app.application.service.tsp.CompleteGraph;
-import com.ms.tourist_app.application.service.tsp.TSP1;
+import com.ms.tourist_app.application.utils.tsp.CompleteGraph;
+import com.ms.tourist_app.application.utils.tsp.TSP1;
 import com.ms.tourist_app.application.utils.GoogleMapApi;
 import com.ms.tourist_app.config.exception.NotFoundException;
 import com.ms.tourist_app.domain.entity.*;
