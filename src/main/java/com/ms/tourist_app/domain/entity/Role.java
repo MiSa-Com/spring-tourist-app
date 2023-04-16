@@ -25,4 +25,8 @@ public class Role extends BaseEntity {
     @JoinTable(name = AppStr.Role.joinTableUserRole)
     @JsonIgnore
     private List<User> users;
+
+    public Role(String name) {
+        this.name = name;
+    }
 }

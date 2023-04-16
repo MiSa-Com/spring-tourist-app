@@ -8,6 +8,7 @@ import com.ms.tourist_app.application.input.roads.FindBestRoadFromHotelInput;
 import com.ms.tourist_app.application.output.roads.FindBestRoadFromHotelOutput;
 import com.ms.tourist_app.application.service.imp.RoadServiceImp;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -20,7 +21,8 @@ public class BestRoadController {
     public BestRoadController(RoadServiceImp roadService) {
         this.roadService = roadService;
     }
-    //@PreAuthorize("hasRole('ADMIN')")
+
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping(UrlConst.Road.bestroad)
     public ResponseEntity<?> findBestRoadFromHotel(@Valid @RequestBody FindBestRoadFromHotelParameter parameter) {
         FindBestRoadFromHotelInput findBestRoadFromHotelInput = new FindBestRoadFromHotelInput();

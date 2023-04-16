@@ -28,4 +28,7 @@ public interface AddressRepository extends JpaRepository<Address,Long> {
 
     List<Address> findAllByProvince(Province province);
 
+    @Query("select a from Address a where(:province is null or a.province = :province )or (:keyword is null or a.other = :keyword) or(:keyword is null or a.detailAddress = :keyword)")
+    List<Address> findAllByProvinceOrOtherOrDetailAddress(@Param("province") Province province,@Param("keyword") String keyword);
+
 }

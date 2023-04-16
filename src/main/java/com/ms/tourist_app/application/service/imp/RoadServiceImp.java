@@ -51,8 +51,8 @@ public class RoadServiceImp implements RoadService {
         Hotel hotel = hotelRepository.findById(idHotel).get();
         List<Long> listIdDestination = new ArrayList<>();
         for (int i = 1 ; i < listIds.length; i++) {
-            listIdDestination.add(Long.parseLong(listIds[i]));
-            Optional<Destination> destination = destinationRepository.findById(Long.parseLong(listIds[i]));
+            listIdDestination.add(Long.valueOf(listIds[i]));
+            Optional<Destination> destination = destinationRepository.findById(Long.valueOf(listIds[i]));
             if (destination.isEmpty()){
                 throw new NotFoundException(AppStr.Destination.tableDestination+AppStr.Base.whiteSpace+AppStr.Exception.notFound);
             }

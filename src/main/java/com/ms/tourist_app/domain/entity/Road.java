@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 
@@ -17,6 +18,7 @@ import javax.persistence.*;
 @Table(name = AppStr.Road.tableRoad)
 public class Road extends BaseEntity {
     @Column(name = AppStr.Road.road)
+    @Nationalized
     private String road;
     @ManyToOne
     @JoinColumn(name = AppStr.Road.idUser)

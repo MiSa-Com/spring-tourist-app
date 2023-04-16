@@ -13,6 +13,7 @@ import com.ms.tourist_app.application.output.provinces.ProvinceDataOutput;
 import com.ms.tourist_app.application.service.ProvinceService;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,6 +29,7 @@ public class ProvinceController {
         this.provinceService = provinceService;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping(UrlConst.Province.province)
     public ResponseEntity<?> createProvince(@Valid @RequestBody ProvinceDataParameter parameter){
         ProvinceDataInput provinceDataInput = provinceMapper.toProvinceDataInput(parameter);
@@ -35,6 +37,7 @@ public class ProvinceController {
         return ResponseUtil.restSuccess(provinceDataOutput);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping(UrlConst.Province.province)
     public ResponseEntity<?> getListProvince(@Valid GetListProvinceDataParameter parameter){
         GetListProvinceDataInput dataInput = new GetListProvinceDataInput(parameter.getKeyword(),parameter.getPage(),parameter.getSize());
@@ -42,6 +45,7 @@ public class ProvinceController {
         return ResponseUtil.restSuccess(output);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping(UrlConst.Province.getProvinceById)
     public ResponseEntity<?> editProvince(@PathVariable(UrlConst.id)Long id,@Valid @RequestBody ProvinceDataParameter parameter){
         ProvinceDataInput provinceDataInput = provinceMapper.toProvinceDataInput(parameter);
@@ -49,6 +53,7 @@ public class ProvinceController {
         return ResponseUtil.restSuccess(provinceDataOutput);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @DeleteMapping(UrlConst.Province.getProvinceById)
     public ResponseEntity<?> deleteProvince(@PathVariable(UrlConst.id)Long id){
         ProvinceDataOutput provinceDataOutput = provinceService.deleteProvince(id);

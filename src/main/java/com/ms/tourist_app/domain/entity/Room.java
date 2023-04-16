@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.util.Calendar;
@@ -21,6 +22,7 @@ import java.util.List;
 public class Room extends BaseEntity {
 
     @Column(name = AppStr.Room.name)
+    @Nationalized
     private String name;
 
 
@@ -32,6 +34,7 @@ public class Room extends BaseEntity {
     private Double superficie;
 
     @Column(name = AppStr.Room.destination)
+    @Nationalized
     private String description;
 
 

@@ -14,3 +14,4 @@ public class RoadDataOutput {
     private String road;
     private User user;
 }
+

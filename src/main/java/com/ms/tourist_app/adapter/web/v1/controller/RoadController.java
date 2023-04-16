@@ -9,6 +9,7 @@ import com.ms.tourist_app.application.input.roads.RoadDataInput;
 import com.ms.tourist_app.application.output.roads.RoadDataOutput;
 import com.ms.tourist_app.application.service.imp.RoadServiceImp;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -22,6 +23,7 @@ public class RoadController {
         this.roadService = roadService;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping(UrlConst.Road.road)
     public ResponseEntity<?> createRoad(@Valid @RequestBody RoadDataParameter parameter){
         String road = "Hotel " + parameter.getIdHotel() + " - " + parameter.getListTime().get(0) + " | ";
