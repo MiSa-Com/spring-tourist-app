@@ -1,7 +1,8 @@
-package com.ms.tourist_app.application.output.roads;
+package com.ms.tourist_app.application.output.itineraries;
 
+import com.google.maps.model.TravelMode;
+import com.ms.tourist_app.domain.entity.Address;
 import com.ms.tourist_app.domain.entity.Destination;
-import com.ms.tourist_app.domain.entity.Hotel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +14,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FindBestRoadFromHotelOutput {
-    private Hotel hotel;
+public class RecommendItineraryOutput {
+    private Address address;
     private List<Destination> listDestination;
     private List<Double> listTime;
+    private List<Double> listDistance;
+    private TravelMode travelMode;
 }

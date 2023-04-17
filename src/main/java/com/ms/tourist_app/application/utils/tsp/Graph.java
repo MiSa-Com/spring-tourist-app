@@ -1,4 +1,4 @@
-package com.ms.tourist_app.application.service.tsp;
+package com.ms.tourist_app.application.utils.tsp;
 
 public interface Graph {
     /**
@@ -9,9 +9,10 @@ public interface Graph {
     /**
      * @param i
      * @param j
+     * @param isDistance
      * @return the cost of arc (i,j) if (i,j) is an arc; -1 otherwise
      */
-    public abstract double getCost(int i, int j);
+    public abstract double getCost(int i, int j, boolean isDistance);
 
     /**
      * @param i

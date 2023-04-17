@@ -27,9 +27,11 @@ public class UrlConst {
         public static final String address = "/addresses";
         public static final String getAddressId = address+idLink;
     }
-    public static final class Road{
-        public static final String road = "/roads";
-        public static final String bestroad = "/bestroad";
+    public static final class Itinerary {
+        public static final String itinerary = "/itineraries";
+        public static final String getByIdUser = itinerary + idLink;
+        public static final String bestItinerary = "/best-itinerary";
+        public static final String recommendItinerary = "/recommend-itinerary";
     }
     public static final class DestinationType{
         public static final String destinationType = "/destination-types";

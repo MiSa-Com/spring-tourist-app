@@ -1,4 +1,4 @@
-package com.ms.tourist_app.application.service.dijkstra;
+package com.ms.tourist_app.application.utils.dijkstra;
 
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
@@ -9,8 +9,8 @@ import java.util.List;
 
 public class Dijkstra {
     private Dijkstra() {}
-    public static Double[][] calculateTimeInMinutes(List<Address> listAddress, TravelMode mode, boolean isDuration) {
-        Double[][] timeInMinutes = new Double[listAddress.size()][listAddress.size()];
+    public static double[][][] calculateTimeInMinutes(List<Address> listAddress, TravelMode mode) {
+        double[][][] timeInMinutes = new double[listAddress.size()][listAddress.size()][2];
         for (int i = 0 ; i < listAddress.size() ; i++) {
             Address origin = listAddress.get(i);
             double originLat = origin.getLatitude();
@@ -22,10 +22,11 @@ public class Dijkstra {
                 double destLng = destination.getLongitude();
                 LatLng destCoordinate = new LatLng(destLat, destLng);
                 if (i != j) {
-                    timeInMinutes[i][j] = GoogleMapApi.getTripDurationOrDistance(mode, isDuration, originCoordinate, destCoordinate);
+                    timeInMinutes[i][j] = GoogleMapApi.getTripDurationOrDistance(mode, originCoordinate, destCoordinate);
                 }
                 else {
-                    timeInMinutes[i][j] = 0.0;
+                    timeInMinutes[i][j][0] = 0.0;
+                    timeInMinutes[i][j][1] = 0.0;
                 }
             }
         }

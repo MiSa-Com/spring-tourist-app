@@ -48,14 +48,14 @@ public class GoogleMapApi {
     }
 
     public static Double getTripDurationByBicycleInMinute(LatLng origin, LatLng destination, LatLng... steps) {
-        return getTripDurationOrDistance(TravelMode.BICYCLING, true, origin, destination, steps);
+        return getTripDurationOrDistance(TravelMode.BICYCLING, origin, destination, steps)[1];
     }
 
     public static Double getTripDistanceByCarInKm(LatLng origin, LatLng destination, LatLng... steps) {
-        return getTripDurationOrDistance(TravelMode.DRIVING, false, origin, destination, steps);
+        return getTripDurationOrDistance(TravelMode.DRIVING, origin, destination, steps)[0];
     }
 
-    public static Double getTripDurationOrDistance(TravelMode mode, boolean duration, LatLng origin, LatLng destination, LatLng... steps) {
+    public static double[] getTripDurationOrDistance(TravelMode mode, LatLng origin, LatLng destination, LatLng... steps) {
 
         DirectionsApiRequest request = DirectionsApi.getDirections(MY_API_CONTEXT, origin.toString(), destination.toString());
         request.mode(mode);
@@ -88,11 +88,10 @@ public class GoogleMapApi {
             return null;
         }
 
-        if (duration) {
-            return cumulDuration;
-        } else {
-            return cumulDistance;
-        }
+        double[] cumulArray = new double[2];
+        cumulArray[0] = cumulDistance;
+        cumulArray[1] = cumulDuration;
+        return cumulArray;
     }
 
     public static List<Address> findAddressFromText(String address, int nbResult) {

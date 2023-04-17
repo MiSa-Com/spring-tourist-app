@@ -1,5 +1,5 @@
 package com.ms.tourist_app.domain.entity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.maps.model.TravelMode;
 import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.domain.entity.base.BaseEntity;
 import lombok.AllArgsConstructor;
@@ -15,12 +15,16 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = AppStr.Road.tableRoad)
-public class Road extends BaseEntity {
-    @Column(name = AppStr.Road.road)
+@Table(name = AppStr.Itinerary.tableItinerary)
+public class Itinerary extends BaseEntity {
+    @Column(name = AppStr.Itinerary.itinerary)
     @Nationalized
-    private String road;
+    private String itinerary;
     @ManyToOne
-    @JoinColumn(name = AppStr.Road.idUser)
+    @JoinColumn(name = AppStr.Itinerary.idUser)
     private User user;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = AppStr.Itinerary.travelMode)
+    private TravelMode travelMode;
 }

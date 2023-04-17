@@ -98,11 +98,16 @@ public class DestinationServiceImp implements DestinationService {
     @Override
     @Transactional
     public List<DestinationDataOutput> getListDestinationCenterRadius(GetListDestinationCenterRadiusInput input) {
-        List<Destination> allDestinations = destinationRepository.findAllDestinations();
+        List<Destination> allDestinations = destinationRepository.findAll();
+        int maxResult = input.getMaxResult();
+        if (maxResult == 0) {
+            maxResult = allDestinations.size();
+        }
         List<Destination> searchDestinations = new ArrayList<>();
         LatLng center = GoogleMapApi.getLatLng(input.getKeyword());
-        for (int i = 0; i < allDestinations.size(); i++) {
-            if (i < input.getPage() * input.getSize()) {
+
+        for (int i = 0 ; i < allDestinations.size() && i < maxResult ; i++) {
+            if ( i < input.getPage() * input.getSize() ) {
                 continue;
             }
             if (i >= (input.getPage() + 1) * input.getSize()) {
