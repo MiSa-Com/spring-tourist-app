@@ -40,6 +40,8 @@ public class UrlConst {
     public static final class Destination{
         public static final String destination = "destinations";
         public static final String getDestinationId = destination+idLink;
+        public static final String destinationRadius = destination+"/radius";
+        public static final String destinationFilter = destination+"/filter";
     }
 
     public static final class Hotel{

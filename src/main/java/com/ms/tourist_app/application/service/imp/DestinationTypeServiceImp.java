@@ -7,6 +7,7 @@ import com.ms.tourist_app.application.input.type_destination.GetListDestinationT
 import com.ms.tourist_app.application.mapper.DestinationTypeMapper;
 import com.ms.tourist_app.application.output.type_destination.DestinationTypeDataOutput;
 import com.ms.tourist_app.application.service.DestinationTypeService;
+import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.config.exception.BadRequestException;
 import com.ms.tourist_app.config.exception.NotFoundException;
 import com.ms.tourist_app.domain.entity.DestinationType;
@@ -24,9 +25,11 @@ public class DestinationTypeServiceImp implements DestinationTypeService {
 
     private final DestinationTypeMapper mapper = Mappers.getMapper(DestinationTypeMapper.class);
 
+    private final JwtUtil jwtUtil;
     private final DestinationTypeRepository repository;
 
-    public DestinationTypeServiceImp(DestinationTypeRepository repository) {
+    public DestinationTypeServiceImp(JwtUtil jwtUtil, DestinationTypeRepository repository) {
+        this.jwtUtil = jwtUtil;
         this.repository = repository;
     }
 
@@ -68,6 +71,7 @@ public class DestinationTypeServiceImp implements DestinationTypeService {
             throw new BadRequestException(AppStr.DestinationType.tableTypeDestination + AppStr.Base.whiteSpace + AppStr.Exception.duplicate);
         }
         DestinationType destinationType = mapper.toDestinationType(input, null);
+        destinationType.setCreateBy(jwtUtil.getUserIdFromToken());
         repository.save(destinationType);
         return new DestinationTypeDataOutput(destinationType.getId(),destinationType.getName());
     }
@@ -80,6 +84,7 @@ public class DestinationTypeServiceImp implements DestinationTypeService {
             throw new NotFoundException(AppStr.DestinationType.destinationType + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
         }
         DestinationType destinationType = mapper.toDestinationType(input, id);
+        destinationType.setUpdateBy(jwtUtil.getUserIdFromToken());
         repository.save(destinationType);
         DestinationTypeDataOutput output = mapper.toDestinationTypeDataOutput(destinationType);
         return output;

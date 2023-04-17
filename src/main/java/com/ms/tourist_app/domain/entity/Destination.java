@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,11 +20,15 @@ import java.util.List;
 @Entity
 @Table(name = AppStr.Destination.tableDestination)
 public class Destination extends BaseEntity {
+
+
     @Column(name = AppStr.Destination.name)
+    @Nationalized
     private String name;
 
 
     @Column(name = AppStr.Destination.description)
+    @Nationalized
     private String description;
 
     @ManyToOne

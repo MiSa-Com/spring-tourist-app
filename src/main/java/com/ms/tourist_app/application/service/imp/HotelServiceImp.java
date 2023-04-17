@@ -74,6 +74,7 @@ public class HotelServiceImp implements HotelService {
             }
         }
         hotel.setImageHotels(imageHotels);
+        hotel.setCreateBy(jwtUtil.getUserIdFromToken());
         hotelRepository.save(hotel);
         imageHotelRepository.saveAll(imageHotels);
         //Hotel data ouput
@@ -113,6 +114,7 @@ public class HotelServiceImp implements HotelService {
                 imageHotels.add(imageHotel);
             }
         }
+        hotel.setUpdateBy(jwtUtil.getUserIdFromToken());
         hotel.setImageHotels(imageHotels);
         hotelRepository.save(hotel);
         imageHotelRepository.saveAll(imageHotels);

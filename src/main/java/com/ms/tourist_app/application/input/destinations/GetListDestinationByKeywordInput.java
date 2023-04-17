@@ -5,13 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetListDestinationInput {
+public class GetListDestinationByKeywordInput {
+    private String keyword;
     private Integer page;
     private Integer size;
-    private Long idAddress;
-    private Long idDestinationType;
 }

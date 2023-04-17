@@ -44,9 +44,9 @@ public class ProvinceServiceImp implements ProvinceService {
             throw new BadRequestException(AppStr.Province.tableProvince + AppStr.Base.whiteSpace + AppStr.Exception.duplicate);
         }
         Province province = provinceMapper.toProvince(provinceDataInput, null);
-//        if (jwtUtil.getUserIdFromToken() != null) {
-//            province.setCreateBy(jwtUtil.getUserIdFromToken());
-//        }
+        if (jwtUtil.getUserIdFromToken() != null) {
+            province.setCreateBy(jwtUtil.getUserIdFromToken());
+        }
         provinceRepository.save(province);
         ProvinceDataOutput provinceDataOutput = provinceMapper.toProvinceDataOutput(province);
         return provinceDataOutput;
@@ -73,7 +73,7 @@ public class ProvinceServiceImp implements ProvinceService {
         }
         Province province = provinceMapper.toProvince(provinceDataInput, id);
         provinceRepository.save(province);
-//        province.setCreateBy(jwtUtil.getUserIdFromToken());
+        province.setUpdateBy(jwtUtil.getUserIdFromToken());
         ProvinceDataOutput provinceDataOutput = provinceMapper.toProvinceDataOutput(province);
         return provinceDataOutput;
     }

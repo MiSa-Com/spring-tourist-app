@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 
@@ -17,6 +18,7 @@ import javax.persistence.*;
 @Table(name = AppStr.Itinerary.tableItinerary)
 public class Itinerary extends BaseEntity {
     @Column(name = AppStr.Itinerary.itinerary)
+    @Nationalized
     private String itinerary;
     @ManyToOne
     @JoinColumn(name = AppStr.Itinerary.idUser)

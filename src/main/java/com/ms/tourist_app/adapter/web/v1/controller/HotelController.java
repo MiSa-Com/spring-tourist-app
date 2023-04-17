@@ -12,6 +12,7 @@ import com.ms.tourist_app.application.output.hotels.HotelDataOutput;
 import com.ms.tourist_app.application.service.HotelService;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,6 +28,7 @@ public class HotelController {
         this.hotelService = hotelService;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping(UrlConst.Hotel.hotel)
     public ResponseEntity<?> createHotel(@Valid HotelDataParameter parameter){
         HotelDataInput hotelDataInput = hotelMapper.createHotelDataInput(parameter);
@@ -34,6 +36,7 @@ public class HotelController {
         return ResponseUtil.restSuccess(hotelDataOutput);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping(UrlConst.Hotel.hotel)
     public ResponseEntity<?> getListHotel(@Valid GetListHotelDataParameter parameter){
         GetListHotelDataInput hotelDataInput = new GetListHotelDataInput(parameter.getKeyword(), parameter.getPage(), parameter.getIdProvince(), parameter.getSize());
@@ -42,12 +45,14 @@ public class HotelController {
 
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping(UrlConst.Hotel.getHotelById)
     public ResponseEntity<?> getDataHotel(@PathVariable("id")Long id){
         HotelDataOutput hotelDataOutput = hotelService.viewHotelDetail(id);
         return ResponseUtil.restSuccess(hotelDataOutput);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping(UrlConst.Hotel.getHotelById)
     public ResponseEntity<?> editHotel(@PathVariable("id")Long id, @Valid HotelDataParameter hotelDataParameter){
         HotelDataInput hotelDataInput = hotelMapper.createHotelDataInput(hotelDataParameter);
@@ -55,6 +60,7 @@ public class HotelController {
         return ResponseUtil.restSuccess(hotelDataOutput);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @DeleteMapping(UrlConst.Hotel.getHotelById)
     public ResponseEntity<?> deleteHotel(@PathVariable("id")Long id){
         HotelDataOutput hotelDataOutput = hotelService.deleteHotel(id);

@@ -13,7 +13,6 @@ import com.ms.tourist_app.application.dai.UserRepository;
 import com.ms.tourist_app.application.input.destinations.GetListDestinationCenterRadiusInput;
 import com.ms.tourist_app.application.input.itineraries.FindBestItineraryFromHotelInput;
 import com.ms.tourist_app.application.input.itineraries.ItineraryDataInput;
-import com.ms.tourist_app.application.mapper.DestinationMapper;
 import com.ms.tourist_app.application.mapper.ItineraryMapper;
 import com.ms.tourist_app.application.output.itineraries.FindBestItineraryFromHotelOutput;
 import com.ms.tourist_app.application.output.itineraries.ItineraryDataOutput;
@@ -40,7 +39,6 @@ public class ItineraryServiceImp implements ItineraryService {
     private final UserRepository userRepository;
 
     private final ItineraryMapper itineraryMapper = Mappers.getMapper(ItineraryMapper.class);
-    private final DestinationMapper destinationMapper = Mappers.getMapper(DestinationMapper.class);
 
     public ItineraryServiceImp(ItineraryRepository itineraryRepository, DestinationRepository destinationRepository,
                                HotelRepository hotelRepository, UserRepository userRepository) {

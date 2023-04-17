@@ -20,7 +20,12 @@ public interface DestinationRepository extends JpaRepository<Destination,Long> {
     List<Destination> findAllByAddress(Address address);
 
     @Query("select d from Destination d " +
-            "where (:address is null or d.address = :address) and(:destinationType is null or d.destinationType = :destinationType)")
-    List<Destination> filter(@Param("address") Address address, @Param("destinationType") DestinationType destinationType, Pageable pageable);
+            "where (:address is null or d.address = :address)")
+    List<Destination> findByProvince(@Param("address") Address address, Pageable pageable);
+
+    @Query("select d from Destination d " +
+            "where (:address is null or d.address = :address) and (:name is null or d.name = :name)")
+    List<Destination> filter(@Param("address") Address address,@Param("name") String name , Pageable pageable);
+
 
 }

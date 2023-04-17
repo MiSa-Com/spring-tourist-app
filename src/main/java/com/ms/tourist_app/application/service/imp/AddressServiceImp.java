@@ -19,6 +19,7 @@ import com.ms.tourist_app.application.service.AddressService;
 import com.ms.tourist_app.application.service.UserService;
 import com.ms.tourist_app.application.utils.GoogleMapApi;
 import com.ms.tourist_app.application.utils.JwtUtil;
+import com.ms.tourist_app.config.exception.BadRequestException;
 import com.ms.tourist_app.config.exception.NotFoundException;
 import com.ms.tourist_app.domain.entity.Address;
 import com.ms.tourist_app.domain.entity.Destination;
@@ -31,6 +32,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -76,14 +78,13 @@ public class AddressServiceImp implements AddressService {
             throw new NotFoundException(AppStr.Address.address + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
         }
         if (this.checkCoordinate(latLng.lng, latLng.lat)) {
-            throw new NotFoundException(AppStr.Address.address + AppStr.Base.whiteSpace + AppStr.Exception.duplicate);
+            throw new BadRequestException(AppStr.Address.address + AppStr.Base.whiteSpace + AppStr.Exception.duplicate);
         }
         Address address = addressMapper.toAddress(input, null);
         address.setLongitude(latLng.lng);
         address.setLatitude(latLng.lat);
         address.setProvince(province.get());
-        Long idCreate = jwtUtil.getUserIdFromToken();
-        address.setCreateBy(idCreate);
+        address.setCreateBy(jwtUtil.getUserIdFromToken());
         address.setOther(slugify.slugify(input.getDetailAddress()));
         addressRepository.save(address);
         ProvinceDataOutput provinceDataOutput = provinceMapper.toProvinceDataOutput(province.get());
@@ -126,11 +127,10 @@ public class AddressServiceImp implements AddressService {
     @Override
     @Transactional
     public List<AddressDataOutput> getListAddressDataOutput(GetListAddressInput input) {
-        List<Address> addresses = new ArrayList<>();
-        if (input.getIdProvince()==null){
-            addresses = addressRepository.searchWithoutProvince(input.getKeyword().trim() ,PageRequest.of(input.getPage(), input.getSize()));
-        }
-        else {
+        List<Address> addresses;
+        if (input.getIdProvince() == null) {
+            addresses = addressRepository.searchWithoutProvince(input.getKeyword().trim(), PageRequest.of(input.getPage(), input.getSize()));
+        } else {
             Optional<Province> province = provinceRepository.findById(input.getIdProvince());
             if (province.isEmpty()) {
                 throw new NotFoundException(AppStr.Province.tableProvince + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
@@ -141,15 +141,15 @@ public class AddressServiceImp implements AddressService {
         List<AddressDataOutput> addressDataOutputs = new ArrayList<>();
         if (addresses.isEmpty()) {
             // search text google map
-            addresses.addAll(GoogleMapApi.findAddressFromText(input.getKeyword(), AppConst.MapApi.defaultNbResult));
-
+            if (GoogleMapApi.findAddressFromText(input.getKeyword(), AppConst.MapApi.defaultNbResult) != null) {
+                addresses.addAll(Objects.requireNonNull(GoogleMapApi.findAddressFromText(input.getKeyword(), AppConst.MapApi.defaultNbResult)));
+            }
             // charge into database
 //            for (Address address : addresses) {
 //                AddressDataParameter addressDataParameter = new AddressDataParameter(address.getProvince(), address.getDetailAddress());
 //                this.createAddress(addressMapper.createAddressInput(addressDataParameter));
 //            }
         }
-
         for (Address address : addresses) {
             AddressDataOutput addressDataOutput = addressMapper.toAddressDataOutput(address);
             addressDataOutputs.add(addressDataOutput);

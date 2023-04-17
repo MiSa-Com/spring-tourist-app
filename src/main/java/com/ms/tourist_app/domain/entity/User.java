@@ -73,4 +73,10 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = AppStr.User.joinTableUser)
     @JsonIgnore
     private List<Itinerary> favoriteItinerary;
+
+    public User(String email, String password, List<Role> roles) {
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
 }

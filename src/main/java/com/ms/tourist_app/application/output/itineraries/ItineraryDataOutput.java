@@ -16,3 +16,4 @@ public class ItineraryDataOutput {
     private User user;
     private TravelMode travelMode;
 }
+

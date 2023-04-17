@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
@@ -13,6 +14,8 @@ import org.springframework.lang.Nullable;
 public class GetListDestinationCenterRadiusParameter {
     private Integer page;
     private Integer size;
+
+    @NotBlank(message = "Destination must not blank")
     private String keyword;
     private Double radius; // in km
     @Nullable

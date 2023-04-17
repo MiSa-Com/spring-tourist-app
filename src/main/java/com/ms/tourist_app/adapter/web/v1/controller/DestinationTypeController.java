@@ -12,6 +12,7 @@ import com.ms.tourist_app.application.output.type_destination.DestinationTypeDat
 import com.ms.tourist_app.application.service.DestinationTypeService;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,6 +27,7 @@ public class DestinationTypeController {
         this.typeService = typeService;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping(UrlConst.DestinationType.destinationType)
     public ResponseEntity<?> createDestinationType(@Valid @RequestBody DestinationTypeDataParameter parameter) {
         DestinationTypeDataInput input = typeMapper.createDestination(parameter);
@@ -33,6 +35,7 @@ public class DestinationTypeController {
         return ResponseUtil.restSuccess(output);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping(UrlConst.DestinationType.destinationType)
     public ResponseEntity<?> getAllDestinationType(@Valid GetListDestinationTypeParameter parameter) {
         GetListDestinationTypeInput input = new GetListDestinationTypeInput(parameter.getPage(), parameter.getSize(), parameter.getKeyword());
@@ -40,12 +43,14 @@ public class DestinationTypeController {
         return ResponseUtil.restSuccess(outputs);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping(UrlConst.DestinationType.getDestinationTypeId)
     public ResponseEntity<?> getDestinationTypeDetail(@PathVariable(UrlConst.id) Long id) {
         DestinationTypeDataOutput output = typeService.getDestinationTypeDetail(id);
         return ResponseUtil.restSuccess(output);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping(UrlConst.DestinationType.getDestinationTypeId)
     public ResponseEntity<?> updateDestinationTypeDetail(@PathVariable(UrlConst.id) Long id, @Valid @RequestBody DestinationTypeDataParameter parameter) {
         DestinationTypeDataInput input = typeMapper.createDestination(parameter);
@@ -53,6 +58,7 @@ public class DestinationTypeController {
         return ResponseUtil.restSuccess(output);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @DeleteMapping(UrlConst.DestinationType.getDestinationTypeId)
     public ResponseEntity<?> deleteDestinationType(@PathVariable(UrlConst.id) Long id) {
         DestinationTypeDataOutput output = typeService.deleteDestinationType(id);

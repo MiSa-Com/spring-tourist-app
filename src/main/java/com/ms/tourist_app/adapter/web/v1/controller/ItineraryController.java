@@ -17,6 +17,7 @@ import com.ms.tourist_app.application.service.DestinationService;
 import com.ms.tourist_app.application.service.imp.DestinationServiceImp;
 import com.ms.tourist_app.application.service.imp.ItineraryServiceImp;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +33,7 @@ public class ItineraryController {
         this.itineraryService = itineraryService;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping(UrlConst.Itinerary.getByIdUser)
     public ResponseEntity<?> saveItinerary(@Valid @RequestBody ItineraryDataParameter parameter,
                                         @PathVariable(value = UrlConst.id) Long idUser){
@@ -40,13 +42,15 @@ public class ItineraryController {
         return ResponseUtil.restSuccess(itineraryDataOutput);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping(UrlConst.Itinerary.bestItinerary)
-    public ResponseEntity<?> findBestRoadFromHotel(@Valid @RequestBody FindBestItineraryFromHotelParameter parameter) {
+    public ResponseEntity<?> findBestItineraryFromHotel(@Valid @RequestBody FindBestItineraryFromHotelParameter parameter) {
         FindBestItineraryFromHotelInput findBestItineraryFromHotelInput = itineraryService.createItineraryInput(parameter);
         FindBestItineraryFromHotelOutput findBestItineraryFromHotelOutput = itineraryService.findBestItineraryFromHotel(findBestItineraryFromHotelInput);
         return ResponseUtil.restSuccess(findBestItineraryFromHotelOutput);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping(UrlConst.Itinerary.recommendItinerary)
     public ResponseEntity<?> recommendItinerary(@Valid @RequestBody RecommendItineraryParameter parameter) {
         GetListDestinationCenterRadiusInput getListDestinationCenterRadiusInput = new GetListDestinationCenterRadiusInput(0, 10, parameter.getAddress(),
