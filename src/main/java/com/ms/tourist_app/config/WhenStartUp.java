@@ -66,23 +66,18 @@ public class WhenStartUp {
             ProvinceDTO[] provinceDTOS = mapper.readValue(inputStream, ProvinceDTO[].class);
             List<ProvinceDTO> provinceDTOList = Arrays.asList(provinceDTOS);
             List<Province> provinces = provinceRepository.findAll();
-            if(provinces.isEmpty()){
+            if (provinces.isEmpty()) {
                 for (ProvinceDTO provinceDTO :
                         provinceDTOList) {
                     System.out.println(provinceDTO.getCodeName());
                     Province province = new Province();
                     province.setName(provinceDTO.getName());
                     province.setCodeName(provinceDTO.getCodeName());
-                    LatLng latLng = GoogleMapApi.getLatLng(provinceDTO.getName());
-                    if (latLng != null) {
-                        province.setLongitude(latLng.lng);
-                        province.setLatitude(latLng.lat);
-                    }
+                    province.setLongitude(provinceDTO.getLongitude());
+                    province.setLatitude(provinceDTO.getLatitude());
+
                     provinceRepository.save(province);
                 }
-            }
-            if(!provinces.isEmpty()){
-
             }
         } catch (IOException e) {
             e.printStackTrace();

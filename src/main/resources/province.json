@@ -1,443 +1,380 @@
 [
   {
     "name": "Thành phố Hà Nội",
-    "code": 1,
-    "divisionType": "thành phố trung ương",
     "codeName": "thanh_pho_ha_noi",
-    "phoneCode": 24
+    "longitude": 105.8341598,
+    "latitude": 21.0277644
   },
   {
     "name": "Tỉnh Hà Giang",
-    "code": 2,
-    "divisionType": "tỉnh",
     "codeName": "tinh_ha_giang",
-    "phoneCode": 219
+    "longitude": 104.9388853,
+    "latitude": 22.7662056
   },
   {
     "name": "Tỉnh Cao Bằng",
-    "code": 4,
-    "divisionType": "tỉnh",
     "codeName": "tinhCao_bang",
-    "phoneCode": 206
+    "longitude": 106.2522143,
+    "latitude": 22.635689
   },
   {
     "name": "Tỉnh Bắc Kạn",
-    "code": 6,
-    "divisionType": "tỉnh",
     "codeName": "tinh_bac_kan",
-    "phoneCode": 209
+    "longitude": 105.876004,
+    "latitude": 22.3032923
   },
   {
     "name": "Tỉnh Tuyên Quang",
-    "code": 8,
-    "divisionType": "tỉnh",
     "codeName": "tinhTuyen_quang",
-    "phoneCode": 207
+    "longitude": 105.3131185,
+    "latitude": 22.1726708
   },
   {
     "name": "Tỉnh Lào Cai",
-    "code": 10,
-    "divisionType": "tỉnh",
     "codeName": "tinh_laoCai",
-    "phoneCode": 214
+    "longitude": 104.1487055,
+    "latitude": 22.3380865
   },
   {
     "name": "Tỉnh Điện Biên",
-    "code": 11,
-    "divisionType": "tỉnh",
     "codeName": "tinh_dien_bien",
-    "phoneCode": 215
+    "longitude": 103.1076525,
+    "latitude": 21.8042309
   },
   {
     "name": "Tỉnh Lai Châu",
-    "code": 12,
-    "divisionType": "tỉnh",
     "codeName": "tinh_laiChau",
-    "phoneCode": 213
+    "longitude": 103.3119085,
+    "latitude": 22.3686613
   },
   {
     "name": "Tỉnh Sơn La",
-    "code": 14,
-    "divisionType": "tỉnh",
     "codeName": "tinh_son_la",
-    "phoneCode": 212
+    "longitude": 103.7289167,
+    "latitude": 21.1022284
   },
   {
     "name": "Tỉnh Yên Bái",
-    "code": 15,
-    "divisionType": "tỉnh",
     "codeName": "tinh_yen_bai",
-    "phoneCode": 216
+    "longitude": 104.4551361,
+    "latitude": 21.6837923
   },
   {
     "name": "Tỉnh Hoà Bình",
-    "code": 17,
-    "divisionType": "tỉnh",
     "codeName": "tinh_hoa_binh",
-    "phoneCode": 218
+    "longitude": 105.3131185,
+    "latitude": 20.6861265
   },
   {
     "name": "Tỉnh Thái Nguyên",
-    "code": 19,
-    "divisionType": "tỉnh",
     "codeName": "tinhThai_nguyen",
-    "phoneCode": 208
+    "longitude": 105.876004,
+    "latitude": 21.5613771
   },
   {
     "name": "Tỉnh Lạng Sơn",
-    "code": 20,
-    "divisionType": "tỉnh",
     "codeName": "tinh_lang_son",
-    "phoneCode": 205
+    "longitude": 106.6291304,
+    "latitude": 21.8563705
   },
   {
     "name": "Tỉnh Quảng Ninh",
-    "code": 22,
-    "divisionType": "tỉnh",
     "codeName": "tinh_quang_ninh",
-    "phoneCode": 203
+    "longitude": 107.2925144,
+    "latitude": 21.006382
   },
   {
     "name": "Tỉnh Bắc Giang",
-    "code": 24,
-    "divisionType": "tỉnh",
     "codeName": "tinh_bac_giang",
-    "phoneCode": 204
+    "longitude": 106.6291304,
+    "latitude": 21.3014947
   },
   {
     "name": "Tỉnh Phú Thọ",
-    "code": 25,
-    "divisionType": "tỉnh",
     "codeName": "tinh_phuTho",
-    "phoneCode": 210
+    "longitude": 105.2045573,
+    "latitude": 21.268443
   },
   {
     "name": "Tỉnh Vĩnh Phúc",
-    "code": 26,
-    "divisionType": "tỉnh",
     "codeName": "tinh_vinh_phuc",
-    "phoneCode": 211
+    "longitude": 105.5474373,
+    "latitude": 21.3608805
   },
   {
     "name": "Tỉnh Bắc Ninh",
-    "code": 27,
-    "divisionType": "tỉnh",
     "codeName": "tinh_bac_ninh",
-    "phoneCode": 222
+    "longitude": 106.1110501,
+    "latitude": 21.121444
   },
   {
     "name": "Tỉnh Hải Dương",
-    "code": 30,
-    "divisionType": "tỉnh",
     "codeName": "tinh_hai_duong",
-    "phoneCode": 220
+    "longitude": 106.3206861,
+    "latitude": 20.9385958
   },
   {
     "name": "Thành phố Hải Phòng",
-    "code": 31,
-    "divisionType": "thành phố trung ương",
     "codeName": "thanh_pho_hai_phong",
-    "phoneCode": 225
+    "longitude": 106.6880841,
+    "latitude": 20.8449115
   },
   {
     "name": "Tỉnh Hưng Yên",
-    "code": 33,
-    "divisionType": "tỉnh",
     "codeName": "tinh_hung_yen",
-    "phoneCode": 221
+    "longitude": 106.0169971,
+    "latitude": 20.8525711
   },
   {
     "name": "Tỉnh Thái Bình",
-    "code": 34,
-    "divisionType": "tỉnh",
     "codeName": "tinhThai_binh",
-    "phoneCode": 227
+    "longitude": 106.3934777,
+    "latitude": 20.5386936
   },
   {
     "name": "Tỉnh Hà Nam",
-    "code": 35,
-    "divisionType": "tỉnh",
     "codeName": "tinh_ha_nam",
-    "phoneCode": 226
+    "longitude": 105.92299,
+    "latitude": 20.5835196
   },
   {
     "name": "Tỉnh Nam Định",
-    "code": 36,
-    "divisionType": "tỉnh",
     "codeName": "tinh_nam_dinh",
-    "phoneCode": 228
+    "longitude": 106.2051484,
+    "latitude": 20.2791804
   },
   {
     "name": "Tỉnh Ninh Bình",
-    "code": 37,
-    "divisionType": "tỉnh",
     "codeName": "tinh_ninh_binh",
-    "phoneCode": 229
+    "longitude": 105.92299,
+    "latitude": 20.2129969
   },
   {
     "name": "Tỉnh Thanh Hóa",
-    "code": 38,
-    "divisionType": "tỉnh",
     "codeName": "tinhThanh_hoa",
-    "phoneCode": 237
+    "longitude": 105.7851816,
+    "latitude": 19.806692
   },
   {
     "name": "Tỉnh Nghệ An",
-    "code": 40,
-    "divisionType": "tỉnh",
     "codeName": "tinh_nghe_an",
-    "phoneCode": 238
+    "longitude": 104.9200365,
+    "latitude": 19.2342489
   },
   {
     "name": "Tỉnh Hà Tĩnh",
-    "code": 42,
-    "divisionType": "tỉnh",
     "codeName": "tinh_haTinh",
-    "phoneCode": 239
+    "longitude": 105.6745247,
+    "latitude": 18.2943776
   },
   {
     "name": "Tỉnh Quảng Bình",
-    "code": 44,
-    "divisionType": "tỉnh",
     "codeName": "tinh_quang_binh",
-    "phoneCode": 232
+    "longitude": 106.3487474,
+    "latitude": 17.6102715
   },
   {
     "name": "Tỉnh Quảng Trị",
-    "code": 45,
-    "divisionType": "tỉnh",
     "codeName": "tinh_quangTri",
-    "phoneCode": 233
+    "longitude": 106.963409,
+    "latitude": 16.7943472
   },
   {
     "name": "Tỉnh Thừa Thiên Huế",
-    "code": 46,
-    "divisionType": "tỉnh",
     "codeName": "tinhThuaThien_hue",
-    "phoneCode": 234
+    "longitude": 107.5905326,
+    "latitude": 16.467397
   },
   {
     "name": "Thành phố Đà Nẵng",
-    "code": 48,
-    "divisionType": "thành phố trung ương",
     "codeName": "thanh_pho_da_nang",
-    "phoneCode": 236
+    "longitude": 108.0717219,
+    "latitude": 16.0544563
   },
   {
     "name": "Tỉnh Quảng Nam",
-    "code": 49,
-    "divisionType": "tỉnh",
     "codeName": "tinh_quang_nam",
-    "phoneCode": 235
+    "longitude": 108.019102,
+    "latitude": 15.5393538
   },
   {
     "name": "Tỉnh Quảng Ngãi",
-    "code": 51,
-    "divisionType": "tỉnh",
     "codeName": "tinh_quang_ngai",
-    "phoneCode": 255
+    "longitude": 108.7125791,
+    "latitude": 15.0759838
   },
   {
     "name": "Tỉnh Bình Định",
-    "code": 52,
-    "divisionType": "tỉnh",
     "codeName": "tinh_binh_dinh",
-    "phoneCode": 256
+    "longitude": 108.902683,
+    "latitude": 14.1665324
   },
   {
     "name": "Tỉnh Phú Yên",
-    "code": 54,
-    "divisionType": "tỉnh",
     "codeName": "tinh_phu_yen",
-    "phoneCode": 257
+    "longitude": 109.0928764,
+    "latitude": 13.0881861
   },
   {
     "name": "Tỉnh Khánh Hòa",
-    "code": 56,
-    "divisionType": "tỉnh",
     "codeName": "tinh_khanh_hoa",
-    "phoneCode": 258
+    "longitude": 109.0526076,
+    "latitude": 12.2585098
   },
   {
     "name": "Tỉnh Ninh Thuận",
-    "code": 58,
-    "divisionType": "tỉnh",
     "codeName": "tinh_ninhThuan",
-    "phoneCode": 259
+    "longitude": 108.8629572,
+    "latitude": 11.6738767
   },
   {
     "name": "Tỉnh Bình Thuận",
-    "code": 60,
-    "divisionType": "tỉnh",
     "codeName": "tinh_binhThuan",
-    "phoneCode": 252
+    "longitude": 108.0720781,
+    "latitude": 11.0903703
   },
   {
     "name": "Tỉnh Kon Tum",
-    "code": 62,
-    "divisionType": "tỉnh",
     "codeName": "tinh_konTum",
-    "phoneCode": 260
+    "longitude": 107.83885,
+    "latitude": 14.661167
   },
   {
     "name": "Tỉnh Gia Lai",
-    "code": 64,
-    "divisionType": "tỉnh",
     "codeName": "tinh_gia_lai",
-    "phoneCode": 269
+    "longitude": 108.109375,
+    "latitude": 13.8078943
   },
   {
     "name": "Tỉnh Đắk Lắk",
-    "code": 66,
-    "divisionType": "tỉnh",
     "codeName": "tinh_dak_lak",
-    "phoneCode": 262
+    "longitude": 108.2377519,
+    "latitude": 12.7100116
   },
   {
     "name": "Tỉnh Đắk Nông",
-    "code": 67,
-    "divisionType": "tỉnh",
     "codeName": "tinh_dak_nong",
-    "phoneCode": 261
+    "longitude": 107.609806,
+    "latitude": 12.2646476
   },
   {
     "name": "Tỉnh Lâm Đồng",
-    "code": 68,
-    "divisionType": "tỉnh",
     "codeName": "tinh_lam_dong",
-    "phoneCode": 263
+    "longitude": 108.1428669,
+    "latitude": 11.5752791
   },
   {
     "name": "Tỉnh Bình Phước",
-    "code": 70,
-    "divisionType": "tỉnh",
     "codeName": "tinh_binh_phuoc",
-    "phoneCode": 271
+    "longitude": 106.7234639,
+    "latitude": 11.7511894
   },
   {
     "name": "Tỉnh Tây Ninh",
-    "code": 72,
-    "divisionType": "tỉnh",
     "codeName": "tinhTay_ninh",
-    "phoneCode": 276
+    "longitude": 106.0640179,
+    "latitude": 11.3494766
   },
   {
     "name": "Tỉnh Bình Dương",
-    "code": 74,
-    "divisionType": "tỉnh",
     "codeName": "tinh_binh_duong",
-    "phoneCode": 274
+    "longitude": 106.477017,
+    "latitude": 11.3254024
   },
   {
     "name": "Tỉnh Đồng Nai",
-    "code": 75,
-    "divisionType": "tỉnh",
     "codeName": "tinh_dong_nai",
-    "phoneCode": 251
+    "longitude": 107.1675976,
+    "latitude": 11.0686305
   },
   {
     "name": "Tỉnh Bà Rịa - Vũng Tàu",
-    "code": 77,
-    "divisionType": "tỉnh",
     "codeName": "tinh_ba_ria_vungTau",
-    "phoneCode": 254
+    "longitude": 107.2429976,
+    "latitude": 10.5417397
   },
   {
     "name": "Thành phố Hồ Chí Minh",
-    "code": 79,
-    "divisionType": "thành phố trung ương",
     "codeName": "thanh_pho_hoChi_minh",
-    "phoneCode": 28
+    "longitude": 106.6296638,
+    "latitude": 10.8230989
   },
   {
     "name": "Tỉnh Long An",
-    "code": 80,
-    "divisionType": "tỉnh",
     "codeName": "tinh_long_an",
-    "phoneCode": 272
+    "longitude": 106.2431205,
+    "latitude": 10.695572
   },
   {
     "name": "Tỉnh Tiền Giang",
-    "code": 82,
-    "divisionType": "tỉnh",
     "codeName": "tinhTien_giang",
-    "phoneCode": 273
+    "longitude": 106.3420504,
+    "latitude": 10.4493324
   },
   {
     "name": "Tỉnh Bến Tre",
-    "code": 83,
-    "divisionType": "tỉnh",
     "codeName": "tinh_benTre",
-    "phoneCode": 275
+    "longitude": 106.4405872,
+    "latitude": 10.1081553
   },
   {
     "name": "Tỉnh Trà Vinh",
-    "code": 84,
-    "divisionType": "tỉnh",
     "codeName": "tinhTra_vinh",
-    "phoneCode": 294
+    "longitude": 106.2992912,
+    "latitude": 9.812740999999999
   },
   {
     "name": "Tỉnh Vĩnh Long",
-    "code": 86,
-    "divisionType": "tỉnh",
     "codeName": "tinh_vinh_long",
-    "phoneCode": 270
+    "longitude": 106.0169971,
+    "latitude": 10.0861281
   },
   {
     "name": "Tỉnh Đồng Tháp",
-    "code": 87,
-    "divisionType": "tỉnh",
     "codeName": "tinh_dongThap",
-    "phoneCode": 277
+    "longitude": 105.6881788,
+    "latitude": 10.4937989
   },
   {
     "name": "Tỉnh An Giang",
-    "code": 89,
-    "divisionType": "tỉnh",
     "codeName": "tinh_an_giang",
-    "phoneCode": 296
+    "longitude": 105.1258955,
+    "latitude": 10.5215836
   },
   {
     "name": "Tỉnh Kiên Giang",
-    "code": 91,
-    "divisionType": "tỉnh",
     "codeName": "tinh_kien_giang",
-    "phoneCode": 297
+    "longitude": 105.1258955,
+    "latitude": 9.8249587
   },
   {
     "name": "Thành phố Cần Thơ",
-    "code": 92,
-    "divisionType": "thành phố trung ương",
     "codeName": "thanh_phoCanTho",
-    "phoneCode": 292
+    "longitude": 105.7468535,
+    "latitude": 10.0451618
   },
   {
     "name": "Tỉnh Hậu Giang",
-    "code": 93,
-    "divisionType": "tỉnh",
     "codeName": "tinh_hau_giang",
-    "phoneCode": 293
+    "longitude": 105.6412527,
+    "latitude": 9.757897999999999
   },
   {
     "name": "Tỉnh Sóc Trăng",
-    "code": 94,
-    "divisionType": "tỉnh",
     "codeName": "tinh_socTrang",
-    "phoneCode": 299
+    "longitude": 105.9599539,
+    "latitude": 9.6003688
   },
   {
     "name": "Tỉnh Bạc Liêu",
-    "code": 95,
-    "divisionType": "tỉnh",
     "codeName": "tinh_bac_lieu",
-    "phoneCode": 291
+    "longitude": 105.5136472,
+    "latitude": 9.251555500000002
   },
   {
     "name": "Tỉnh Cà Mau",
-    "code": 96,
-    "divisionType": "tỉnh",
     "codeName": "tinhCa_mau",
-    "phoneCode": 290
+    "longitude": 105.1258955,
+    "latitude": 8.962409899999999
   }
 ]

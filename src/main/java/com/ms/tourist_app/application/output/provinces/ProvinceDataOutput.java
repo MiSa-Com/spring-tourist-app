@@ -12,5 +12,7 @@ import lombok.Setter;
 public class ProvinceDataOutput {
     private Long id;
     private String name;
-
+    private String codeName;
+    private Double longitude;
+    private Double latitude;
 }

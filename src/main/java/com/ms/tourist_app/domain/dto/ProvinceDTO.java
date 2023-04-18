@@ -30,5 +30,9 @@ public class ProvinceDTO {
 
     private String phoneCode;
 
+    private Double longitude;
+
+    private Double latitude;
+
 
 }
