@@ -31,4 +31,13 @@ public class Province extends BaseEntity {
     @OneToMany(mappedBy = AppStr.Province.tableProvince)
     @JsonIgnore
     private List<Address> addresses;
+
+    @Column(name = AppStr.Province.slugify)
+    private String codeName;
+
+    @Column(name = AppStr.Province.longitude)
+    private Double longitude;
+
+    @Column(name = AppStr.Province.latitude)
+    private Double latitude;
 }

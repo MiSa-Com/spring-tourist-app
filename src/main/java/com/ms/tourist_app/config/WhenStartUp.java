@@ -1,14 +1,23 @@
 package com.ms.tourist_app.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.maps.model.LatLng;
 import com.ms.tourist_app.application.constants.AppStr;
+import com.ms.tourist_app.application.dai.ProvinceRepository;
 import com.ms.tourist_app.application.dai.RoleRepository;
 import com.ms.tourist_app.application.dai.UserRepository;
+import com.ms.tourist_app.application.utils.GoogleMapApi;
+import com.ms.tourist_app.domain.dto.ProvinceDTO;
+import com.ms.tourist_app.domain.entity.Province;
 import com.ms.tourist_app.domain.entity.Role;
 import com.ms.tourist_app.domain.entity.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -16,11 +25,13 @@ public class WhenStartUp {
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final ProvinceRepository provinceRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public WhenStartUp(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public WhenStartUp(RoleRepository roleRepository, UserRepository userRepository, ProvinceRepository provinceRepository, PasswordEncoder passwordEncoder) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
+        this.provinceRepository = provinceRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -47,4 +58,35 @@ public class WhenStartUp {
             roleRepository.save(role);
         }
     }
+
+    @Bean
+    public void readData() {
+        ObjectMapper mapper = new ObjectMapper();
+        try (InputStream inputStream = getClass().getResourceAsStream("/province.json")) {
+            ProvinceDTO[] provinceDTOS = mapper.readValue(inputStream, ProvinceDTO[].class);
+            List<ProvinceDTO> provinceDTOList = Arrays.asList(provinceDTOS);
+            List<Province> provinces = provinceRepository.findAll();
+            if(provinces.isEmpty()){
+                for (ProvinceDTO provinceDTO :
+                        provinceDTOList) {
+                    System.out.println(provinceDTO.getCodeName());
+                    Province province = new Province();
+                    province.setName(provinceDTO.getName());
+                    province.setCodeName(provinceDTO.getCodeName());
+                    LatLng latLng = GoogleMapApi.getLatLng(provinceDTO.getName());
+                    if (latLng != null) {
+                        province.setLongitude(latLng.lng);
+                        province.setLatitude(latLng.lat);
+                    }
+                    provinceRepository.save(province);
+                }
+            }
+            if(!provinces.isEmpty()){
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

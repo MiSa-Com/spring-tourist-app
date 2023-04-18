@@ -232,6 +232,9 @@ public class AppStr {
         }
         public static final String tableProvince = "province";
         public static final String name = "name";
+        public static final String slugify = "slugify";
+        public static final String longitude = "longitude";
+        public static final String latitude = "latitude";
 
     }
     public static final class CloudImage{
@@ -249,6 +252,13 @@ public class AppStr {
         public static final String claimUUID = "username";
         public static final String claimId = "id";
         public static final String refreshToken = "refresh_token";
+    }
+
+    public static final class WeatherMap{
+        public WeatherMap() {
+        }
+        public static final String apiKey = "ec2e3acfd4f07b705ff0a828ec6c228e";
+        public static final String apiUrl = "http://api.openweathermap.org/data/2.5";
     }
 
 }
