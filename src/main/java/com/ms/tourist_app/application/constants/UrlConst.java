@@ -52,4 +52,8 @@ public class UrlConst {
         public static final String province = "provinces";
         public static final String getProvinceById = province+idLink;
     }
+    public static final class Weather{
+        public static final String weather = "weathers";
+        public static final String getWeatherById = weather+idLink;
+    }
 }

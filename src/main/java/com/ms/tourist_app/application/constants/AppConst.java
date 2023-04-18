@@ -23,6 +23,10 @@ public class AppConst {
 
         public static final int TIME_LIMIT = 5000; // 5 seconds
     }
-
+    public static final class Temp{
+        public Temp() {
+        }
+        public static final double kToC = 273.15;
+    }
 
 }
