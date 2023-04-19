@@ -10,7 +10,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WeatherDataDTO {
+    private Long idProvince;
     private String province;
+    private String dateTime;
     private Float temp;
     private Float feelsLike;
     private Float tempMin;

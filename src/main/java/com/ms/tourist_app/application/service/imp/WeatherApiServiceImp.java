@@ -28,27 +28,33 @@ public class WeatherApiServiceImp implements WeatherApiService {
         this.provinceRepository = provinceRepository;
     }
 
+    /**
+     * Get data for many province**/
     @Override
-    public List<WeatherDataDTO> getWeatherDataByCoordinates(GetListWeatherDataInput input) throws IOException {
+    public List<WeatherDataDTO> getAllWeatherData(GetListWeatherDataInput input) throws IOException {
         List<Province> provinces = provinceRepository.findAllByNameContainingIgnoreCase(input.getNameProvince(), PageRequest.of(input.getPage(), input.getSize()));
-        List<LatLng> coordinates = new ArrayList<>();
         List<WeatherDataDTO> weatherDataDTOS = new ArrayList<>();
         for (Province province :
                 provinces) {
             LatLng latLng = new LatLng(province.getLatitude(), province.getLongitude());
-            WeatherDataDTO weatherDataDTO = weatherUtils.getWeatherDataByCoordinates(latLng.lat, latLng.lng);
+            WeatherDataDTO weatherDataDTO = weatherUtils.getWeatherForManyProvince(province.getId(),latLng.lat, latLng.lng,1);
             weatherDataDTO.setProvince(province.getName());
             weatherDataDTOS.add(weatherDataDTO);
         }
         return weatherDataDTOS;
     }
 
+
+    /**
+     * Get data for one province**/
     @Override
-    public WeatherDataDTO getWeatherByCoordinate(GetWeatherDataInput input) throws IOException {
+    public List<WeatherDataDTO> getWeatherByCoordinate(GetWeatherDataInput input) throws IOException {
         Optional<Province> province = provinceRepository.findById(input.getIdProvince());
-        LatLng latLng = new LatLng(province.get().getLatitude(), province.get().getLongitude());
-        WeatherDataDTO weatherDataDTO = weatherUtils.getWeatherDataByCoordinates(latLng.lat, latLng.lng);
-        weatherDataDTO.setProvince(province.get().getName());
-        return weatherDataDTO;
+        List<WeatherDataDTO> weatherDataDTOS = new ArrayList<>();
+        if(province.isPresent()){
+            LatLng latLng = new LatLng(province.get().getLatitude(), province.get().getLongitude());
+            weatherDataDTOS = weatherUtils.getWeatherDataByCoordinates(province.get().getId(),latLng.lat, latLng.lng,40);
+        }
+        return weatherDataDTOS;
     }
 }

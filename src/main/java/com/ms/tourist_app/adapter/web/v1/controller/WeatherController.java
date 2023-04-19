@@ -3,7 +3,6 @@ package com.ms.tourist_app.adapter.web.v1.controller;
 import com.ms.tourist_app.adapter.web.base.ResponseUtil;
 import com.ms.tourist_app.adapter.web.base.RestApiV1;
 import com.ms.tourist_app.adapter.web.v1.transfer.parameter.weathers.GetListWeatherDataParameter;
-import com.ms.tourist_app.adapter.web.v1.transfer.parameter.weathers.GetWeatherDataParameter;
 import com.ms.tourist_app.application.constants.UrlConst;
 import com.ms.tourist_app.application.input.weathers.GetListWeatherDataInput;
 import com.ms.tourist_app.application.input.weathers.GetWeatherDataInput;
@@ -30,7 +29,7 @@ public class WeatherController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<?> getWeatherById(@PathVariable(UrlConst.id)Long id) throws IOException {
         GetWeatherDataInput input = new GetWeatherDataInput(id);
-        WeatherDataDTO output = weatherApiServiceImp.getWeatherByCoordinate(input);
+        List<WeatherDataDTO> output = weatherApiServiceImp.getWeatherByCoordinate(input);
         return ResponseUtil.restSuccess(output);
     }
 
@@ -38,7 +37,7 @@ public class WeatherController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<?> getListWeather(@Valid GetListWeatherDataParameter parameter) throws IOException {
         GetListWeatherDataInput input = new GetListWeatherDataInput(parameter.getKeyword(),parameter.getPage(),parameter.getSize());
-        List<WeatherDataDTO> output = weatherApiServiceImp.getWeatherDataByCoordinates(input);
+        List<WeatherDataDTO> output = weatherApiServiceImp.getAllWeatherData(input);
         return ResponseUtil.restSuccess(output);
     }
 }
