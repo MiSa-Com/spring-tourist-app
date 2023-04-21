@@ -23,9 +23,17 @@ public class Address extends BaseEntity {
     @Nationalized
     private String detailAddress;
 
-    @Column(name = AppStr.Address.other)
+
+    @Column(name = AppStr.Address.slugWithSpace)
+    private String slugWithSpace;
+
+
+    @Column(name = AppStr.Address.slug)
     @Nationalized
-    private String other;
+    private String slug;
+
+    @Column(name = AppStr.Address.slugWithoutSpace)
+    private String slugWithoutSpace;
 
     @Column(name = AppStr.Address.longitude)
     private Double longitude;

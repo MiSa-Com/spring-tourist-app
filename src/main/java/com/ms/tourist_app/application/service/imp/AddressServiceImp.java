@@ -2,7 +2,6 @@ package com.ms.tourist_app.application.service.imp;
 
 import com.github.slugify.Slugify;
 import com.google.maps.model.LatLng;
-import com.ms.tourist_app.adapter.web.v1.transfer.parameter.addresses.AddressDataParameter;
 import com.ms.tourist_app.application.constants.AppConst;
 import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.application.dai.AddressRepository;
@@ -18,6 +17,7 @@ import com.ms.tourist_app.application.output.addresses.AddressDataOutput;
 import com.ms.tourist_app.application.output.provinces.ProvinceDataOutput;
 import com.ms.tourist_app.application.service.AddressService;
 import com.ms.tourist_app.application.service.UserService;
+import com.ms.tourist_app.application.utils.Convert;
 import com.ms.tourist_app.application.utils.GoogleMapApi;
 import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.config.exception.BadRequestException;
@@ -86,13 +86,15 @@ public class AddressServiceImp implements AddressService {
         address.setLatitude(latLng.lat);
         address.setProvince(province.get());
         address.setCreateBy(jwtUtil.getUserIdFromToken());
-        address.setOther(slugify.slugify(input.getDetailAddress()));
+        address.setSlug(slugify.slugify(input.getDetailAddress()));
+        address.setSlugWithSpace(Convert.withSpace(slugify.slugify(input.getDetailAddress())));
+        address.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(input.getDetailAddress())));
         addressRepository.save(address);
         ProvinceDataOutput provinceDataOutput = provinceMapper.toProvinceDataOutput(province.get());
         // convert tuwf address sang output
         return new AddressDataOutput(address.getId(), address.getCreateBy(),
                 address.getCreateAt(), address.getUpdateBy(),
-                address.getUpdateAt(), address.getOther(), address.getLongitude(),
+                address.getUpdateAt(), address.getSlug(), address.getLongitude(),
                 address.getLatitude(), provinceDataOutput,
                 address.getDetailAddress());
     }
@@ -121,6 +123,8 @@ public class AddressServiceImp implements AddressService {
         Address address = addressMapper.toAddress(input, id);
         address.setProvince(province.get());
         address.setUpdateBy(jwtUtil.getUserIdFromToken());
+        address.setSlugWithSpace(Convert.withSpace(slugify.slugify(input.getDetailAddress())));
+        address.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(input.getDetailAddress())));
         addressRepository.save(address);
         return addressMapper.toAddressDataOutput(address);
     }
@@ -147,7 +151,7 @@ public class AddressServiceImp implements AddressService {
             // charge into database
             for (Address address : addresses) {
                 if (!checkCoordinate(address.getLongitude(), address.getLatitude())) {
-                    address.setOther(slugify.slugify(address.getDetailAddress()));
+                    address.setSlug(slugify.slugify(address.getDetailAddress()));
                     addressRepository.save(address);
                 }
             }

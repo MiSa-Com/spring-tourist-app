@@ -27,6 +27,15 @@ public class Destination extends BaseEntity {
     private String name;
 
 
+    @Column(name = AppStr.Destination.slug)
+    private String slug;
+
+    @Column(name = AppStr.Destination.slugWithSpace)
+    private String slugWithSpace;
+
+    @Column(name = AppStr.Destination.slugWithoutSpace)
+    private String slugWithoutSpace;
+
     @Column(name = AppStr.Destination.description)
     @Nationalized
     private String description;

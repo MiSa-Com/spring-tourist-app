@@ -12,20 +12,18 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DestinationRepository extends JpaRepository<Destination,Long> {
+public interface DestinationRepository extends JpaRepository<Destination, Long> {
     @Query("select d from Destination d where d.destinationType = ?1")
     List<Destination> findAllByDestinationType(DestinationType destinationType, Pageable pageable);
 
     @Query("select d from Destination d where d.address = ?1")
     List<Destination> findAllByAddress(Address address);
 
-    @Query("select d from Destination d " +
-            "where (:address is null or d.address = :address)")
+    @Query("select d from Destination d " + "where (:address is null or d.address = :address)")
     List<Destination> findByProvince(@Param("address") Address address, Pageable pageable);
 
-    @Query("select d from Destination d " +
-            "where (:address is null or d.address = :address) and (:name is null or d.name = :name)")
-    List<Destination> filter(@Param("address") Address address,@Param("name") String name , Pageable pageable);
+    @Query("select d from Destination d " + "where (:address is null or d.address = :address) and( (:name is null or d.name like :name) or (:name is null or d.slug like :name) or (:name is null or d.slugWithSpace like :name) or (:name is null or d.slugWithoutSpace like :name)  )")
+    List<Destination> filter(@Param("address") Address address, @Param("name") String name, Pageable pageable);
 
 
 }

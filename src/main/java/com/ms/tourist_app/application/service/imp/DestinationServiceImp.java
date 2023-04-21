@@ -1,5 +1,6 @@
 package com.ms.tourist_app.application.service.imp;
 
+import com.github.slugify.Slugify;
 import com.google.maps.model.LatLng;
 import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.application.dai.*;
@@ -10,6 +11,7 @@ import com.ms.tourist_app.application.input.destinations.GetListDestinationByPro
 import com.ms.tourist_app.application.mapper.DestinationMapper;
 import com.ms.tourist_app.application.output.destinations.DestinationDataOutput;
 import com.ms.tourist_app.application.service.DestinationService;
+import com.ms.tourist_app.application.utils.Convert;
 import com.ms.tourist_app.application.utils.GoogleMapApi;
 import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.application.utils.UploadFile;
@@ -34,8 +36,10 @@ public class DestinationServiceImp implements DestinationService {
     private final UploadFile uploadFile;
     private final DestinationMapper destinationMapper = Mappers.getMapper(DestinationMapper.class);
     private final JwtUtil jwtUtil;
+    private final Slugify slugify;
 
-    public DestinationServiceImp(DestinationRepository destinationRepository, ImageDestinationRepository imageDestinationRepository, DestinationTypeRepository destinationTypeRepository, AddressRepository addressRepository, ProvinceRepository provinceRepository, UploadFile uploadFile, JwtUtil jwtUtil) {
+
+    public DestinationServiceImp(DestinationRepository destinationRepository, ImageDestinationRepository imageDestinationRepository, DestinationTypeRepository destinationTypeRepository, AddressRepository addressRepository, ProvinceRepository provinceRepository, UploadFile uploadFile, JwtUtil jwtUtil, Slugify slugify) {
         this.destinationRepository = destinationRepository;
         this.imageDestinationRepository = imageDestinationRepository;
         this.destinationTypeRepository = destinationTypeRepository;
@@ -43,6 +47,8 @@ public class DestinationServiceImp implements DestinationService {
         this.provinceRepository = provinceRepository;
         this.uploadFile = uploadFile;
         this.jwtUtil = jwtUtil;
+
+        this.slugify = slugify;
     }
 
     @Override
@@ -171,6 +177,9 @@ public class DestinationServiceImp implements DestinationService {
         }
         destination.setDestinationType(destinationType.get());
         destination.setAddress(address.get());
+        destination.setSlug(slugify.slugify(input.getName()));
+        destination.setSlugWithSpace(Convert.withSpace(slugify.slugify(input.getName())));
+        destination.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(input.getName())));
         destination.setCreateBy(jwtUtil.getUserIdFromToken());
         List<ImageDestination> imageDestinations = new ArrayList<>();
         if (input.getImages().size() > 1) {

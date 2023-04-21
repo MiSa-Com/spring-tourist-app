@@ -132,7 +132,7 @@ public class ItineraryServiceImp implements ItineraryService {
             }
         }
         Address addressCenter = new Address();
-        addressCenter.setOther(input.getKeyword());
+        addressCenter.setSlug(input.getKeyword());
         addressCenter.setLatitude(center.lat);
         addressCenter.setLongitude(center.lng);
         List<Address> listAddress = new ArrayList<>();

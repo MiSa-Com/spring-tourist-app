@@ -18,7 +18,7 @@ public class AddressDataOutput {
     private LocalDateTime createAt;
     private Long updateBy;
     private LocalDateTime updateAt;
-    private String other;
+    private String slug;
     private Double longitude;
     private Double latitude;
     private ProvinceDataOutput province;

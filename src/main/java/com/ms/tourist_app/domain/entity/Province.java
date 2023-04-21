@@ -24,6 +24,15 @@ public class Province extends BaseEntity {
     @Nationalized
     private String name;
 
+    @Column(name = AppStr.Province.slug)
+    private String slug;
+
+    @Column(name = AppStr.Province.slugWithSpace)
+    private String slugWithSpace;
+
+    @Column(name = AppStr.Province.slugWithoutSpace)
+    private String slugWithoutSpace;
+
     @OneToMany(mappedBy = AppStr.Province.tableProvince)
     @JsonIgnore
     private List<Address> addresses;

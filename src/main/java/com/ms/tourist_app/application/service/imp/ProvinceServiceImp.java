@@ -1,7 +1,6 @@
 package com.ms.tourist_app.application.service.imp;
 
 import com.github.slugify.Slugify;
-import com.ms.tourist_app.adapter.web.v1.transfer.parameter.provinces.GetListProvinceDataParameter;
 import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.application.dai.AddressRepository;
 import com.ms.tourist_app.application.dai.ProvinceRepository;
@@ -10,6 +9,7 @@ import com.ms.tourist_app.application.input.provinces.ProvinceDataInput;
 import com.ms.tourist_app.application.mapper.ProvinceMapper;
 import com.ms.tourist_app.application.output.provinces.ProvinceDataOutput;
 import com.ms.tourist_app.application.service.ProvinceService;
+import com.ms.tourist_app.application.utils.Convert;
 import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.config.exception.BadRequestException;
 import com.ms.tourist_app.domain.entity.Address;
@@ -25,6 +25,7 @@ import java.util.Optional;
 @Service
 public class ProvinceServiceImp implements ProvinceService {
     private final Slugify slugify;
+
     private final ProvinceMapper provinceMapper = Mappers.getMapper(ProvinceMapper.class);
     private final ProvinceRepository provinceRepository;
     private final AddressRepository addressRepository;
@@ -44,6 +45,9 @@ public class ProvinceServiceImp implements ProvinceService {
             throw new BadRequestException(AppStr.Province.tableProvince + AppStr.Base.whiteSpace + AppStr.Exception.duplicate);
         }
         Province province = provinceMapper.toProvince(provinceDataInput, null);
+        province.setSlug(slugify.slugify(provinceDataInput.getName()));
+        province.setSlugWithSpace(Convert.withSpace(slugify.slugify(provinceDataInput.getName())));
+        province.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(provinceDataInput.getName())));
         if (jwtUtil.getUserIdFromToken() != null) {
             province.setCreateBy(jwtUtil.getUserIdFromToken());
         }
@@ -74,6 +78,8 @@ public class ProvinceServiceImp implements ProvinceService {
         Province province = provinceMapper.toProvince(provinceDataInput, id);
         provinceRepository.save(province);
         province.setUpdateBy(jwtUtil.getUserIdFromToken());
+        province.setSlugWithSpace(Convert.withSpace(slugify.slugify(provinceDataInput.getName())));
+        province.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(provinceDataInput.getName())));
         ProvinceDataOutput provinceDataOutput = provinceMapper.toProvinceDataOutput(province);
         return provinceDataOutput;
     }

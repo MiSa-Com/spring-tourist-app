@@ -105,7 +105,7 @@ public class GoogleMapApi {
                 addressToAdd.setLatitude(searchResponse.results[i].geometry.location.lat);
                 addressToAdd.setLongitude(searchResponse.results[i].geometry.location.lng);
                 slugify = slugify.withTransliterator(true);
-                addressToAdd.setOther(slugify.slugify(searchResponse.results[i].formattedAddress));
+                addressToAdd.setSlug(slugify.slugify(searchResponse.results[i].formattedAddress));
                 resultAdds.add(addressToAdd);
             }
             return resultAdds;

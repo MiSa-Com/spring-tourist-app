@@ -1,12 +1,12 @@
 package com.ms.tourist_app.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.maps.model.LatLng;
+import com.github.slugify.Slugify;
 import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.application.dai.ProvinceRepository;
 import com.ms.tourist_app.application.dai.RoleRepository;
 import com.ms.tourist_app.application.dai.UserRepository;
-import com.ms.tourist_app.application.utils.GoogleMapApi;
+import com.ms.tourist_app.application.utils.Convert;
 import com.ms.tourist_app.domain.dto.ProvinceDTO;
 import com.ms.tourist_app.domain.entity.Province;
 import com.ms.tourist_app.domain.entity.Role;
@@ -27,12 +27,14 @@ public class WhenStartUp {
     private final UserRepository userRepository;
     private final ProvinceRepository provinceRepository;
     private final PasswordEncoder passwordEncoder;
+    private final Slugify slugify;
 
-    public WhenStartUp(RoleRepository roleRepository, UserRepository userRepository, ProvinceRepository provinceRepository, PasswordEncoder passwordEncoder) {
+    public WhenStartUp(RoleRepository roleRepository, UserRepository userRepository, ProvinceRepository provinceRepository, PasswordEncoder passwordEncoder, Slugify slugify) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.provinceRepository = provinceRepository;
         this.passwordEncoder = passwordEncoder;
+        this.slugify = slugify;
     }
 
     @Bean
@@ -74,6 +76,9 @@ public class WhenStartUp {
                     province.setDivisionType(provinceDTO.getDivisionType());
                     province.setLongitude(provinceDTO.getLongitude());
                     province.setLatitude(provinceDTO.getLatitude());
+                    province.setSlug(slugify.slugify(provinceDTO.getName()));
+                    province.setSlugWithSpace(Convert.withSpace(slugify.slugify(provinceDTO.getName())));
+                    province.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(provinceDTO.getName())));
                     provinceRepository.save(province);
                 }
             }

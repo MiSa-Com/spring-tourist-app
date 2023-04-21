@@ -141,10 +141,12 @@ public class AppStr {
         public static final String tableAddress = "addresses";
         public static final String longitude = "longitude";
         public static final String latitude = "latitude";
-        public static final String other = "other";
         public static final String address = "address";
         public static final String idProvince = "id_province";
         public static final String detailAddress = "detail_address";
+        public static final String slug = "slug";
+        public static final String slugWithoutSpace = "slug_without_space";
+        public static final String slugWithSpace = "slug_with_space";
     }
 
 
@@ -156,8 +158,10 @@ public class AppStr {
         public static final String description = "description";
         public static final String tableDestination = "destination";
         public static final String idAddress = "id_address";
-        public static final String typeAddress = "type_address";
+        public static final String slug = "slug";
         public static final String idTypeDestination = "id_type_destination";
+        public static final String slugWithSpace = "slug_with_space";
+        public static final String slugWithoutSpace = "slug_without_space";
     }
 
     public static final class Validation {
@@ -235,6 +239,9 @@ public class AppStr {
         public static final String divisionType = "division_type";
         public static final String longitude = "longitude";
         public static final String latitude = "latitude";
+        public static final String slug = "slug";
+        public static final String slugWithSpace = "slug_with_space";
+        public static final String slugWithoutSpace = "slug_without_space";
 
     }
     public static final class CloudImage{
