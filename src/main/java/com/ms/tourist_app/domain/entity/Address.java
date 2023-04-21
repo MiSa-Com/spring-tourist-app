@@ -19,7 +19,6 @@ import javax.persistence.*;
 @Table(name = AppStr.Address.tableAddress)
 public class Address extends BaseEntity {
 
-
     @Column(name = AppStr.Address.detailAddress)
     @Nationalized
     private String detailAddress;
@@ -28,20 +27,15 @@ public class Address extends BaseEntity {
     @Nationalized
     private String other;
 
-
     @Column(name = AppStr.Address.longitude)
     private Double longitude;
-
-
-    @ManyToOne
-    @JoinColumn(name = AppStr.Address.idProvince)
-    @JsonIgnore
-    private Province province;
-
 
     @Column(name = AppStr.Address.latitude)
     @Nationalized
     private Double latitude;
 
-
+    @ManyToOne
+    @JoinColumn(name = AppStr.Address.idProvince)
+    @JsonIgnore
+    private Province province;
 }

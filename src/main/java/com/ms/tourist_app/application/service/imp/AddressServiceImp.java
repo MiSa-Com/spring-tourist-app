@@ -2,6 +2,7 @@ package com.ms.tourist_app.application.service.imp;
 
 import com.github.slugify.Slugify;
 import com.google.maps.model.LatLng;
+import com.ms.tourist_app.adapter.web.v1.transfer.parameter.addresses.AddressDataParameter;
 import com.ms.tourist_app.application.constants.AppConst;
 import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.application.dai.AddressRepository;
@@ -141,14 +142,15 @@ public class AddressServiceImp implements AddressService {
         List<AddressDataOutput> addressDataOutputs = new ArrayList<>();
         if (addresses.isEmpty()) {
             // search text google map
-            if (GoogleMapApi.findAddressFromText(input.getKeyword(), AppConst.MapApi.defaultNbResult) != null) {
-                addresses.addAll(Objects.requireNonNull(GoogleMapApi.findAddressFromText(input.getKeyword(), AppConst.MapApi.defaultNbResult)));
-            }
+            addresses.addAll(Objects.requireNonNull(GoogleMapApi.findAddressFromText(input.getKeyword(), AppConst.MapApi.defaultNbResult)));
+
             // charge into database
-//            for (Address address : addresses) {
-//                AddressDataParameter addressDataParameter = new AddressDataParameter(address.getProvince(), address.getDetailAddress());
-//                this.createAddress(addressMapper.createAddressInput(addressDataParameter));
-//            }
+            for (Address address : addresses) {
+                if (!checkCoordinate(address.getLongitude(), address.getLatitude())) {
+                    address.setOther(slugify.slugify(address.getDetailAddress()));
+                    addressRepository.save(address);
+                }
+            }
         }
         for (Address address : addresses) {
             AddressDataOutput addressDataOutput = addressMapper.toAddressDataOutput(address);
