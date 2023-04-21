@@ -45,29 +45,79 @@ public class WeatherResponseForOneProvinceDTO {
         @AllArgsConstructor
         public static class Rain {
 
+
             @JsonProperty("0h")
             private Double zeroHours;
+
+            @JsonProperty("1h")
+            private Double oneHours;
+
+            @JsonProperty("2h")
+            private Double twoHours;
 
             @JsonProperty("3h")
             private Double threeHours;
 
+            @JsonProperty("4h")
+            private Double fourHours;
+
+            @JsonProperty("5h")
+            private Double fiveHours;
+
             @JsonProperty("6h")
-            private Double sixHour;
+            private Double sixHours;
+
+            @JsonProperty("7h")
+            private Double sevenHours;
+
+            @JsonProperty("8h")
+            private Double eightHours;
 
             @JsonProperty("9h")
             private Double nineHours;
 
+            @JsonProperty("10h")
+            private Double tenHours;
+
+            @JsonProperty("11h")
+            private Double elevenHours;
+
             @JsonProperty("12h")
             private Double twelveHours;
+
+            @JsonProperty("13h")
+            private Double thirteenHours;
+
+            @JsonProperty("14h")
+            private Double fourteenHours;
 
             @JsonProperty("15h")
             private Double fifteenHours;
 
+            @JsonProperty("16h")
+            private Double sixteenHours;
+
+            @JsonProperty("17h")
+            private Double seventeenHours;
+
             @JsonProperty("18h")
             private Double eighteenHours;
 
+            @JsonProperty("19h")
+            private Double nineteenHours;
+
+            @JsonProperty("20h")
+            private Double twentyHours;
+
             @JsonProperty("21h")
             private Double twentyOneHours;
+
+            @JsonProperty("22h")
+            private Double twentyTwoHours;
+
+            @JsonProperty("23h")
+            private Double twentyThreeHours;
+
         }
 
         @Getter

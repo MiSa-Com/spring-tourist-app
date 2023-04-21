@@ -5,6 +5,7 @@ public class AppStr {
 
     }
 
+
     public static final class Exception {
         public static final String duplicate = "Duplicate";
         public static final String notFound = "Not found";
@@ -45,6 +46,21 @@ public class AppStr {
         public static final String favoriteRoad = "favorite_road";
     }
 
+    public static final class Weather {
+        public static final String tableCurrentWeather = "current_weathers";
+        public static final String tableWeather = "weathers";
+        public static final String idProvince = "id_province";
+        public static final String province = "province";
+        public static final String dateTime = "date_time";
+        public static final String temp = "temp";
+        public static final String feelLike = "feels_like";
+        public static final String tempMin = "temp_min";
+        public static final String tempMax = "temp_max";
+        public static final String humidity = "humidity";
+        public static final String main = "main";
+        public static final String description = "description";
+    }
+
     public static final class Hotel {
         public Hotel() {
         }
@@ -58,7 +74,7 @@ public class AppStr {
         public static final String idAddress = "id_address";
     }
 
-    public static final class ImageHotel{
+    public static final class ImageHotel {
         public ImageHotel() {
         }
 
@@ -91,7 +107,6 @@ public class AppStr {
         public static final String userRole = "ROLE_USER";
         public static final String adminRole = "ROLE_ADMIN";
     }
-
 
 
     public static final class ImageDestination {
@@ -153,6 +168,7 @@ public class AppStr {
     public static final class Destination {
         public Destination() {
         }
+
         public static final String name = "name";
         public static final String address = "address";
         public static final String description = "description";
@@ -181,7 +197,7 @@ public class AppStr {
         public static final String uploadImageFailed = "Upload image failed";
     }
 
-    public static final class Auth{
+    public static final class Auth {
         public static final String authorization = "Authorization";
         public static final String bearer = "Bearer";
         public static final String inCorrectLogin = "Incorrect user name or password";
@@ -189,7 +205,7 @@ public class AppStr {
         public static final String notFoundUser = "Not found user";
     }
 
-    public static final class Booking{
+    public static final class Booking {
         public static final String idUser = "id_user";
         public static final String idRoom = "id_room";
         public static final String idUserElement = "idUser";
@@ -199,9 +215,10 @@ public class AppStr {
         public static final String totalPrice = "total_price";
     }
 
-    public static final class CommentDestination{
+    public static final class CommentDestination {
         public CommentDestination() {
         }
+
         public static final String idUser = "id_user";
         public static final String idDestination = "id_destination";
         public static final String idUserElement = "idUser";
@@ -209,9 +226,11 @@ public class AppStr {
         public static final String tableCommentDestination = "comment_destination";
         public static final String commentDestination = "commentDestination";
     }
-    public static final class CommentHotel{
+
+    public static final class CommentHotel {
         public CommentHotel() {
         }
+
         public static final String idUser = "id_user";
         public static final String idHotel = "id_hotel";
         public static final String idUserElement = "idUser";
@@ -225,15 +244,18 @@ public class AppStr {
     public static final class DestinationType {
         public DestinationType() {
         }
+
         public static final String tableTypeDestination = "type_destination";
         public static final String name = "name";
         public static final String idTypeDestination = "id_type_destination";
         public static final String destinationType = "destinationType";
 
     }
-    public static final class Province{
+
+    public static final class Province {
         public Province() {
         }
+
         public static final String tableProvince = "province";
         public static final String name = "name";
         public static final String divisionType = "division_type";
@@ -244,26 +266,31 @@ public class AppStr {
         public static final String slugWithoutSpace = "slug_without_space";
 
     }
-    public static final class CloudImage{
+
+    public static final class CloudImage {
         public CloudImage() {
         }
+
         public static final String secureUrl = "secure_url";
         public static final String cloudName = "cloud_name";
         public static final String apiKey = "api_key";
         public static final String apiSecret = "api_secret";
     }
-    public static final class AuthorityConstant{
+
+    public static final class AuthorityConstant {
         public AuthorityConstant() {
         }
+
         public static final String anonymousUser = "anonymous";
         public static final String claimUUID = "username";
         public static final String claimId = "id";
         public static final String refreshToken = "refresh_token";
     }
 
-    public static final class WeatherMap{
+    public static final class WeatherMap {
         public WeatherMap() {
         }
+
         public static final String apiKey = "ec2e3acfd4f07b705ff0a828ec6c228e";
         public static final String apiUrl = "http://api.openweathermap.org/data/2.5";
     }
