@@ -20,7 +20,7 @@ public class GoogleMapApi {
 
             return results[AppConst.MapApi.defaultIndex].geometry.location;
         } catch (Exception ex) {
-            return null;
+            throw new NullPointerException("Cannot get LatLng from address: " + address);
         }
     }
 
@@ -110,7 +110,7 @@ public class GoogleMapApi {
             }
             return resultAdds;
         } catch (Exception ex) {
-            return null;
+            throw new NullPointerException("Cannot find address");
         }
     }
 

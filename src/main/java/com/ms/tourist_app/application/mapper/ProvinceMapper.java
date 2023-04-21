@@ -22,7 +22,7 @@ public interface ProvinceMapper {
     @Mappings({
             @Mapping(target = "id",source = "id"),
             @Mapping(target = "name",source = "name"),
-            @Mapping(target = "codeName",source = "codeName"),
+            @Mapping(target = "divisionType",source = "divisionType"),
             @Mapping(target = "longitude",source = "longitude"),
             @Mapping(target = "latitude",source = "latitude")
     })
