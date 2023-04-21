@@ -232,7 +232,7 @@ public class AppStr {
         }
         public static final String tableProvince = "province";
         public static final String name = "name";
-        public static final String slugify = "slugify";
+        public static final String divisionType = "division_type";
         public static final String longitude = "longitude";
         public static final String latitude = "latitude";
 

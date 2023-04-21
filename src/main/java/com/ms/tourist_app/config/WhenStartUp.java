@@ -69,10 +69,9 @@ public class WhenStartUp {
             if (provinces.isEmpty()) {
                 for (ProvinceDTO provinceDTO :
                         provinceDTOList) {
-                    System.out.println(provinceDTO.getCodeName());
                     Province province = new Province();
                     province.setName(provinceDTO.getName());
-                    province.setCodeName(provinceDTO.getCodeName());
+                    province.setDivisionType(provinceDTO.getDivisionType());
                     province.setLongitude(provinceDTO.getLongitude());
                     province.setLatitude(provinceDTO.getLatitude());
                     provinceRepository.save(province);

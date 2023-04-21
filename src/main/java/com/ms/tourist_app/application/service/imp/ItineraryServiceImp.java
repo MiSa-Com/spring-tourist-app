@@ -17,6 +17,7 @@ import com.ms.tourist_app.application.mapper.ItineraryMapper;
 import com.ms.tourist_app.application.output.itineraries.FindBestItineraryFromHotelOutput;
 import com.ms.tourist_app.application.output.itineraries.ItineraryDataOutput;
 import com.ms.tourist_app.application.output.itineraries.RecommendItineraryOutput;
+import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.application.utils.tsp.CompleteGraph;
 import com.ms.tourist_app.application.utils.tsp.TSP1;
 import com.ms.tourist_app.application.utils.GoogleMapApi;
@@ -37,15 +38,16 @@ public class ItineraryServiceImp implements ItineraryService {
 
     private final HotelRepository hotelRepository;
     private final UserRepository userRepository;
-
+    private final JwtUtil jwtUtil;
     private final ItineraryMapper itineraryMapper = Mappers.getMapper(ItineraryMapper.class);
 
     public ItineraryServiceImp(ItineraryRepository itineraryRepository, DestinationRepository destinationRepository,
-                               HotelRepository hotelRepository, UserRepository userRepository) {
+                               HotelRepository hotelRepository, UserRepository userRepository, JwtUtil jwtUtil) {
         this.itineraryRepository = itineraryRepository;
         this.destinationRepository = destinationRepository;
         this.hotelRepository = hotelRepository;
         this.userRepository = userRepository;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -196,6 +198,7 @@ public class ItineraryServiceImp implements ItineraryService {
         }
         User user = optionalUser.get();
         Itinerary itinerary = new Itinerary(itineraryDataInput.getItinerary(), user, itineraryDataInput.getTravelMode());
+        itinerary.setCreateBy(jwtUtil.getUserIdFromToken());
         itineraryRepository.save(itinerary);
         ItineraryDataOutput itineraryDataOutput = itineraryMapper.toItineraryDataOutput(itinerary);
         return itineraryDataOutput;
