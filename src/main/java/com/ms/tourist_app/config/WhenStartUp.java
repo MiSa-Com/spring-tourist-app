@@ -75,7 +75,6 @@ public class WhenStartUp {
                     province.setCodeName(provinceDTO.getCodeName());
                     province.setLongitude(provinceDTO.getLongitude());
                     province.setLatitude(provinceDTO.getLatitude());
-
                     provinceRepository.save(province);
                 }
             }
