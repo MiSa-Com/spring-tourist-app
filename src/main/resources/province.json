@@ -1,379 +1,316 @@
 [
   {
     "name": "Thành phố Hà Nội",
-    "codeName": "thanh_pho_ha_noi",
     "longitude": 105.8341598,
     "latitude": 21.0277644
   },
   {
     "name": "Tỉnh Hà Giang",
-    "codeName": "tinh_ha_giang",
     "longitude": 104.9388853,
     "latitude": 22.7662056
   },
   {
     "name": "Tỉnh Cao Bằng",
-    "codeName": "tinhCao_bang",
     "longitude": 106.2522143,
     "latitude": 22.635689
   },
   {
     "name": "Tỉnh Bắc Kạn",
-    "codeName": "tinh_bac_kan",
     "longitude": 105.876004,
     "latitude": 22.3032923
   },
   {
     "name": "Tỉnh Tuyên Quang",
-    "codeName": "tinhTuyen_quang",
     "longitude": 105.3131185,
     "latitude": 22.1726708
   },
   {
     "name": "Tỉnh Lào Cai",
-    "codeName": "tinh_laoCai",
     "longitude": 104.1487055,
     "latitude": 22.3380865
   },
   {
     "name": "Tỉnh Điện Biên",
-    "codeName": "tinh_dien_bien",
     "longitude": 103.1076525,
     "latitude": 21.8042309
   },
   {
     "name": "Tỉnh Lai Châu",
-    "codeName": "tinh_laiChau",
     "longitude": 103.3119085,
     "latitude": 22.3686613
   },
   {
     "name": "Tỉnh Sơn La",
-    "codeName": "tinh_son_la",
     "longitude": 103.7289167,
     "latitude": 21.1022284
   },
   {
     "name": "Tỉnh Yên Bái",
-    "codeName": "tinh_yen_bai",
     "longitude": 104.4551361,
     "latitude": 21.6837923
   },
   {
     "name": "Tỉnh Hoà Bình",
-    "codeName": "tinh_hoa_binh",
     "longitude": 105.3131185,
     "latitude": 20.6861265
   },
   {
     "name": "Tỉnh Thái Nguyên",
-    "codeName": "tinhThai_nguyen",
     "longitude": 105.876004,
     "latitude": 21.5613771
   },
   {
     "name": "Tỉnh Lạng Sơn",
-    "codeName": "tinh_lang_son",
     "longitude": 106.6291304,
     "latitude": 21.8563705
   },
   {
     "name": "Tỉnh Quảng Ninh",
-    "codeName": "tinh_quang_ninh",
     "longitude": 107.2925144,
     "latitude": 21.006382
   },
   {
     "name": "Tỉnh Bắc Giang",
-    "codeName": "tinh_bac_giang",
     "longitude": 106.6291304,
     "latitude": 21.3014947
   },
   {
     "name": "Tỉnh Phú Thọ",
-    "codeName": "tinh_phuTho",
     "longitude": 105.2045573,
     "latitude": 21.268443
   },
   {
     "name": "Tỉnh Vĩnh Phúc",
-    "codeName": "tinh_vinh_phuc",
     "longitude": 105.5474373,
     "latitude": 21.3608805
   },
   {
     "name": "Tỉnh Bắc Ninh",
-    "codeName": "tinh_bac_ninh",
     "longitude": 106.1110501,
     "latitude": 21.121444
   },
   {
     "name": "Tỉnh Hải Dương",
-    "codeName": "tinh_hai_duong",
     "longitude": 106.3206861,
     "latitude": 20.9385958
   },
   {
     "name": "Thành phố Hải Phòng",
-    "codeName": "thanh_pho_hai_phong",
     "longitude": 106.6880841,
     "latitude": 20.8449115
   },
   {
     "name": "Tỉnh Hưng Yên",
-    "codeName": "tinh_hung_yen",
     "longitude": 106.0169971,
     "latitude": 20.8525711
   },
   {
     "name": "Tỉnh Thái Bình",
-    "codeName": "tinhThai_binh",
     "longitude": 106.3934777,
     "latitude": 20.5386936
   },
   {
     "name": "Tỉnh Hà Nam",
-    "codeName": "tinh_ha_nam",
     "longitude": 105.92299,
     "latitude": 20.5835196
   },
   {
     "name": "Tỉnh Nam Định",
-    "codeName": "tinh_nam_dinh",
     "longitude": 106.2051484,
     "latitude": 20.2791804
   },
   {
     "name": "Tỉnh Ninh Bình",
-    "codeName": "tinh_ninh_binh",
     "longitude": 105.92299,
     "latitude": 20.2129969
   },
   {
     "name": "Tỉnh Thanh Hóa",
-    "codeName": "tinhThanh_hoa",
     "longitude": 105.7851816,
     "latitude": 19.806692
   },
   {
     "name": "Tỉnh Nghệ An",
-    "codeName": "tinh_nghe_an",
     "longitude": 104.9200365,
     "latitude": 19.2342489
   },
   {
     "name": "Tỉnh Hà Tĩnh",
-    "codeName": "tinh_haTinh",
     "longitude": 105.6745247,
     "latitude": 18.2943776
   },
   {
     "name": "Tỉnh Quảng Bình",
-    "codeName": "tinh_quang_binh",
     "longitude": 106.3487474,
     "latitude": 17.6102715
   },
   {
     "name": "Tỉnh Quảng Trị",
-    "codeName": "tinh_quangTri",
     "longitude": 106.963409,
     "latitude": 16.7943472
   },
   {
     "name": "Tỉnh Thừa Thiên Huế",
-    "codeName": "tinhThuaThien_hue",
     "longitude": 107.5905326,
     "latitude": 16.467397
   },
   {
     "name": "Thành phố Đà Nẵng",
-    "codeName": "thanh_pho_da_nang",
     "longitude": 108.0717219,
     "latitude": 16.0544563
   },
   {
     "name": "Tỉnh Quảng Nam",
-    "codeName": "tinh_quang_nam",
     "longitude": 108.019102,
     "latitude": 15.5393538
   },
   {
     "name": "Tỉnh Quảng Ngãi",
-    "codeName": "tinh_quang_ngai",
     "longitude": 108.7125791,
     "latitude": 15.0759838
   },
   {
     "name": "Tỉnh Bình Định",
-    "codeName": "tinh_binh_dinh",
     "longitude": 108.902683,
     "latitude": 14.1665324
   },
   {
     "name": "Tỉnh Phú Yên",
-    "codeName": "tinh_phu_yen",
     "longitude": 109.0928764,
     "latitude": 13.0881861
   },
   {
     "name": "Tỉnh Khánh Hòa",
-    "codeName": "tinh_khanh_hoa",
     "longitude": 109.0526076,
     "latitude": 12.2585098
   },
   {
     "name": "Tỉnh Ninh Thuận",
-    "codeName": "tinh_ninhThuan",
     "longitude": 108.8629572,
     "latitude": 11.6738767
   },
   {
     "name": "Tỉnh Bình Thuận",
-    "codeName": "tinh_binhThuan",
     "longitude": 108.0720781,
     "latitude": 11.0903703
   },
   {
     "name": "Tỉnh Kon Tum",
-    "codeName": "tinh_konTum",
     "longitude": 107.83885,
     "latitude": 14.661167
   },
   {
     "name": "Tỉnh Gia Lai",
-    "codeName": "tinh_gia_lai",
     "longitude": 108.109375,
     "latitude": 13.8078943
   },
   {
     "name": "Tỉnh Đắk Lắk",
-    "codeName": "tinh_dak_lak",
     "longitude": 108.2377519,
     "latitude": 12.7100116
   },
   {
     "name": "Tỉnh Đắk Nông",
-    "codeName": "tinh_dak_nong",
     "longitude": 107.609806,
     "latitude": 12.2646476
   },
   {
     "name": "Tỉnh Lâm Đồng",
-    "codeName": "tinh_lam_dong",
     "longitude": 108.1428669,
     "latitude": 11.5752791
   },
   {
     "name": "Tỉnh Bình Phước",
-    "codeName": "tinh_binh_phuoc",
     "longitude": 106.7234639,
     "latitude": 11.7511894
   },
   {
     "name": "Tỉnh Tây Ninh",
-    "codeName": "tinhTay_ninh",
     "longitude": 106.0640179,
     "latitude": 11.3494766
   },
   {
     "name": "Tỉnh Bình Dương",
-    "codeName": "tinh_binh_duong",
     "longitude": 106.477017,
     "latitude": 11.3254024
   },
   {
     "name": "Tỉnh Đồng Nai",
-    "codeName": "tinh_dong_nai",
     "longitude": 107.1675976,
     "latitude": 11.0686305
   },
   {
     "name": "Tỉnh Bà Rịa - Vũng Tàu",
-    "codeName": "tinh_ba_ria_vungTau",
     "longitude": 107.2429976,
     "latitude": 10.5417397
   },
   {
     "name": "Thành phố Hồ Chí Minh",
-    "codeName": "thanh_pho_hoChi_minh",
     "longitude": 106.6296638,
     "latitude": 10.8230989
   },
   {
     "name": "Tỉnh Long An",
-    "codeName": "tinh_long_an",
     "longitude": 106.2431205,
     "latitude": 10.695572
   },
   {
     "name": "Tỉnh Tiền Giang",
-    "codeName": "tinhTien_giang",
     "longitude": 106.3420504,
     "latitude": 10.4493324
   },
   {
     "name": "Tỉnh Bến Tre",
-    "codeName": "tinh_benTre",
     "longitude": 106.4405872,
     "latitude": 10.1081553
   },
   {
     "name": "Tỉnh Trà Vinh",
-    "codeName": "tinhTra_vinh",
     "longitude": 106.2992912,
     "latitude": 9.812740999999999
   },
   {
     "name": "Tỉnh Vĩnh Long",
-    "codeName": "tinh_vinh_long",
     "longitude": 106.0169971,
     "latitude": 10.0861281
   },
   {
     "name": "Tỉnh Đồng Tháp",
-    "codeName": "tinh_dongThap",
     "longitude": 105.6881788,
     "latitude": 10.4937989
   },
   {
     "name": "Tỉnh An Giang",
-    "codeName": "tinh_an_giang",
     "longitude": 105.1258955,
     "latitude": 10.5215836
   },
   {
     "name": "Tỉnh Kiên Giang",
-    "codeName": "tinh_kien_giang",
     "longitude": 105.1258955,
     "latitude": 9.8249587
   },
   {
     "name": "Thành phố Cần Thơ",
-    "codeName": "thanh_phoCanTho",
     "longitude": 105.7468535,
     "latitude": 10.0451618
   },
   {
     "name": "Tỉnh Hậu Giang",
-    "codeName": "tinh_hau_giang",
     "longitude": 105.6412527,
     "latitude": 9.757897999999999
   },
   {
     "name": "Tỉnh Sóc Trăng",
-    "codeName": "tinh_socTrang",
     "longitude": 105.9599539,
     "latitude": 9.6003688
   },
   {
     "name": "Tỉnh Bạc Liêu",
-    "codeName": "tinh_bac_lieu",
     "longitude": 105.5136472,
     "latitude": 9.251555500000002
   },
   {
     "name": "Tỉnh Cà Mau",
-    "codeName": "tinhCa_mau",
     "longitude": 105.1258955,
     "latitude": 8.962409899999999
   }
