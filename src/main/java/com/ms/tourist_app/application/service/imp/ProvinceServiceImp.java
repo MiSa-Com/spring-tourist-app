@@ -14,6 +14,7 @@ import com.ms.tourist_app.application.utils.Convert;
 import com.ms.tourist_app.application.utils.GoogleMapApi;
 import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.config.exception.BadRequestException;
+import com.ms.tourist_app.config.exception.NotFoundException;
 import com.ms.tourist_app.domain.dto.FindDistanceDTO;
 import com.ms.tourist_app.domain.entity.Address;
 import com.ms.tourist_app.domain.entity.Province;
@@ -108,17 +109,14 @@ public class ProvinceServiceImp implements ProvinceService {
     @Override
     public Long getProvinceByCoordinate(Double lon, Double lat) {
         LatLng latLng = new LatLng(lat, lon);
-        List<FindDistanceDTO> findDistanceDTOS = new ArrayList<>();
-        List<Province> provinces = provinceRepository.findAll();
-        for (Province province : provinces) {
-            LatLng latLngProvince = new LatLng(province.getLatitude(), province.getLongitude());
-            Double distance = GoogleMapApi.getFlightDistanceInKm(latLng, latLngProvince);
-            FindDistanceDTO findDistanceDTO = new FindDistanceDTO(province.getId(), distance);
-            findDistanceDTOS.add(findDistanceDTO);
+        String formattedAddress = GoogleMapApi.getFormattedAddressFromLngLat(latLng);
+        slugify.withTransliterator(true);
+        formattedAddress = Convert.withoutSpace(slugify.slugify(formattedAddress));
+        List<Province> listProvince = provinceRepository.findProvinceByNameContaining(formattedAddress);
+        if (listProvince.size() > 0) {
+            return listProvince.get(0).getId();
         }
-        FindDistanceDTO min = findDistanceDTOS.stream().min(Comparator.comparing(FindDistanceDTO::getDistance)).orElse(null);
-        return min.getIdProvince();
-
+        throw new NotFoundException(AppStr.Province.tableProvince + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
     }
 
 
