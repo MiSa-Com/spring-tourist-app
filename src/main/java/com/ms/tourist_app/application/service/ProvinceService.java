@@ -12,4 +12,5 @@ public interface ProvinceService {
     List<ProvinceDataOutput> getListProvinceDataOutput(GetListProvinceDataInput getListProvinceDataInput);
     ProvinceDataOutput editProvince(Long id,ProvinceDataInput provinceDataInput);
     ProvinceDataOutput deleteProvince(Long id);
+    Long getProvinceByCoordinate(Double lon,Double lat);
 }

@@ -6,7 +6,7 @@ import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.application.dai.ProvinceRepository;
 import com.ms.tourist_app.application.dai.RoleRepository;
 import com.ms.tourist_app.application.dai.UserRepository;
-import com.ms.tourist_app.application.service.WeatherApiService;
+import com.ms.tourist_app.application.service.WeatherService;
 import com.ms.tourist_app.application.utils.Convert;
 import com.ms.tourist_app.domain.dto.ProvinceDTO;
 import com.ms.tourist_app.domain.entity.Province;
@@ -31,15 +31,15 @@ public class WhenStartUp {
     private final ProvinceRepository provinceRepository;
     private final PasswordEncoder passwordEncoder;
     private final Slugify slugify;
-    private final WeatherApiService weatherApiService;
+    private final WeatherService weatherService;
 
-    public WhenStartUp(RoleRepository roleRepository, UserRepository userRepository, ProvinceRepository provinceRepository, PasswordEncoder passwordEncoder, Slugify slugify, WeatherApiService weatherApiService) {
+    public WhenStartUp(RoleRepository roleRepository, UserRepository userRepository, ProvinceRepository provinceRepository, PasswordEncoder passwordEncoder, Slugify slugify, WeatherService weatherService) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.provinceRepository = provinceRepository;
         this.passwordEncoder = passwordEncoder;
         this.slugify = slugify;
-        this.weatherApiService = weatherApiService;
+        this.weatherService = weatherService;
     }
 
     @Bean

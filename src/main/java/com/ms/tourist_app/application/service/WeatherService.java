@@ -7,9 +7,10 @@ import com.ms.tourist_app.application.output.weather.WeatherDataOutput;
 import java.io.IOException;
 import java.util.List;
 
-public interface WeatherApiService {
+public interface WeatherService {
     List<WeatherDataOutput> getCurrentWeatherForAllProvince(GetListWeatherDataInput input);
     List<WeatherDataOutput> getWeatherForecastForAProvince(GetWeatherDataInput input) ;
+    List<WeatherDataOutput> getWeatherForecastByCoordinate(Double lon,Double lat);
     void chargeWeatherForeCastIntoDatabase() throws IOException;
     void chargeCurrentWeatherIntoDatabase() throws IOException;
 

@@ -1,6 +1,5 @@
 package com.ms.tourist_app.application.service.imp;
 
-import com.google.maps.model.LatLng;
 import com.ms.tourist_app.application.dai.CurrentWeatherRepository;
 import com.ms.tourist_app.application.dai.ProvinceRepository;
 import com.ms.tourist_app.application.dai.WeatherForecastRepository;
@@ -8,7 +7,8 @@ import com.ms.tourist_app.application.input.weathers.GetListWeatherDataInput;
 import com.ms.tourist_app.application.input.weathers.GetWeatherDataInput;
 import com.ms.tourist_app.application.mapper.WeatherMapper;
 import com.ms.tourist_app.application.output.weather.WeatherDataOutput;
-import com.ms.tourist_app.application.service.WeatherApiService;
+import com.ms.tourist_app.application.service.ProvinceService;
+import com.ms.tourist_app.application.service.WeatherService;
 import com.ms.tourist_app.application.utils.WeatherUtils;
 import com.ms.tourist_app.domain.dto.WeatherDataDTO;
 import com.ms.tourist_app.domain.entity.CurrentWeather;
@@ -17,31 +17,30 @@ import com.ms.tourist_app.domain.entity.WeatherForcast;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @EnableScheduling
-public class WeatherApiServiceImp implements WeatherApiService {
+public class WeatherServiceImp implements WeatherService {
 
 
     private final WeatherUtils weatherUtils;
     private final ProvinceRepository provinceRepository;
     private final WeatherForecastRepository weatherForecastRepository;
     private final CurrentWeatherRepository currentWeatherRepository;
+    private final ProvinceService provinceService;
     private final WeatherMapper weatherMapper = Mappers.getMapper(WeatherMapper.class);
 
-    public WeatherApiServiceImp(WeatherUtils weatherUtils, ProvinceRepository provinceRepository, WeatherForecastRepository weatherForecastRepository, CurrentWeatherRepository currentWeatherRepository, WeatherMapper weatherMapper) {
+    public WeatherServiceImp(WeatherUtils weatherUtils, ProvinceRepository provinceRepository, WeatherForecastRepository weatherForecastRepository, CurrentWeatherRepository currentWeatherRepository, ProvinceService provinceService) {
         this.weatherUtils = weatherUtils;
         this.provinceRepository = provinceRepository;
         this.weatherForecastRepository = weatherForecastRepository;
 
         this.currentWeatherRepository = currentWeatherRepository;
+        this.provinceService = provinceService;
     }
 
     /**
@@ -69,6 +68,18 @@ public class WeatherApiServiceImp implements WeatherApiService {
     public List<WeatherDataOutput> getWeatherForecastForAProvince(GetWeatherDataInput input)  {
         List<WeatherDataOutput> weatherDataOutputs = new ArrayList<>();
         List<WeatherForcast> weatherForcasts = weatherForecastRepository.findAllByIdProvince(input.getIdProvince());
+        for(WeatherForcast weatherForcast: weatherForcasts){
+            WeatherDataOutput weatherDataOutput = weatherMapper.fromWeatherForcastToWeatherDataOutput(weatherForcast);
+            weatherDataOutputs.add(weatherDataOutput);
+        }
+        return weatherDataOutputs;
+    }
+
+    @Override
+    public List<WeatherDataOutput> getWeatherForecastByCoordinate(Double lon, Double lat) {
+        Long idProvince = provinceService.getProvinceByCoordinate(lon,lat);
+        List<WeatherDataOutput> weatherDataOutputs = new ArrayList<>();
+        List<WeatherForcast> weatherForcasts = weatherForecastRepository.findAllByIdProvince(idProvince);
         for(WeatherForcast weatherForcast: weatherForcasts){
             WeatherDataOutput weatherDataOutput = weatherMapper.fromWeatherForcastToWeatherDataOutput(weatherForcast);
             weatherDataOutputs.add(weatherDataOutput);
