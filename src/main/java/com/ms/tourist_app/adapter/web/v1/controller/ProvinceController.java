@@ -4,9 +4,11 @@ import com.cloudinary.Url;
 import com.ms.tourist_app.adapter.web.base.ResponseUtil;
 import com.ms.tourist_app.adapter.web.base.RestApiV1;
 import com.ms.tourist_app.adapter.web.v1.transfer.parameter.provinces.GetListProvinceDataParameter;
+import com.ms.tourist_app.adapter.web.v1.transfer.parameter.provinces.GetProvinceByCoordinateDataParameter;
 import com.ms.tourist_app.adapter.web.v1.transfer.parameter.provinces.ProvinceDataParameter;
 import com.ms.tourist_app.application.constants.UrlConst;
 import com.ms.tourist_app.application.input.provinces.GetListProvinceDataInput;
+import com.ms.tourist_app.application.input.provinces.GetProvinceByCoordinateDataInput;
 import com.ms.tourist_app.application.input.provinces.ProvinceDataInput;
 import com.ms.tourist_app.application.mapper.ProvinceMapper;
 import com.ms.tourist_app.application.output.provinces.ProvinceDataOutput;
@@ -58,5 +60,12 @@ public class ProvinceController {
     public ResponseEntity<?> deleteProvince(@PathVariable(UrlConst.id)Long id){
         ProvinceDataOutput provinceDataOutput = provinceService.deleteProvince(id);
         return ResponseUtil.restSuccess(provinceDataOutput);
+    }
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @GetMapping(UrlConst.Province.provinceLtLng)
+    public ResponseEntity<?> getProvinceByLatLng(@Valid GetProvinceByCoordinateDataParameter parameter){
+        GetProvinceByCoordinateDataInput input = new GetProvinceByCoordinateDataInput(parameter.getLon(), parameter.getLat());
+        Long idProvince = provinceService.getProvinceByCoordinate(input.getLon(), input.getLat());
+        return ResponseUtil.restSuccess(idProvince);
     }
 }
