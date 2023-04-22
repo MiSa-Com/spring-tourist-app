@@ -75,9 +75,6 @@ public class AddressServiceImp implements AddressService {
             throw new NotFoundException(AppStr.Province.tableProvince + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
         }
         LatLng latLng = GoogleMapApi.getLatLng(input.getDetailAddress());
-        if (latLng == null) {
-            throw new NotFoundException(AppStr.Address.address + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
-        }
         if (this.checkCoordinate(latLng.lng, latLng.lat)) {
             throw new BadRequestException(AppStr.Address.address + AppStr.Base.whiteSpace + AppStr.Exception.duplicate);
         }
@@ -91,7 +88,7 @@ public class AddressServiceImp implements AddressService {
         address.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(input.getDetailAddress())));
         addressRepository.save(address);
         ProvinceDataOutput provinceDataOutput = provinceMapper.toProvinceDataOutput(province.get());
-        // convert tuwf address sang output
+        // convert tu address sang output
         return new AddressDataOutput(address.getId(), address.getCreateBy(),
                 address.getCreateAt(), address.getUpdateBy(),
                 address.getUpdateAt(), address.getSlug(), address.getLongitude(),

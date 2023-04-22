@@ -6,6 +6,7 @@ import com.google.maps.model.*;
 import com.ms.tourist_app.application.constants.AppConst;
 import com.ms.tourist_app.application.constants.AppEnv;
 import com.ms.tourist_app.domain.entity.Address;
+import com.ms.tourist_app.domain.entity.Province;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,17 @@ public class GoogleMapApi {
             return results[AppConst.MapApi.defaultIndex].geometry.location;
         } catch (Exception ex) {
             throw new NullPointerException("Cannot get LatLng from address: " + address);
+        }
+    }
+
+    public static String getFormattedAddressFromLngLat(LatLng latLng) {
+        try {
+            GeocodingApiRequest request = GeocodingApi.reverseGeocode(MY_API_CONTEXT, latLng);
+            request.language(AppConst.MapApi.language);
+            GeocodingResult[] results = request.await();
+            return results[AppConst.MapApi.defaultIndex].formattedAddress;
+        } catch (Exception ex) {
+            throw new NullPointerException("Cannot get province from LatLng: " + latLng);
         }
     }
 
