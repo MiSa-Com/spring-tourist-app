@@ -11,9 +11,11 @@ import com.ms.tourist_app.application.output.weather.WeatherDataOutputOfListProv
 import com.ms.tourist_app.application.service.ProvinceService;
 import com.ms.tourist_app.application.service.WeatherService;
 import com.ms.tourist_app.application.utils.WeatherUtils;
+import com.ms.tourist_app.config.exception.NotFoundException;
 import com.ms.tourist_app.domain.dto.WeatherDataDTO;
 import com.ms.tourist_app.domain.entity.CurrentWeather;
 import com.ms.tourist_app.domain.entity.Province;
+import com.ms.tourist_app.domain.entity.User;
 import com.ms.tourist_app.domain.entity.WeatherForcast;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
@@ -67,6 +69,7 @@ public class WeatherServiceImp implements WeatherService {
     }
 
 
+
     /**
      * Get data for one province
      **/
@@ -91,8 +94,19 @@ public class WeatherServiceImp implements WeatherService {
         List<WeatherDataOutputOfAProvince.WeatherInformation> sortedList = weatherInformations.stream()
                 .sorted(Comparator.comparing(o -> LocalDateTime.parse(o.getDateTime(), formatter)))
                 .collect(Collectors.toList());
-        return new WeatherDataOutputOfAProvince(input.getIdProvince(), province.get().getName(),sortedList);
+        CurrentWeather currentWeather = currentWeatherRepository.findByIdProvince(input.getIdProvince());
+        WeatherDataOutputOfAProvince.CurrentWeather currentWeatherResult = new WeatherDataOutputOfAProvince.CurrentWeather(
+                currentWeather.getTemp(),
+                currentWeather.getFeelsLike(),
+                currentWeather.getTempMin(),
+                currentWeather.getTempMax(),
+                currentWeather.getHumidity(),
+                currentWeather.getMain(),
+                currentWeather.getDescription());
+        return new WeatherDataOutputOfAProvince(input.getIdProvince(), province.get().getName(),currentWeatherResult,sortedList);
     }
+
+
 
     @Override
     public WeatherDataOutputOfAProvince getWeatherForecastByCoordinate(Double lon, Double lat) {
@@ -117,6 +131,16 @@ public class WeatherServiceImp implements WeatherService {
                 .sorted(Comparator.comparing(o -> LocalDateTime.parse(o.getDateTime(), formatter)))
                 .collect(Collectors.toList());
         weatherDataOutputOfAProvince.setWeatherInformationList(sortedList);
+        CurrentWeather currentWeather = currentWeatherRepository.findByIdProvince(idProvince);
+        WeatherDataOutputOfAProvince.CurrentWeather currentWeatherResult = new WeatherDataOutputOfAProvince.CurrentWeather(
+                currentWeather.getTemp(),
+                currentWeather.getFeelsLike(),
+                currentWeather.getTempMin(),
+                currentWeather.getTempMax(),
+                currentWeather.getHumidity(),
+                currentWeather.getMain(),
+                currentWeather.getDescription());
+        weatherDataOutputOfAProvince.setCurrentWeather(currentWeatherResult);
         return weatherDataOutputOfAProvince;
     }
 

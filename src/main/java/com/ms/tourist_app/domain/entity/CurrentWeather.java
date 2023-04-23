@@ -24,7 +24,6 @@ public class CurrentWeather {
     @Id
     private Long id;
 
-
     @Column(name = AppStr.Weather.idProvince)
     private Long idProvince;
 
