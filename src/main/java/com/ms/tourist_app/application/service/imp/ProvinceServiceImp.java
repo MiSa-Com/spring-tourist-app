@@ -15,18 +15,14 @@ import com.ms.tourist_app.application.utils.GoogleMapApi;
 import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.config.exception.BadRequestException;
 import com.ms.tourist_app.config.exception.NotFoundException;
-import com.ms.tourist_app.domain.dto.FindDistanceDTO;
 import com.ms.tourist_app.domain.entity.Address;
 import com.ms.tourist_app.domain.entity.Province;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ProvinceServiceImp implements ProvinceService {
@@ -58,8 +54,7 @@ public class ProvinceServiceImp implements ProvinceService {
             province.setCreateBy(jwtUtil.getUserIdFromToken());
         }
         provinceRepository.save(province);
-        ProvinceDataOutput provinceDataOutput = provinceMapper.toProvinceDataOutput(province);
-        return provinceDataOutput;
+        return provinceMapper.toProvinceDataOutput(province);
     }
 
     @Override
@@ -85,8 +80,7 @@ public class ProvinceServiceImp implements ProvinceService {
         province.setUpdateBy(jwtUtil.getUserIdFromToken());
         province.setSlugWithSpace(Convert.withSpace(slugify.slugify(provinceDataInput.getName())));
         province.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(provinceDataInput.getName())));
-        ProvinceDataOutput provinceDataOutput = provinceMapper.toProvinceDataOutput(province);
-        return provinceDataOutput;
+        return provinceMapper.toProvinceDataOutput(province);
     }
 
     @Override
@@ -102,8 +96,7 @@ public class ProvinceServiceImp implements ProvinceService {
             addressRepository.save(address);
         }
         provinceRepository.delete(province.get());
-        ProvinceDataOutput provinceDataOutput = provinceMapper.toProvinceDataOutput(province.get());
-        return provinceDataOutput;
+        return provinceMapper.toProvinceDataOutput(province.get());
     }
 
     @Override

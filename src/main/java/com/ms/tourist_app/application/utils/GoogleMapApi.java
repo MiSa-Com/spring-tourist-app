@@ -6,8 +6,6 @@ import com.google.maps.model.*;
 import com.ms.tourist_app.application.constants.AppConst;
 import com.ms.tourist_app.application.constants.AppEnv;
 import com.ms.tourist_app.domain.entity.Address;
-import com.ms.tourist_app.domain.entity.Province;
-
 import java.util.ArrayList;
 import java.util.List;
 
