@@ -6,7 +6,8 @@ import com.ms.tourist_app.application.dai.WeatherForecastRepository;
 import com.ms.tourist_app.application.input.weathers.GetListWeatherDataInput;
 import com.ms.tourist_app.application.input.weathers.GetWeatherDataInput;
 import com.ms.tourist_app.application.mapper.WeatherMapper;
-import com.ms.tourist_app.application.output.weather.WeatherDataOutput;
+import com.ms.tourist_app.application.output.weather.WeatherDataOutputOfAProvince;
+import com.ms.tourist_app.application.output.weather.WeatherDataOutputOfListProvince;
 import com.ms.tourist_app.application.service.ProvinceService;
 import com.ms.tourist_app.application.service.WeatherService;
 import com.ms.tourist_app.application.utils.WeatherUtils;
@@ -19,8 +20,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @EnableScheduling
@@ -47,17 +53,17 @@ public class WeatherServiceImp implements WeatherService {
      * Get data for many province
      **/
     @Override
-    public List<WeatherDataOutput> getCurrentWeatherForAllProvince(GetListWeatherDataInput input) {
+    public List<WeatherDataOutputOfListProvince> getCurrentWeatherForAllProvince(GetListWeatherDataInput input) {
         List<Province> provinces = provinceRepository.findAllByNameContainingIgnoreCase(input.getNameProvince(),PageRequest.of(input.getPage(), input.getSize()));
-        List<WeatherDataOutput> weatherDataOutputs = new ArrayList<>();
+        List<WeatherDataOutputOfListProvince> weatherDataOutputOfListProvinces = new ArrayList<>();
         for (Province province: provinces){
             List<CurrentWeather> currentWeathers =  currentWeatherRepository.findAllByProvince(province.getName());
             for(CurrentWeather currentWeather: currentWeathers){
-                WeatherDataOutput weatherDataOutput = weatherMapper.fromCurrentWeatherToWeatherDataOutput(currentWeather);
-                weatherDataOutputs.add(weatherDataOutput);
+                WeatherDataOutputOfListProvince weatherDataOutputOfListProvince = weatherMapper.fromCurrentWeatherToWeatherDataOutput(currentWeather);
+                weatherDataOutputOfListProvinces.add(weatherDataOutputOfListProvince);
             }
         }
-        return weatherDataOutputs;
+        return weatherDataOutputOfListProvinces;
     }
 
 
@@ -65,26 +71,53 @@ public class WeatherServiceImp implements WeatherService {
      * Get data for one province
      **/
     @Override
-    public List<WeatherDataOutput> getWeatherForecastForAProvince(GetWeatherDataInput input)  {
-        List<WeatherDataOutput> weatherDataOutputs = new ArrayList<>();
+    public WeatherDataOutputOfAProvince getWeatherForecastForAProvince(GetWeatherDataInput input)  {
+        Optional<Province> province = provinceRepository.findById(input.getIdProvince());
         List<WeatherForcast> weatherForcasts = weatherForecastRepository.findAllByIdProvince(input.getIdProvince());
+        List<WeatherDataOutputOfAProvince.WeatherInformation> weatherInformations = new ArrayList<>();
         for(WeatherForcast weatherForcast: weatherForcasts){
-            WeatherDataOutput weatherDataOutput = weatherMapper.fromWeatherForcastToWeatherDataOutput(weatherForcast);
-            weatherDataOutputs.add(weatherDataOutput);
+            WeatherDataOutputOfAProvince.WeatherInformation weatherInformation = new WeatherDataOutputOfAProvince.WeatherInformation(
+                    weatherForcast.getDateTime(),
+                    weatherForcast.getTemp(),
+                    weatherForcast.getFeelsLike(),
+                    weatherForcast.getTempMin(),
+                    weatherForcast.getTempMax(),
+                    weatherForcast.getHumidity(),
+                    weatherForcast.getMain(),
+                    weatherForcast.getDescription());
+            weatherInformations.add(weatherInformation);
         }
-        return weatherDataOutputs;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        List<WeatherDataOutputOfAProvince.WeatherInformation> sortedList = weatherInformations.stream()
+                .sorted(Comparator.comparing(o -> LocalDateTime.parse(o.getDateTime(), formatter)))
+                .collect(Collectors.toList());
+        return new WeatherDataOutputOfAProvince(input.getIdProvince(), province.get().getName(),sortedList);
     }
 
     @Override
-    public List<WeatherDataOutput> getWeatherForecastByCoordinate(Double lon, Double lat) {
+    public WeatherDataOutputOfAProvince getWeatherForecastByCoordinate(Double lon, Double lat) {
         Long idProvince = provinceService.getProvinceByCoordinate(lon,lat);
-        List<WeatherDataOutput> weatherDataOutputs = new ArrayList<>();
+        Optional<Province> province = provinceRepository.findById(idProvince);
+        WeatherDataOutputOfAProvince weatherDataOutputOfAProvince = new WeatherDataOutputOfAProvince(idProvince,province.get().getName());
         List<WeatherForcast> weatherForcasts = weatherForecastRepository.findAllByIdProvince(idProvince);
+        List<WeatherDataOutputOfAProvince.WeatherInformation> weatherInformations = new ArrayList<>();
         for(WeatherForcast weatherForcast: weatherForcasts){
-            WeatherDataOutput weatherDataOutput = weatherMapper.fromWeatherForcastToWeatherDataOutput(weatherForcast);
-            weatherDataOutputs.add(weatherDataOutput);
-        }
-        return weatherDataOutputs;
+            WeatherDataOutputOfAProvince.WeatherInformation weatherInformation = new WeatherDataOutputOfAProvince.WeatherInformation(
+                    weatherForcast.getDateTime(),
+                    weatherForcast.getTemp(),
+                    weatherForcast.getFeelsLike(),
+                    weatherForcast.getTempMin(),
+                    weatherForcast.getTempMax(),
+                    weatherForcast.getHumidity(),
+                    weatherForcast.getMain(),
+                    weatherForcast.getDescription());
+            weatherInformations.add(weatherInformation);
+        }        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        List<WeatherDataOutputOfAProvince.WeatherInformation> sortedList = weatherInformations.stream()
+                .sorted(Comparator.comparing(o -> LocalDateTime.parse(o.getDateTime(), formatter)))
+                .collect(Collectors.toList());
+        weatherDataOutputOfAProvince.setWeatherInformationList(sortedList);
+        return weatherDataOutputOfAProvince;
     }
 
     @Override
