@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface WeatherForecastRepository extends JpaRepository<WeatherForcast,Long> {
     List<WeatherForcast> findAllByIdProvince(Long idProvince);
+
 }
 

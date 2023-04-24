@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface CurrentWeatherRepository extends JpaRepository<CurrentWeather,Long> {
     List<CurrentWeather> findAllByProvince(String province);
+    CurrentWeather findByIdProvince(Long idProvince);
 }

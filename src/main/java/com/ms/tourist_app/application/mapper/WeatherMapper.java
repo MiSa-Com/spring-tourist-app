@@ -1,6 +1,6 @@
 package com.ms.tourist_app.application.mapper;
 
-import com.ms.tourist_app.application.output.weather.WeatherDataOutput;
+import com.ms.tourist_app.application.output.weather.WeatherDataOutputOfListProvince;
 import com.ms.tourist_app.domain.dto.WeatherDataDTO;
 import com.ms.tourist_app.domain.entity.CurrentWeather;
 import com.ms.tourist_app.domain.entity.WeatherForcast;
@@ -26,7 +26,7 @@ public interface WeatherMapper {
             @Mapping(target = "main",source = "main"),
             @Mapping(target = "description",source = "description")
     })
-    WeatherDataOutput fromWeatherForcastToWeatherDataOutput(WeatherForcast weatherForcast);
+    WeatherDataOutputOfListProvince fromWeatherForcastToWeatherDataOutput(WeatherForcast weatherForcast);
     @Mappings({
             @Mapping(target = "idProvince",source = "idProvince"),
             @Mapping(target = "province",source = "province"),
@@ -39,7 +39,7 @@ public interface WeatherMapper {
             @Mapping(target = "main",source = "main"),
             @Mapping(target = "description",source = "description")
     })
-    WeatherDataOutput fromCurrentWeatherToWeatherDataOutput(CurrentWeather currentWeather);
+    WeatherDataOutputOfListProvince fromCurrentWeatherToWeatherDataOutput(CurrentWeather currentWeather);
 
 
     CurrentWeather toCurrentWeather(WeatherDataDTO weatherDataDTO);

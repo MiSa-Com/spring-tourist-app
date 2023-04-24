@@ -1,6 +1,7 @@
 package com.ms.tourist_app.application.service.imp;
 
 import com.github.slugify.Slugify;
+import com.google.maps.model.LatLng;
 import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.application.dai.AddressRepository;
 import com.ms.tourist_app.application.dai.ProvinceRepository;
@@ -10,14 +11,15 @@ import com.ms.tourist_app.application.mapper.ProvinceMapper;
 import com.ms.tourist_app.application.output.provinces.ProvinceDataOutput;
 import com.ms.tourist_app.application.service.ProvinceService;
 import com.ms.tourist_app.application.utils.Convert;
+import com.ms.tourist_app.application.utils.GoogleMapApi;
 import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.config.exception.BadRequestException;
+import com.ms.tourist_app.config.exception.NotFoundException;
 import com.ms.tourist_app.domain.entity.Address;
 import com.ms.tourist_app.domain.entity.Province;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,8 +54,7 @@ public class ProvinceServiceImp implements ProvinceService {
             province.setCreateBy(jwtUtil.getUserIdFromToken());
         }
         provinceRepository.save(province);
-        ProvinceDataOutput provinceDataOutput = provinceMapper.toProvinceDataOutput(province);
-        return provinceDataOutput;
+        return provinceMapper.toProvinceDataOutput(province);
     }
 
     @Override
@@ -61,8 +62,7 @@ public class ProvinceServiceImp implements ProvinceService {
         List<ProvinceDataOutput> provinceDataOutputs = new ArrayList<>();
         List<Province> provinces = provinceRepository.findAllByNameContainingIgnoreCase(getListProvinceDataInput.getKeyword(), PageRequest.of(getListProvinceDataInput.getPage(), getListProvinceDataInput.getSize()));
         System.out.println(provinces.size());
-        for (Province province :
-                provinces) {
+        for (Province province : provinces) {
             ProvinceDataOutput provinceDataOutput = provinceMapper.toProvinceDataOutput(province);
             provinceDataOutputs.add(provinceDataOutput);
         }
@@ -80,8 +80,7 @@ public class ProvinceServiceImp implements ProvinceService {
         province.setUpdateBy(jwtUtil.getUserIdFromToken());
         province.setSlugWithSpace(Convert.withSpace(slugify.slugify(provinceDataInput.getName())));
         province.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(provinceDataInput.getName())));
-        ProvinceDataOutput provinceDataOutput = provinceMapper.toProvinceDataOutput(province);
-        return provinceDataOutput;
+        return provinceMapper.toProvinceDataOutput(province);
     }
 
     @Override
@@ -91,14 +90,27 @@ public class ProvinceServiceImp implements ProvinceService {
             throw new BadRequestException(AppStr.Province.tableProvince + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
         }
         List<Address> addresses = addressRepository.findAllByProvince(province.get());
-        for (Address address :
-                addresses) {
+        for (Address address : addresses) {
             address.setProvince(null);
             address.setId(address.getId());
             addressRepository.save(address);
         }
         provinceRepository.delete(province.get());
-        ProvinceDataOutput provinceDataOutput = provinceMapper.toProvinceDataOutput(province.get());
-        return provinceDataOutput;
+        return provinceMapper.toProvinceDataOutput(province.get());
     }
+
+    @Override
+    public Long getProvinceByCoordinate(Double lon, Double lat) {
+        LatLng latLng = new LatLng(lat, lon);
+        String formattedAddress = GoogleMapApi.getFormattedAddressFromLngLat(latLng);
+        slugify.withTransliterator(true);
+        formattedAddress = Convert.withoutSpace(slugify.slugify(formattedAddress));
+        List<Province> listProvince = provinceRepository.findProvinceByNameContaining(formattedAddress);
+        if (listProvince.size() > 0) {
+            return listProvince.get(0).getId();
+        }
+        throw new NotFoundException(AppStr.Province.tableProvince + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
+    }
+
+
 }

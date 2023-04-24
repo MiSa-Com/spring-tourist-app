@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class WeatherDataOutput {
+public class WeatherDataOutputOfListProvince {
     private Long idProvince;
     private String province;
     private String dateTime;

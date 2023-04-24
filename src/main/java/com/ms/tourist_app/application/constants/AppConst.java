@@ -14,6 +14,7 @@ public class AppConst {
         public static final double radiusEarth = 6371.0; // Average radius of Earth (km)
         public static final int defaultIndex = 0;
         public static final int defaultNbResult = 5;
+        public static final String language = "vi";
     }
 
     public static final class TSP{
