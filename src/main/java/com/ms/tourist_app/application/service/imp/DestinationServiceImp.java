@@ -4,11 +4,9 @@ import com.github.slugify.Slugify;
 import com.google.maps.model.LatLng;
 import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.application.dai.*;
-import com.ms.tourist_app.application.input.destinations.DestinationDataInput;
-import com.ms.tourist_app.application.input.destinations.GetListDestinationByKeywordInput;
-import com.ms.tourist_app.application.input.destinations.GetListDestinationCenterRadiusInput;
-import com.ms.tourist_app.application.input.destinations.GetListDestinationByProvinceInput;
+import com.ms.tourist_app.application.input.destinations.*;
 import com.ms.tourist_app.application.mapper.DestinationMapper;
+import com.ms.tourist_app.application.output.destinations.CommentDestinationDataOutput;
 import com.ms.tourist_app.application.output.destinations.DestinationDataOutput;
 import com.ms.tourist_app.application.service.DestinationService;
 import com.ms.tourist_app.application.utils.Convert;
@@ -17,6 +15,7 @@ import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.application.utils.UploadFile;
 import com.ms.tourist_app.config.exception.NotFoundException;
 import com.ms.tourist_app.domain.entity.*;
+import com.ms.tourist_app.domain.entity.id.CommentDestinationId;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -37,9 +36,11 @@ public class DestinationServiceImp implements DestinationService {
     private final DestinationMapper destinationMapper = Mappers.getMapper(DestinationMapper.class);
     private final JwtUtil jwtUtil;
     private final Slugify slugify;
+    private final UserRepository userRepository;
+    private final CommentDestinationRepository commentDestinationRepository;
 
 
-    public DestinationServiceImp(DestinationRepository destinationRepository, ImageDestinationRepository imageDestinationRepository, DestinationTypeRepository destinationTypeRepository, AddressRepository addressRepository, ProvinceRepository provinceRepository, UploadFile uploadFile, JwtUtil jwtUtil, Slugify slugify) {
+    public DestinationServiceImp(DestinationRepository destinationRepository, ImageDestinationRepository imageDestinationRepository, DestinationTypeRepository destinationTypeRepository, AddressRepository addressRepository, ProvinceRepository provinceRepository, UploadFile uploadFile, JwtUtil jwtUtil, Slugify slugify, UserRepository userRepository, CommentDestinationRepository commentDestinationRepository) {
         this.destinationRepository = destinationRepository;
         this.imageDestinationRepository = imageDestinationRepository;
         this.destinationTypeRepository = destinationTypeRepository;
@@ -47,8 +48,9 @@ public class DestinationServiceImp implements DestinationService {
         this.provinceRepository = provinceRepository;
         this.uploadFile = uploadFile;
         this.jwtUtil = jwtUtil;
-
         this.slugify = slugify;
+        this.userRepository = userRepository;
+        this.commentDestinationRepository = commentDestinationRepository;
     }
 
     @Override
@@ -58,6 +60,7 @@ public class DestinationServiceImp implements DestinationService {
         if (destination.isEmpty()) {
             throw new NotFoundException(AppStr.Destination.tableDestination + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
         }
+        List<CommentDestination> commentDestinations = commentDestinationRepository.findAllByDestination(destination.get());
         DestinationDataOutput output = destinationMapper.toDestinationDataOutput(destination.get());
         output.setDestinationType(destination.get().getDestinationType());
         output.setAddress(destination.get().getAddress());
@@ -67,6 +70,7 @@ public class DestinationServiceImp implements DestinationService {
                 imageDestinations) {
             linkImageDestination.add(imageDestination.getLink());
         }
+        output.setCommentDestinations(commentDestinations);
         output.setImages(linkImageDestination);
         return output;
     }
@@ -233,4 +237,40 @@ public class DestinationServiceImp implements DestinationService {
         output.setImages(linkImageDestination);
         return output;
     }
+
+    @Override
+    public CommentDestinationDataOutput createComment(Long idDestination, CommentDestinationDataInput input) {
+        Optional<Destination> destination = destinationRepository.findById(idDestination);
+        if(destination.isEmpty()){
+            throw new NotFoundException(AppStr.Exception.notFound+AppStr.Base.whiteSpace+AppStr.Destination.tableDestination);
+        }
+        Long idUser = jwtUtil.getUserIdFromToken();
+        if(idUser == null){
+            throw new NotFoundException(AppStr.Forbiden.notSignIn);
+        }
+        Optional<User> user = userRepository.findById(idUser);
+
+        CommentDestination commentDestination = new CommentDestination(new CommentDestinationId(idUser,idDestination),user.get(),destination.get(),input.getContent(),input.getRating());
+        commentDestinationRepository.save(commentDestination);
+        List<CommentDestination> commentDestinations = commentDestinationRepository.findAllByDestination(destination.get());
+        commentDestinations.add(commentDestination);
+        user.get().setCommentDestinations(commentDestinations);
+        return new CommentDestinationDataOutput(idUser,idDestination,input.getContent(),input.getRating());
+    }
+
+    @Override
+    public CommentDestinationDataOutput editComment(CommentDestinationId commentDestinationId, CommentDestinationDataInput input) {
+        Optional<CommentDestination> commentDestination = commentDestinationRepository.findById(commentDestinationId);
+        Optional<User> user = userRepository.findById(commentDestinationId.getIdUser());
+        Optional<Destination> destination = destinationRepository.findById(commentDestinationId.getIdUser());
+        commentDestination.get().setContent(input.getContent());
+        commentDestination.get().setRating(input.getRating());
+        commentDestinationRepository.save(commentDestination.get());
+        List<CommentDestination> commentDestinations = commentDestinationRepository.findAllByDestination(destination.get());
+        commentDestinations.add(commentDestination.get());
+        user.get().setCommentDestinations(commentDestinations);
+        return new CommentDestinationDataOutput(commentDestinationId.getIdUser(),commentDestinationId.getIdDestination(),input.getContent(),input.getRating());
+    }
+
+
 }

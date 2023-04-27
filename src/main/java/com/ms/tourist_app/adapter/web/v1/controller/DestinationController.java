@@ -2,23 +2,22 @@ package com.ms.tourist_app.adapter.web.v1.controller;
 
 import com.ms.tourist_app.adapter.web.base.ResponseUtil;
 import com.ms.tourist_app.adapter.web.base.RestApiV1;
-import com.ms.tourist_app.adapter.web.v1.transfer.parameter.destinations.DestinationDataParameter;
-import com.ms.tourist_app.adapter.web.v1.transfer.parameter.destinations.GetListDestinationByKeywordParameter;
-import com.ms.tourist_app.adapter.web.v1.transfer.parameter.destinations.GetListDestinationByProvinceParameter;
-import com.ms.tourist_app.adapter.web.v1.transfer.parameter.destinations.GetListDestinationCenterRadiusParameter;
+import com.ms.tourist_app.adapter.web.v1.transfer.parameter.destinations.*;
 import com.ms.tourist_app.application.constants.UrlConst;
-import com.ms.tourist_app.application.input.destinations.DestinationDataInput;
-import com.ms.tourist_app.application.input.destinations.GetListDestinationByKeywordInput;
-import com.ms.tourist_app.application.input.destinations.GetListDestinationCenterRadiusInput;
-import com.ms.tourist_app.application.input.destinations.GetListDestinationByProvinceInput;
+import com.ms.tourist_app.application.input.destinations.*;
 import com.ms.tourist_app.application.mapper.DestinationMapper;
+import com.ms.tourist_app.application.output.destinations.CommentDestinationDataOutput;
 import com.ms.tourist_app.application.output.destinations.DestinationDataOutput;
 import com.ms.tourist_app.application.service.DestinationService;
+import com.ms.tourist_app.application.utils.JwtUtil;
+import com.ms.tourist_app.domain.entity.id.CommentDestinationId;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -27,9 +26,11 @@ import java.util.List;
 public class DestinationController {
     private final DestinationMapper destinationMapper = Mappers.getMapper(DestinationMapper.class);
     private final DestinationService destinationService;
+    private final JwtUtil jwtUtil;
 
-    public DestinationController(DestinationService destinationService) {
+    public DestinationController(DestinationService destinationService, JwtUtil jwtUtil) {
         this.destinationService = destinationService;
+        this.jwtUtil = jwtUtil;
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
@@ -38,6 +39,12 @@ public class DestinationController {
         DestinationDataInput dataInput = destinationMapper.createDestinationInput(parameter);
         DestinationDataOutput dataOutput = destinationService.createDestination(dataInput);
         return ResponseUtil.restSuccess(dataOutput);
+    }
+
+    @GetMapping(UrlConst.Destination.getDestinationId)
+    public ResponseEntity<?> viewDestinationDetail(@PathVariable("id") Long idDestination){
+        DestinationDataOutput destinationDataOutput = destinationService.getDestinationDetail(idDestination);
+        return ResponseUtil.restSuccess(destinationDataOutput);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
@@ -63,5 +70,22 @@ public class DestinationController {
                                             parameter.getRadius(), parameter.getMaxResult());
         List<DestinationDataOutput> outputs = destinationService.getListDestinationCenterRadius(input);
         return ResponseUtil.restSuccess(outputs);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PostMapping(UrlConst.Destination.commentDestination)
+    public ResponseEntity<?> createCommentDestination(@Valid CommentDestinationDataParameter parameter){
+        CommentDestinationDataInput input = new CommentDestinationDataInput(parameter.getIdDestination(), parameter.getContent(), parameter.getRating());
+        CommentDestinationDataOutput output = destinationService.createComment(input.getIdDestination(), input);
+        return ResponseUtil.restSuccess(output);
+    }
+
+
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PutMapping(UrlConst.Destination.commentDestination)
+    public ResponseEntity<?> editCommentDestination(@Valid CommentDestinationDataParameter parameter){
+        CommentDestinationDataInput input = new CommentDestinationDataInput(parameter.getIdDestination(), parameter.getContent(), parameter.getRating());
+        CommentDestinationDataOutput output = destinationService.editComment(new CommentDestinationId(jwtUtil.getUserIdFromToken(), input.getIdDestination()),input);
+        return ResponseUtil.restSuccess(output);
     }
 }
