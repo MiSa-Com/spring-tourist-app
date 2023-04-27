@@ -32,9 +32,22 @@ public class CommentDestination {
     @JsonIgnore
     private Destination destination;
 
+    @Column(name = AppStr.CommentDestination.content)
+    private String content;
+
+    @Column(name = AppStr.CommentDestination.rating)
+    private Double rating;
+
 
     @OneToMany(mappedBy = AppStr.CommentDestination.commentDestination)
     @JsonIgnore
     private List<ImageCommentDestination> imageCommentDestinations;
 
+    public CommentDestination(CommentDestinationId commentDestinationId, User user, Destination destination, String content, Double rating) {
+        this.commentDestinationId = commentDestinationId;
+        this.user = user;
+        this.destination = destination;
+        this.content = content;
+        this.rating = rating;
+    }
 }

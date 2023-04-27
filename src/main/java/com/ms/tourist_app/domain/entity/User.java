@@ -65,6 +65,10 @@ public class User extends BaseEntity {
     @JsonIgnore
     private List<CommentHotel> commentHotels;
 
+    @OneToMany(mappedBy = AppStr.User.joinTableUser)
+    @JsonIgnore
+    private List<CommentDestination> commentDestinations;
+
     @ManyToOne
     @JoinColumn(name = AppStr.User.idAddress)
     @JsonIgnore

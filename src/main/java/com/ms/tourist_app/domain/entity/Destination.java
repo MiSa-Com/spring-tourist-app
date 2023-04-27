@@ -55,5 +55,9 @@ public class Destination extends BaseEntity {
     @JsonIgnore
     private Address address;
 
+    @OneToMany(mappedBy = AppStr.Destination.tableDestination)
+    @JsonIgnore
+    private List<CommentDestination> commentDestinations;
+
 
 }
