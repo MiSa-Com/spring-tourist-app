@@ -114,7 +114,8 @@ public class GoogleMapApi {
                 Address addressToAdd = new Address();
                 addressToAdd.setLatitude(searchResponse.results[i].geometry.location.lat);
                 addressToAdd.setLongitude(searchResponse.results[i].geometry.location.lng);
-                slugify = slugify.withTransliterator(true);
+                addressToAdd.setDetailAddress(searchResponse.results[i].formattedAddress);
+                slugify.withTransliterator(true);
                 addressToAdd.setSlug(slugify.slugify(searchResponse.results[i].formattedAddress));
                 resultAdds.add(addressToAdd);
             }
