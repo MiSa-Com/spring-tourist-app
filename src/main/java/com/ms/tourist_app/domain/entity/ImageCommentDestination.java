@@ -26,6 +26,7 @@ public class ImageCommentDestination extends BaseEntity {
     @JoinColumns({
             @JoinColumn(name = AppStr.ImageCommentDestination.idUser),
             @JoinColumn(name = AppStr.ImageCommentDestination.idDestination),
+            @JoinColumn(name = AppStr.ImageCommentDestination.idCommentDestination)
     })
     @JsonIgnore
     private CommentDestination commentDestination;
