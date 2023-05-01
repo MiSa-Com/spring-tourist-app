@@ -43,6 +43,7 @@ public class UrlConst {
         public static final String destinationRadius = destination+"/radius";
         public static final String destinationFilter = destination+"/filter";
         public static final String commentDestination = destination+"/comments";
+        public static final String topDestination = destination+"/top";
     }
 
     public static final class Hotel{

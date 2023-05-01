@@ -21,5 +21,5 @@ public class DestinationDataOutput {
     private DestinationType destinationType;
     private Address address;
     private List<String> images;
-    private List<CommentDestination> commentDestinations;
+    private List<CommentDestinationDataOutput> commentDestinations;
 }

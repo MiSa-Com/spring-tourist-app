@@ -88,4 +88,11 @@ public class DestinationController {
         CommentDestinationDataOutput output = destinationService.editComment(new CommentDestinationId(jwtUtil.getUserIdFromToken(), input.getIdDestination()),input);
         return ResponseUtil.restSuccess(output);
     }
+
+    @GetMapping(UrlConst.Destination.topDestination)
+    public ResponseEntity<?> getListDestinationNearest(@Valid SelectTopCreateAtParameter parameter){
+        SelectTopCreateAtInput input = new SelectTopCreateAtInput(parameter.getPage(),parameter.getSize());
+        List<DestinationDataOutput> outputs = destinationService.selectTopCreateAt(input);
+        return ResponseUtil.restSuccess(outputs);
+    }
 }

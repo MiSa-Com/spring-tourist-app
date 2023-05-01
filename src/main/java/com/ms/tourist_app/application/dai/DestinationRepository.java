@@ -20,10 +20,28 @@ public interface DestinationRepository extends JpaRepository<Destination, Long> 
     List<Destination> findAllByAddress(Address address);
 
     @Query("select d from Destination d " + "where (:address is null or d.address = :address)")
-    List<Destination> findByProvince(@Param("address") Address address, Pageable pageable);
+    List<Destination> findByAddress(@Param("address") Address address, Pageable pageable);
 
-    @Query("select d from Destination d " + "where (:address is null or d.address = :address) and( (:name is null or d.name like :name) or (:name is null or d.slug like :name) or (:name is null or d.slugWithSpace like :name) or (:name is null or d.slugWithoutSpace like :name)  )")
+    @Query("select d from Destination d " + "where :address is null or d.address = :address and :name is null or d.name like :name or  d.slug like :name or  d.slugWithSpace like :name  or d.slugWithoutSpace like :name")
     List<Destination> filter(@Param("address") Address address, @Param("name") String name, Pageable pageable);
 
+    @Query("SELECT d FROM Destination d ORDER BY d.createAt DESC")
+    List<Destination> selectTopCreateAt(Pageable pageable);
 
+    @Query("SELECT d FROM Destination d " +
+            "JOIN d.address a " +
+            "JOIN a.province p " +
+            "WHERE :name is null or LOWER(d.name) LIKE lower(concat('%', :name, '%')) " +
+            "OR LOWER(d.slug) LIKE lower(concat('%', :name, '%')) " +
+            "OR LOWER(d.slugWithSpace) LIKE lower(concat('%', :name, '%')) " +
+            "OR LOWER(d.slugWithoutSpace) LIKE lower(concat('%', :name, '%')) " +
+            "OR LOWER(a.detailAddress) LIKE lower(concat('%', :name, '%')) " +
+            "OR LOWER(a.slug) LIKE lower(concat('%', :name, '%')) " +
+            "OR LOWER(a.slugWithSpace) LIKE lower(concat('%', :name, '%')) " +
+            "OR LOWER(a.slugWithoutSpace) LIKE lower(concat('%', :name, '%')) " +
+            "OR LOWER(p.name) LIKE lower(concat('%', :name, '%')) " +
+            "OR LOWER(p.slug) LIKE lower(concat('%', :name, '%')) " +
+            "OR LOWER(p.slugWithSpace) LIKE lower(concat('%', :name, '%')) " +
+            "OR LOWER(p.slugWithoutSpace) LIKE lower(concat('%', :name, '%')) ")
+    List<Destination> filter(@Param("name") String name, Pageable pageable);
 }

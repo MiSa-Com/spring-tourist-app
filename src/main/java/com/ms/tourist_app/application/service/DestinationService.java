@@ -17,4 +17,5 @@ public interface DestinationService {
     DestinationDataOutput deleteDestination(Long id);
     CommentDestinationDataOutput createComment(Long idDestination, CommentDestinationDataInput input);
     CommentDestinationDataOutput editComment(CommentDestinationId commentDestinationId,CommentDestinationDataInput input);
+    List<DestinationDataOutput> selectTopCreateAt(SelectTopCreateAtInput input);
 }

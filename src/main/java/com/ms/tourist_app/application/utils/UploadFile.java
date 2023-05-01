@@ -1,6 +1,7 @@
 package com.ms.tourist_app.application.utils;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
 import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.config.exception.UploadImageException;
@@ -43,7 +44,9 @@ public class UploadFile {
         List<String> urls = new ArrayList<>();
         try {
             for (int i = 0; i < multipartFiles.size(); i++) {
-                Map<?, ?> map = cloudinary.uploader().upload(multipartFiles.get(i).getBytes(), ObjectUtils.emptyMap());
+                Transformation transformation = new Transformation().width(1920).height(1080).crop("fill").gravity("center");
+                Map<?, ?> map = cloudinary.uploader().upload(multipartFiles.get(i).getBytes(), ObjectUtils.asMap("transformation",transformation));
+
                 urls.add(map.get(AppStr.CloudImage.secureUrl).toString());
             }
             return urls;
