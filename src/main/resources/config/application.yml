@@ -35,6 +35,13 @@ spring:
 logging:
   level:
     org:
+      hibernate:
+        sql: DEBUG
+      type:
+        descriptor:
+          sql:
+            BasicBinder:
+              TRACE
       springframework:
         web: TRACE
 cloudinary:
