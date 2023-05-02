@@ -17,6 +17,12 @@ public class AppConst {
         public static final String language = "vi";
     }
 
+    public static final class ItineraryController {
+        public ItineraryController() {
+        }
+        public static final double recommendedRadius = 10.0;
+    }
+
     public static final class TSP{
         public TSP() {
         }

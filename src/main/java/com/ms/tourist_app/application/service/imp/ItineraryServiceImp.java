@@ -30,6 +30,7 @@ import com.ms.tourist_app.application.service.ItineraryService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class ItineraryServiceImp implements ItineraryService {
@@ -111,26 +112,27 @@ public class ItineraryServiceImp implements ItineraryService {
 
     @Override
     public RecommendItineraryOutput recommendItinerary(GetListDestinationCenterRadiusInput input, String travelMode) {
+        // fix page = 0
         List<Destination> allDestinations = destinationRepository.findAll();
-        int maxResult = input.getMaxResult();
-        if (maxResult == 0) {
-            maxResult = allDestinations.size();
-        }
-        List<Destination> searchDestinations = new ArrayList<>();
+
+        List<Destination> destinationsInCircle = new ArrayList<>();
         LatLng center = GoogleMapApi.getLatLng(input.getKeyword());
-        for (int i = 0 ; i < allDestinations.size() && i < maxResult ; i++) {
-            if ( i < input.getPage() * input.getSize() ) {
-                continue;
-            }
-            if ( i >= (input.getPage()+1) * input.getSize() ) {
-                break;
-            }
-            LatLng latLngDest = new LatLng(allDestinations.get(i).getAddress().getLatitude(), allDestinations.get(i).getAddress().getLongitude());
+        for (Destination allDestination : allDestinations) {
+            LatLng latLngDest = new LatLng(allDestination.getAddress().getLatitude(), allDestination.getAddress().getLongitude());
             double distance = GoogleMapApi.getFlightDistanceInKm(center, latLngDest);
             if (distance <= input.getRadius()) {
-                searchDestinations.add(allDestinations.get(i));
+                destinationsInCircle.add(allDestination);
             }
         }
+        Random rand = new Random();
+        List<Destination> searchDestinations = new ArrayList<>();
+        int maxResult = input.getSize();
+        for (int i = 0; i < maxResult; i++) {
+            int randomIndex = rand.nextInt(destinationsInCircle.size());
+            searchDestinations.add(destinationsInCircle.get(randomIndex));
+            destinationsInCircle.remove(randomIndex);
+        }
+
         Address addressCenter = new Address();
         addressCenter.setSlug(input.getKeyword());
         addressCenter.setLatitude(center.lat);

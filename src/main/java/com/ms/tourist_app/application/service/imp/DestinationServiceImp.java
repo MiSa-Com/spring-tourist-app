@@ -118,24 +118,18 @@ public class DestinationServiceImp implements DestinationService {
     @Transactional
     public List<DestinationDataOutput> getListDestinationCenterRadius(GetListDestinationCenterRadiusInput input) {
         List<Destination> allDestinations = destinationRepository.findAll();
-        int maxResult = input.getMaxResult();
-        if (maxResult == 0) {
-            maxResult = allDestinations.size();
+        LatLng center = GoogleMapApi.getLatLng(input.getKeyword());
+        List<Destination> destinationsInCircle = new ArrayList<>();
+        for (Destination destination : allDestinations) {
+            LatLng destinationLatLng = new LatLng(destination.getAddress().getLatitude(), destination.getAddress().getLongitude());
+            if (GoogleMapApi.getFlightDistanceInKm(center, destinationLatLng) <= input.getRadius()) {
+                destinationsInCircle.add(destination);
+            }
         }
         List<Destination> searchDestinations = new ArrayList<>();
-        LatLng center = GoogleMapApi.getLatLng(input.getKeyword());
-
-        for (int i = 0; i < allDestinations.size() && i < maxResult; i++) {
-            if (i < input.getPage() * input.getSize()) {
-                continue;
-            }
-            if (i >= (input.getPage() + 1) * input.getSize()) {
-                break;
-            }
-            LatLng latLngDest = new LatLng(allDestinations.get(i).getAddress().getLatitude(), allDestinations.get(i).getAddress().getLongitude());
-            double distance = GoogleMapApi.getFlightDistanceInKm(center, latLngDest);
-            if (distance <= input.getRadius()) {
-                searchDestinations.add(allDestinations.get(i));
+        for (int i = 0; i < destinationsInCircle.size(); i++) {
+            if (i >= input.getPage() * input.getSize() && i < (input.getPage()+1) * input.getSize()) {
+                searchDestinations.add(destinationsInCircle.get(i));
             }
         }
         List<DestinationDataOutput> destinationDataOutputs = new ArrayList<>();
