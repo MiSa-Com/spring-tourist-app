@@ -15,6 +15,4 @@ public class GetListDestinationCenterRadiusInput {
     private Integer size;
     private String keyword;
     private Double radius; // in km
-    @Nullable
-    private int maxResult;
 }

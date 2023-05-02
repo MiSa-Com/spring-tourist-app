@@ -5,6 +5,7 @@ import com.ms.tourist_app.adapter.web.base.RestApiV1;
 import com.ms.tourist_app.adapter.web.v1.transfer.parameter.itineraries.FindBestItineraryFromHotelParameter;
 import com.ms.tourist_app.adapter.web.v1.transfer.parameter.itineraries.ItineraryDataParameter;
 import com.ms.tourist_app.adapter.web.v1.transfer.parameter.itineraries.RecommendItineraryParameter;
+import com.ms.tourist_app.application.constants.AppConst;
 import com.ms.tourist_app.application.constants.UrlConst;
 import com.ms.tourist_app.application.input.destinations.GetListDestinationCenterRadiusInput;
 import com.ms.tourist_app.application.input.itineraries.FindBestItineraryFromHotelInput;
@@ -53,8 +54,8 @@ public class ItineraryController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping(UrlConst.Itinerary.recommendItinerary)
     public ResponseEntity<?> recommendItinerary(@Valid @RequestBody RecommendItineraryParameter parameter) {
-        GetListDestinationCenterRadiusInput getListDestinationCenterRadiusInput = new GetListDestinationCenterRadiusInput(0, 10, parameter.getAddress(),
-                10.0, 10);
+        GetListDestinationCenterRadiusInput getListDestinationCenterRadiusInput = new GetListDestinationCenterRadiusInput(0, parameter.getMaxDestination(),
+                parameter.getAddress(), AppConst.ItineraryController.recommendedRadius);
         RecommendItineraryOutput recommendItineraryOutput = itineraryService.recommendItinerary(getListDestinationCenterRadiusInput, parameter.getTravelMode());
         return ResponseUtil.restSuccess(recommendItineraryOutput);
     }
