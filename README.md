@@ -1,4 +1,4 @@
-<h1>MiSa-Com: TouristApp</h1>
+<h1>MiSa-Tech: TouristApp</h1>
 
 <h2>I. Các package</h2>
 <h3>1. adapter: cho web, app...</h3>
