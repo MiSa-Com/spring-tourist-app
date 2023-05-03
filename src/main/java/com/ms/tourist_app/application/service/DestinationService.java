@@ -12,8 +12,9 @@ public interface DestinationService {
     List<DestinationDataOutput> getListDestinationByProvince(GetListDestinationByProvinceInput input);
     List<DestinationDataOutput> getListDestinationCenterRadius(GetListDestinationCenterRadiusInput input);
     List<DestinationDataOutput> getListDestinationByKeyword(GetListDestinationByKeywordInput input);
+    List<DestinationDataOutput> getListDestinationByCreateBy(Long id);
     DestinationDataOutput createDestination(DestinationDataInput input);
-    DestinationDataInput editDestination(DestinationDataInput input,Long id);
+    DestinationDataOutput editDestination(DestinationDataInput input,Long id);
     DestinationDataOutput deleteDestination(Long id);
     CommentDestinationDataOutput createComment(Long idDestination, CommentDestinationDataInput input);
     CommentDestinationDataOutput editComment(CommentDestinationId commentDestinationId,CommentDestinationDataInput input);
