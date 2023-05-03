@@ -162,6 +162,7 @@ public class AddressServiceImp implements AddressService {
         }
         for (Address address : addresses) {
             AddressDataOutput addressDataOutput = addressMapper.toAddressDataOutput(address);
+
             addressDataOutputs.add(addressDataOutput);
         }
         return addressDataOutputs;
