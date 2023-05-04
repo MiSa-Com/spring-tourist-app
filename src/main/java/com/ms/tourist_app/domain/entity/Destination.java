@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.util.List;
@@ -38,6 +39,7 @@ public class Destination extends BaseEntity {
 
     @Column(name = AppStr.Destination.description)
     @Nationalized
+    @Length(max = 200000)
     private String description;
 
     @ManyToOne
@@ -54,6 +56,10 @@ public class Destination extends BaseEntity {
     @JoinColumn(name = AppStr.Destination.idAddress)
     @JsonIgnore
     private Address address;
+
+    @OneToMany(mappedBy = AppStr.Destination.tableDestination)
+    @JsonIgnore
+    private List<CommentDestination> commentDestinations;
 
 
 }

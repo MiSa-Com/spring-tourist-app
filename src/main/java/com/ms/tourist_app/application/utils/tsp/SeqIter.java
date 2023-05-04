@@ -2,6 +2,7 @@ package com.ms.tourist_app.application.utils.tsp;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class SeqIter implements Iterator<Integer> {
     private Integer[] candidates;
@@ -15,7 +16,7 @@ public class SeqIter implements Iterator<Integer> {
      * @param currentVertex
      * @param g
      */
-    public SeqIter(ArrayList<Integer> unvisited, int currentVertex, Graph g){
+    public SeqIter(List<Integer> unvisited, int currentVertex, Graph g){
         this.candidates = new Integer[unvisited.size()];
         for (Integer s : unvisited){
             if (g.isArc(currentVertex, s))

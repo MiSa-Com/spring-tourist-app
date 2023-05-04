@@ -142,19 +142,27 @@ public class AddressServiceImp implements AddressService {
 
         List<AddressDataOutput> addressDataOutputs = new ArrayList<>();
         if (addresses.isEmpty()) {
+            List<Address> resultsToAdd = GoogleMapApi.findAddressFromText(input.getKeyword(), AppConst.MapApi.defaultNbResult);
             // search text google map
-            addresses.addAll(Objects.requireNonNull(GoogleMapApi.findAddressFromText(input.getKeyword(), AppConst.MapApi.defaultNbResult)));
+            addresses.addAll(resultsToAdd);
 
             // charge into database
             for (Address address : addresses) {
                 if (!checkCoordinate(address.getLongitude(), address.getLatitude())) {
-                    address.setSlug(slugify.slugify(address.getDetailAddress()));
+                    String detailAddress = address.getDetailAddress();
+                    slugify.withTransliterator(true);
+                    String formattedAddress = Convert.withoutSpace(slugify.slugify(detailAddress));
+                    List<Province> listProvince = provinceRepository.findProvinceByNameContaining(formattedAddress);
+                    if (listProvince.size() > 0) {
+                        address.setProvince(listProvince.get(0));
+                    }
                     addressRepository.save(address);
                 }
             }
         }
         for (Address address : addresses) {
             AddressDataOutput addressDataOutput = addressMapper.toAddressDataOutput(address);
+
             addressDataOutputs.add(addressDataOutput);
         }
         return addressDataOutputs;

@@ -3,10 +3,8 @@ spring:
     time-zone: GMT+7
   servlet:
     multipart:
-      file-size-threshold: 2KB
       max-file-size: 100MB
       max-request-size: 115MB
-      enabled: true
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -37,7 +35,17 @@ spring:
 logging:
   level:
     org:
+      hibernate:
+        sql: DEBUG
+      type:
+        descriptor:
+          sql:
+            BasicBinder:
+              TRACE
       springframework:
         web: TRACE
+cloudinary:
+  max-file-size: 20MB
+  max-image-width: 5000
 
 

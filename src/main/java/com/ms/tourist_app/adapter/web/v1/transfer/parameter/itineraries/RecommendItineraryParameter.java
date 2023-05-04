@@ -14,4 +14,5 @@ import java.util.List;
 public class RecommendItineraryParameter {
     private String address;
     private String travelMode;
+    private Integer maxDestination;
 }

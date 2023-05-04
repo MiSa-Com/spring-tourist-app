@@ -26,4 +26,6 @@ public interface DestinationMapper {
             @Mapping(target = "description",source = "description")
     })
     DestinationDataOutput toDestinationDataOutput(Destination destination);
+
+
 }

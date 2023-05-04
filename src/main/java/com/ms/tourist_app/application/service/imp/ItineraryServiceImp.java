@@ -13,7 +13,9 @@ import com.ms.tourist_app.application.dai.UserRepository;
 import com.ms.tourist_app.application.input.destinations.GetListDestinationCenterRadiusInput;
 import com.ms.tourist_app.application.input.itineraries.FindBestItineraryFromHotelInput;
 import com.ms.tourist_app.application.input.itineraries.ItineraryDataInput;
+import com.ms.tourist_app.application.mapper.DestinationMapper;
 import com.ms.tourist_app.application.mapper.ItineraryMapper;
+import com.ms.tourist_app.application.output.destinations.DestinationDataOutput;
 import com.ms.tourist_app.application.output.itineraries.FindBestItineraryFromHotelOutput;
 import com.ms.tourist_app.application.output.itineraries.ItineraryDataOutput;
 import com.ms.tourist_app.application.output.itineraries.RecommendItineraryOutput;
@@ -30,6 +32,7 @@ import com.ms.tourist_app.application.service.ItineraryService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class ItineraryServiceImp implements ItineraryService {
@@ -40,6 +43,7 @@ public class ItineraryServiceImp implements ItineraryService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final ItineraryMapper itineraryMapper = Mappers.getMapper(ItineraryMapper.class);
+    private final DestinationMapper destinationMapper = Mappers.getMapper(DestinationMapper.class);
 
     public ItineraryServiceImp(ItineraryRepository itineraryRepository, DestinationRepository destinationRepository,
                                HotelRepository hotelRepository, UserRepository userRepository, JwtUtil jwtUtil) {
@@ -111,26 +115,30 @@ public class ItineraryServiceImp implements ItineraryService {
 
     @Override
     public RecommendItineraryOutput recommendItinerary(GetListDestinationCenterRadiusInput input, String travelMode) {
+        // fix page = 0
         List<Destination> allDestinations = destinationRepository.findAll();
-        int maxResult = input.getMaxResult();
-        if (maxResult == 0) {
-            maxResult = allDestinations.size();
-        }
-        List<Destination> searchDestinations = new ArrayList<>();
+
+        List<Destination> destinationsInCircle = new ArrayList<>();
         LatLng center = GoogleMapApi.getLatLng(input.getKeyword());
-        for (int i = 0 ; i < allDestinations.size() && i < maxResult ; i++) {
-            if ( i < input.getPage() * input.getSize() ) {
-                continue;
-            }
-            if ( i >= (input.getPage()+1) * input.getSize() ) {
-                break;
-            }
-            LatLng latLngDest = new LatLng(allDestinations.get(i).getAddress().getLatitude(), allDestinations.get(i).getAddress().getLongitude());
+        for (Destination allDestination : allDestinations) {
+            LatLng latLngDest = new LatLng(allDestination.getAddress().getLatitude(), allDestination.getAddress().getLongitude());
             double distance = GoogleMapApi.getFlightDistanceInKm(center, latLngDest);
             if (distance <= input.getRadius()) {
-                searchDestinations.add(allDestinations.get(i));
+                destinationsInCircle.add(allDestination);
             }
         }
+        Random rand = new Random();
+        List<Destination> searchDestinations = new ArrayList<>();
+        int maxResult = input.getSize();
+        for (int i = 0; i < maxResult; i++) {
+            if (destinationsInCircle.size() == 0) {
+                break;
+            }
+            int randomIndex = rand.nextInt(destinationsInCircle.size());
+            searchDestinations.add(destinationsInCircle.get(randomIndex));
+            destinationsInCircle.remove(randomIndex);
+        }
+
         Address addressCenter = new Address();
         addressCenter.setSlug(input.getKeyword());
         addressCenter.setLatitude(center.lat);
@@ -185,7 +193,14 @@ public class ItineraryServiceImp implements ItineraryService {
             listTime.add(time);
             listDistance.add(distance);
         }
-        RecommendItineraryOutput recommendItineraryOutput = new RecommendItineraryOutput(addressCenter, listOutputDestination,
+        List<DestinationDataOutput> outputs = new ArrayList<>();
+        for (int i = 0; i < listOutputDestination.size(); i++) {
+            DestinationDataOutput output = destinationMapper.toDestinationDataOutput(listOutputDestination.get(i));
+            output.setDestinationType(listOutputDestination.get(i).getDestinationType());
+            output.setAddress(listOutputDestination.get(i).getAddress());
+            outputs.add(output);
+        }
+        RecommendItineraryOutput recommendItineraryOutput = new RecommendItineraryOutput(addressCenter, outputs,
                                 listTime, listDistance, travelModeEnum);
         return recommendItineraryOutput;
     }

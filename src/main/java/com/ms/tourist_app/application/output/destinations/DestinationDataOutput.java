@@ -1,6 +1,7 @@
 package com.ms.tourist_app.application.output.destinations;
 
 import com.ms.tourist_app.domain.entity.Address;
+import com.ms.tourist_app.domain.entity.CommentDestination;
 import com.ms.tourist_app.domain.entity.DestinationType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,4 +21,5 @@ public class DestinationDataOutput {
     private DestinationType destinationType;
     private Address address;
     private List<String> images;
+    private List<CommentDestinationDataOutput> commentDestinations;
 }

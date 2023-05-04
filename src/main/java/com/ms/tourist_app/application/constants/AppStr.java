@@ -126,6 +126,7 @@ public class AppStr {
         public static final String link = "link";
         public static final String idUser = "id_user";
         public static final String idDestination = "id_destination";
+        public static final String idCommentDestination = "id_comment_destination";
     }
 
     public static final class ImageCommentHotel {
@@ -225,6 +226,9 @@ public class AppStr {
         public static final String idDestinationElement = "idDestination";
         public static final String tableCommentDestination = "comment_destination";
         public static final String commentDestination = "commentDestination";
+        public static final String content = "content";
+        public static final String rating = "rating";
+        public static final String idCommentDestination = "id";
     }
 
     public static final class CommentHotel {
@@ -293,6 +297,12 @@ public class AppStr {
 
         public static final String apiKey = "ec2e3acfd4f07b705ff0a828ec6c228e";
         public static final String apiUrl = "http://api.openweathermap.org/data/2.5";
+    }
+
+    public static final class Forbiden{
+        public Forbiden() {
+        }
+        public static final String notSignIn = "You have to sign in";
     }
 
 }

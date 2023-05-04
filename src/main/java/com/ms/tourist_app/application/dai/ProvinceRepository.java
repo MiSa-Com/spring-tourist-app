@@ -17,6 +17,11 @@ public interface ProvinceRepository extends JpaRepository<Province, Long> {
 //    @Query("select p from Province p where :name is null or " + "( p.name like concat('%[',:name,']%') and length(:name) <= 3 ) or" + "((( p.name like concat('%',:name,'%'))or(p.slug like concat('%',:name,'%')) or (p.slugWithSpace like concat('%',:name,'%')) or (p.slugWithoutSpace like concat('%',:name,'%')) )and length(:name) > 3 ) " + "ORDER BY p.name ASC")
     List<Province> findAllByNameContainingIgnoreCase(@Param("name") String name, Pageable pageable);
 
+    @Query("select p from Province p where :name is null or (p.name like concat('%',:name,'%')) or " +
+            "(p.slug like concat('%',:name,'%')) or " +
+            "(p.slugWithSpace like concat('%',:name,'%')) or (p.slugWithoutSpace like concat('%',:name,'%'))")
+    List<Province> findAllByKeyword(@Param("name") String name);
+
     @Query("select p from Province p where :name like concat('%', p.slugWithoutSpace, '%')")
     List<Province> findProvinceByNameContaining(@Param("name") String name);
 
