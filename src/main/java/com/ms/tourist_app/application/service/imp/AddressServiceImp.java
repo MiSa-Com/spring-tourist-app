@@ -140,7 +140,7 @@ public class AddressServiceImp implements AddressService {
             addresses = addressRepository.search(input.getKeyword().trim(), province.get(), PageRequest.of(input.getPage(), input.getSize()));
         }
 
-        List<AddressDataOutput> addressDataOutputs = new ArrayList<>();
+        List<Address> savedAddress = new ArrayList<>();
         if (addresses.isEmpty()) {
             List<Address> resultsToAdd = GoogleMapApi.findAddressFromText(input.getKeyword(), AppConst.MapApi.defaultNbResult);
             // search text google map
@@ -156,10 +156,14 @@ public class AddressServiceImp implements AddressService {
                     if (listProvince.size() > 0) {
                         address.setProvince(listProvince.get(0));
                     }
-                    addressRepository.save(address);
+                    Address savedAd = addressRepository.save(address);
+                    savedAddress.add(savedAd);
                 }
             }
+            addresses.clear();
+            addresses.addAll(savedAddress);
         }
+        List<AddressDataOutput> addressDataOutputs = new ArrayList<>();
         for (Address address : addresses) {
             AddressDataOutput addressDataOutput = addressMapper.toAddressDataOutput(address);
             addressDataOutputs.add(addressDataOutput);
