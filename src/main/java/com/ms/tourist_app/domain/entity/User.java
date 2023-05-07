@@ -78,11 +78,12 @@ public class User extends BaseEntity {
     @JsonIgnore
     private List<Itinerary> favoriteItinerary;
 
+    @OneToMany(targetEntity = Destination.class)
+    private List<Destination> favoriteDestination;
+
     public User(String email, String password, List<Role> roles) {
         this.email = email;
         this.password = password;
         this.roles = roles;
     }
-
-
 }

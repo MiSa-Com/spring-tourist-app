@@ -2,12 +2,15 @@ package com.ms.tourist_app.adapter.web.v1.controller;
 
 import com.ms.tourist_app.adapter.web.base.ResponseUtil;
 import com.ms.tourist_app.adapter.web.base.RestApiV1;
+import com.ms.tourist_app.adapter.web.v1.transfer.parameter.user.AddFavoriteDestinationParameter;
 import com.ms.tourist_app.adapter.web.v1.transfer.parameter.user.UserDataParameter;
 import com.ms.tourist_app.adapter.web.v1.transfer.parameter.user.GetAllUserParameter;
 import com.ms.tourist_app.application.constants.UrlConst;
+import com.ms.tourist_app.application.input.users.AddFavoriteDestinationInput;
 import com.ms.tourist_app.application.input.users.UserDataInput;
 import com.ms.tourist_app.application.input.users.GetListUserInput;
 import com.ms.tourist_app.application.mapper.UserMapper;
+import com.ms.tourist_app.application.output.destinations.DestinationDataOutput;
 import com.ms.tourist_app.application.output.users.UserDataOutput;
 import com.ms.tourist_app.application.service.UserService;
 import org.mapstruct.factory.Mappers;
@@ -65,6 +68,14 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable(UrlConst.id)Long id){
         UserDataOutput userDataOutput = userService.deleteUser(id);
         return ResponseUtil.restSuccess(userDataOutput);
+    }
+
+    @PostMapping(UrlConst.User.addFavoriteDestination)
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    public ResponseEntity<?> addFavoriteDestination(@Valid AddFavoriteDestinationParameter parameter){
+        AddFavoriteDestinationInput input = userMapper.toAddFavoriteDestinationInput(parameter);
+        DestinationDataOutput output = userService.addFavoriteDestination(input);
+        return ResponseUtil.restSuccess(output);
     }
 }
 

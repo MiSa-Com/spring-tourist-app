@@ -2,15 +2,21 @@ package com.ms.tourist_app.application.service.imp;
 
 import com.ms.tourist_app.application.constants.AppStr;
 import com.ms.tourist_app.application.dai.AddressRepository;
+import com.ms.tourist_app.application.dai.DestinationRepository;
 import com.ms.tourist_app.application.dai.UserRepository;
+import com.ms.tourist_app.application.input.users.AddFavoriteDestinationInput;
 import com.ms.tourist_app.application.input.users.UserDataInput;
 import com.ms.tourist_app.application.input.users.GetListUserInput;
+import com.ms.tourist_app.application.mapper.DestinationMapper;
 import com.ms.tourist_app.application.mapper.UserMapper;
+import com.ms.tourist_app.application.output.destinations.DestinationDataOutput;
 import com.ms.tourist_app.application.output.users.UserDataOutput;
 import com.ms.tourist_app.application.service.UserService;
+import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.config.exception.BadRequestException;
 import com.ms.tourist_app.config.exception.NotFoundException;
 import com.ms.tourist_app.domain.entity.Address;
+import com.ms.tourist_app.domain.entity.Destination;
 import com.ms.tourist_app.domain.entity.User;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
@@ -27,10 +33,16 @@ public class UserServiceImp implements UserService {
     private final UserMapper userMapper = Mappers.getMapper(UserMapper.class);
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
+    private final DestinationRepository destinationRepository;
+    private final JwtUtil jwtUtil;
+    private final DestinationMapper destinationMapper = Mappers.getMapper(DestinationMapper.class);
 
-    public UserServiceImp(UserRepository userRepository, AddressRepository addressRepository) {
+    public UserServiceImp(UserRepository userRepository, AddressRepository addressRepository,
+                          DestinationRepository destinationRepository, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
+        this.destinationRepository = destinationRepository;
+        this.jwtUtil = jwtUtil;
     }
 
 
@@ -133,5 +145,21 @@ public class UserServiceImp implements UserService {
         return userDataOutput;
     }
 
-
+    @Override
+    @Transactional
+    public DestinationDataOutput addFavoriteDestination(AddFavoriteDestinationInput input) {
+        Long userId = jwtUtil.getUserIdFromToken();
+        User user = userRepository.findById(userId).get();
+        List<Destination> favoriteDest = user.getFavoriteDestination();
+        Destination destination = destinationRepository.findById(input.getDestinationId()).get();
+        if (favoriteDest.contains(destination)) {
+            throw new BadRequestException(AppStr.User.userFavDestination);
+        }
+        List<Destination> newFavDestination = new ArrayList<>(favoriteDest);
+        newFavDestination.add(destination);
+        user.setFavoriteDestination(newFavDestination);
+        userRepository.save(user);
+        DestinationDataOutput output = destinationMapper.toDestinationDataOutput(destination);
+        return output;
+    }
 }

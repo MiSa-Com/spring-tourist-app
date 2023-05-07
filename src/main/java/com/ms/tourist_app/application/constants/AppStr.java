@@ -43,7 +43,7 @@ public class AppStr {
         public static final String password = "password";
         public static final String joinTableUser = "user";
         public static final String idAddress = "id_address";
-        public static final String favoriteRoad = "favorite_road";
+        public static final String userFavDestination = "This destination already existed in your list of favorite";
     }
 
     public static final class Weather {
