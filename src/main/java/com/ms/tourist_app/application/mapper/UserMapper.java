@@ -1,7 +1,9 @@
 package com.ms.tourist_app.application.mapper;
 
 
+import com.ms.tourist_app.adapter.web.v1.transfer.parameter.user.AddFavoriteDestinationParameter;
 import com.ms.tourist_app.adapter.web.v1.transfer.parameter.user.UserDataParameter;
+import com.ms.tourist_app.application.input.users.AddFavoriteDestinationInput;
 import com.ms.tourist_app.application.input.users.UserDataInput;
 import com.ms.tourist_app.application.output.users.UserDataOutput;
 import com.ms.tourist_app.domain.entity.User;
@@ -35,5 +37,8 @@ public interface UserMapper {
     })
     UserDataOutput toUserDataOutput(User user);
 
-
+    @Mappings({
+            @Mapping(target = "destinationId", source = "destinationId")
+    })
+    AddFavoriteDestinationInput toAddFavoriteDestinationInput(AddFavoriteDestinationParameter parameter);
 }
