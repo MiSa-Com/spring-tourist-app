@@ -21,6 +21,7 @@ import com.ms.tourist_app.application.output.itineraries.ItineraryDataOutput;
 import com.ms.tourist_app.application.output.itineraries.RecommendItineraryOutput;
 import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.application.utils.tsp.CompleteGraph;
+import com.ms.tourist_app.application.utils.tsp.Graph;
 import com.ms.tourist_app.application.utils.tsp.TSP1;
 import com.ms.tourist_app.application.utils.GoogleMapApi;
 import com.ms.tourist_app.config.exception.NotFoundException;
@@ -54,9 +55,55 @@ public class ItineraryServiceImp implements ItineraryService {
         this.jwtUtil = jwtUtil;
     }
 
+    private TravelMode chooseTravelMode(String travelMode) {
+        switch (travelMode) {
+            case "driving":
+                return TravelMode.DRIVING;
+            case "walking":
+                return TravelMode.WALKING;
+            case "bicycling":
+                return TravelMode.BICYCLING;
+            case "transit":
+                return TravelMode.TRANSIT;
+            default:
+                return TravelMode.UNKNOWN;
+        }
+    }
+
+    private List<Destination> findItinerarySolution(Graph graph, List<Destination> listDestination, List<Double> listTime, List<Double> listDistance) {
+        TSP1 tsp = new TSP1();
+        tsp.searchSolution(AppConst.TSP.TIME_LIMIT, graph);
+        List<Destination> listOutputDestination = new ArrayList<>();
+
+        int indexSol = tsp.getSolution(0);
+        int indexDes = tsp.getSolution(1);
+
+        Double time = graph.getCost(indexSol, indexDes, false);
+        Double distance = graph.getCost(indexSol, indexDes, true);
+        listTime.add(time);
+        listDistance.add(distance);
+
+        for (int i = 1; i < graph.getNbVertices(); i++) {
+            indexSol = tsp.getSolution(i);
+            Destination destSol = listDestination.get(indexSol-1);
+            listOutputDestination.add( destSol );
+
+            indexDes = 0;
+            if (i != graph.getNbVertices() - 1) {
+                indexDes = tsp.getSolution(i + 1);
+            }
+
+            time = graph.getCost(indexSol, indexDes, false);
+            distance = graph.getCost(indexSol, indexDes, true);
+            listTime.add(time);
+            listDistance.add(distance);
+        }
+        return listOutputDestination;
+    }
+
     @Override
     public FindBestItineraryFromHotelOutput findBestItineraryFromHotel(FindBestItineraryFromHotelInput findBestItineraryFromHotelInput) {
-        TSP1 tsp = new TSP1();
+
         List<Destination> listDestination = new ArrayList<>();
         String[] listIds = findBestItineraryFromHotelInput.getItinerary().split(",");
         Long idHotel = Long.parseLong(listIds[0]);
@@ -81,33 +128,10 @@ public class ItineraryServiceImp implements ItineraryService {
         }
 
         CompleteGraph graph = new CompleteGraph(listAddress, findBestItineraryFromHotelInput.getTravelMode());
-        tsp.searchSolution(AppConst.TSP.TIME_LIMIT, graph);
-        List<Destination> listOutputDestination = new ArrayList<>();
         List<Double> listTime = new ArrayList<>();
         List<Double> listDistance = new ArrayList<>();
-        int indexSol = tsp.getSolution(0);
-        int indexDes = tsp.getSolution(1);
-
-        Double time = graph.getCost(indexSol, indexDes, false);
-        Double distance = graph.getCost(indexSol, indexDes, true);
-        listTime.add(time);
-        listDistance.add(distance);
-
-        for (int i = 1; i < graph.getNbVertices(); i++) {
-            indexSol = tsp.getSolution(i);
-            Destination destSol = listDestination.get(indexSol-1);
-            listOutputDestination.add( destSol );
-
-            indexDes = 0;
-            if (i != graph.getNbVertices() - 1) {
-                indexDes = tsp.getSolution(i + 1);
-            }
-
-            time = graph.getCost(indexSol, indexDes, false);
-            distance = graph.getCost(indexSol, indexDes, true);
-            listTime.add(time);
-            listDistance.add(distance);
-        }
+        List<Destination> listOutputDestination = findItinerarySolution(graph, listDestination,
+                                                                listTime, listDistance);
         FindBestItineraryFromHotelOutput findBestItineraryFromHotelOutput = new FindBestItineraryFromHotelOutput(hotel, listOutputDestination,
                                 findBestItineraryFromHotelInput.getTravelMode(), listTime, listDistance);
         return findBestItineraryFromHotelOutput;
@@ -148,51 +172,13 @@ public class ItineraryServiceImp implements ItineraryService {
         for (Destination destination : searchDestinations) {
             listAddress.add(destination.getAddress());
         }
-        TSP1 tsp = new TSP1();
-        TravelMode travelModeEnum = TravelMode.UNKNOWN;
-        switch (travelMode) {
-            case "driving":
-                travelModeEnum = TravelMode.DRIVING;
-                break;
-            case "walking":
-                travelModeEnum = TravelMode.WALKING;
-                break;
-            case "bicycling":
-                travelModeEnum = TravelMode.BICYCLING;
-                break;
-            case "transit":
-                travelModeEnum = TravelMode.TRANSIT;
-                break;
-        }
+        TravelMode travelModeEnum = chooseTravelMode(travelMode);
 
         CompleteGraph graph = new CompleteGraph(listAddress, travelModeEnum);
-        tsp.searchSolution(AppConst.TSP.TIME_LIMIT, graph);
-        List<Destination> listOutputDestination = new ArrayList<>();
         List<Double> listTime = new ArrayList<>();
         List<Double> listDistance = new ArrayList<>();
-        int indexSol = tsp.getSolution(0);
-        int indexDes = tsp.getSolution(1);
-
-        Double time = graph.getCost(indexSol, indexDes, false);
-        Double distance = graph.getCost(indexSol, indexDes, true);
-        listTime.add(time);
-        listDistance.add(distance);
-
-        for (int i = 1; i < graph.getNbVertices(); i++) {
-            indexSol = tsp.getSolution(i);
-            Destination destSol = searchDestinations.get(indexSol-1);
-            listOutputDestination.add( destSol );
-
-            indexDes = 0;
-            if (i != graph.getNbVertices() - 1) {
-                indexDes = tsp.getSolution(i + 1);
-            }
-
-            time = graph.getCost(indexSol, indexDes, false);
-            distance = graph.getCost(indexSol, indexDes, true);
-            listTime.add(time);
-            listDistance.add(distance);
-        }
+        List<Destination> listOutputDestination = findItinerarySolution(graph, searchDestinations,
+                                listTime, listDistance);
         List<DestinationDataOutput> outputs = new ArrayList<>();
         for (int i = 0; i < listOutputDestination.size(); i++) {
             DestinationDataOutput output = destinationMapper.toDestinationDataOutput(listOutputDestination.get(i));

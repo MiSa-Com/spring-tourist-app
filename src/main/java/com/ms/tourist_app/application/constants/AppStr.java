@@ -44,6 +44,7 @@ public class AppStr {
         public static final String joinTableUser = "user";
         public static final String idAddress = "id_address";
         public static final String userFavDestination = "This destination already existed in your list of favorite";
+        public static final String notFoundFavoriteDestination = "This destination" + AppStr.Base.whiteSpace + AppStr.Exception.notFound + AppStr.Base.whiteSpace + "in your list of favorite";
     }
 
     public static final class Weather {

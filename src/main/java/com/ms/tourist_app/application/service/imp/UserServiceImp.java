@@ -176,4 +176,22 @@ public class UserServiceImp implements UserService {
         }
         return outputs;
     }
+
+    @Override
+    @Transactional
+    public DestinationDataOutput deleteFavoriteDestination(Long id) {
+        Long userId = jwtUtil.getUserIdFromToken();
+        User user = userRepository.findById(userId).get();
+        List<Destination> listFavDests = user.getFavoriteDestination();
+        Destination destinationToDelete = destinationRepository.findById(id).get();
+        if (!listFavDests.contains(destinationToDelete)) {
+            throw new BadRequestException(AppStr.User.notFoundFavoriteDestination);
+        }
+        List<Destination> newFavDestination = new ArrayList<>(listFavDests);
+        newFavDestination.remove(destinationToDelete);
+        user.setFavoriteDestination(newFavDestination);
+        userRepository.save(user);
+        DestinationDataOutput output = destinationMapper.toDestinationDataOutput(destinationToDelete);
+        return output;
+    }
 }

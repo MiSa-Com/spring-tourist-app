@@ -16,6 +16,7 @@ public class UrlConst {
         public static final String getUserById = users+idLink;
         public static final String addFavoriteDestination = users+"/favorite-destination";
         public static final String viewFavoriteDestination = users+"/favorite-destination";
+        public static final String deleteFavoriteDestination = users+"/favorite-destination"+idLink;
     }
 
     public static final class Auth{
