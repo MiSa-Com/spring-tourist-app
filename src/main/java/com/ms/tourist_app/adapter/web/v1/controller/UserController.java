@@ -77,6 +77,13 @@ public class UserController {
         DestinationDataOutput output = userService.addFavoriteDestination(input);
         return ResponseUtil.restSuccess(output);
     }
+
+    @GetMapping(UrlConst.User.viewFavoriteDestination)
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    public ResponseEntity<?> viewFavoriteDestination(){
+        List<DestinationDataOutput> output = userService.viewFavoriteDestinations();
+        return ResponseUtil.restSuccess(output);
+    }
 }
 
 

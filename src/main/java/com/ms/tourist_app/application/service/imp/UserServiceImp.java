@@ -162,4 +162,18 @@ public class UserServiceImp implements UserService {
         DestinationDataOutput output = destinationMapper.toDestinationDataOutput(destination);
         return output;
     }
+
+    @Override
+    @Transactional
+    public List<DestinationDataOutput> viewFavoriteDestinations() {
+        Long userId = jwtUtil.getUserIdFromToken();
+        User user = userRepository.findById(userId).get();
+        List<Destination> listFavDests = user.getFavoriteDestination();
+        List<DestinationDataOutput> outputs = new ArrayList<>();
+        for (Destination dest : listFavDests) {
+            DestinationDataOutput output = destinationMapper.toDestinationDataOutput(dest);
+            outputs.add(output);
+        }
+        return outputs;
+    }
 }
