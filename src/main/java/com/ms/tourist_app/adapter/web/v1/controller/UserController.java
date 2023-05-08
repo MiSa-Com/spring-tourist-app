@@ -11,6 +11,7 @@ import com.ms.tourist_app.application.input.users.UserDataInput;
 import com.ms.tourist_app.application.input.users.GetListUserInput;
 import com.ms.tourist_app.application.mapper.UserMapper;
 import com.ms.tourist_app.application.output.destinations.DestinationDataOutput;
+import com.ms.tourist_app.application.output.type_destination.DestinationTypeDataOutput;
 import com.ms.tourist_app.application.output.users.UserDataOutput;
 import com.ms.tourist_app.application.service.UserService;
 import org.mapstruct.factory.Mappers;
@@ -82,6 +83,13 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<?> viewFavoriteDestination(){
         List<DestinationDataOutput> output = userService.viewFavoriteDestinations();
+        return ResponseUtil.restSuccess(output);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @DeleteMapping(UrlConst.User.deleteFavoriteDestination)
+    public ResponseEntity<?> deleteFavoriteDestination(@PathVariable(UrlConst.id) Long id) {
+        DestinationDataOutput output = userService.deleteFavoriteDestination(id);
         return ResponseUtil.restSuccess(output);
     }
 }
