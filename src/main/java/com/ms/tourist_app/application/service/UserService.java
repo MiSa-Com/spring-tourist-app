@@ -20,4 +20,6 @@ public interface UserService {
     UserDataOutput deleteUser(Long id);
 
     DestinationDataOutput addFavoriteDestination(AddFavoriteDestinationInput input);
+
+    List<DestinationDataOutput> viewFavoriteDestinations();
 }
