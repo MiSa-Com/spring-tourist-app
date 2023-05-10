@@ -6,10 +6,7 @@ import com.ms.tourist_app.adapter.web.v1.transfer.parameter.itineraries.FindBest
 import com.ms.tourist_app.adapter.web.v1.transfer.parameter.itineraries.ItineraryDataParameter;
 import com.ms.tourist_app.application.constants.AppConst;
 import com.ms.tourist_app.application.constants.AppStr;
-import com.ms.tourist_app.application.dai.DestinationRepository;
-import com.ms.tourist_app.application.dai.HotelRepository;
-import com.ms.tourist_app.application.dai.ItineraryRepository;
-import com.ms.tourist_app.application.dai.UserRepository;
+import com.ms.tourist_app.application.dai.*;
 import com.ms.tourist_app.application.input.destinations.GetListDestinationCenterRadiusInput;
 import com.ms.tourist_app.application.input.itineraries.FindBestItineraryFromHotelInput;
 import com.ms.tourist_app.application.input.itineraries.ItineraryDataInput;
@@ -39,7 +36,7 @@ import java.util.Random;
 public class ItineraryServiceImp implements ItineraryService {
     private final ItineraryRepository itineraryRepository;
     private final DestinationRepository destinationRepository;
-
+    private final ImageDestinationRepository imageDestinationRepository;
     private final HotelRepository hotelRepository;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
@@ -47,9 +44,10 @@ public class ItineraryServiceImp implements ItineraryService {
     private final DestinationMapper destinationMapper = Mappers.getMapper(DestinationMapper.class);
 
     public ItineraryServiceImp(ItineraryRepository itineraryRepository, DestinationRepository destinationRepository,
-                               HotelRepository hotelRepository, UserRepository userRepository, JwtUtil jwtUtil) {
+                               ImageDestinationRepository imageDestinationRepository, HotelRepository hotelRepository, UserRepository userRepository, JwtUtil jwtUtil) {
         this.itineraryRepository = itineraryRepository;
         this.destinationRepository = destinationRepository;
+        this.imageDestinationRepository = imageDestinationRepository;
         this.hotelRepository = hotelRepository;
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
@@ -164,7 +162,7 @@ public class ItineraryServiceImp implements ItineraryService {
         }
 
         Address addressCenter = new Address();
-        addressCenter.setSlug(input.getKeyword());
+        addressCenter.setDetailAddress(input.getKeyword());
         addressCenter.setLatitude(center.lat);
         addressCenter.setLongitude(center.lng);
         List<Address> listAddress = new ArrayList<>();
@@ -184,6 +182,13 @@ public class ItineraryServiceImp implements ItineraryService {
             DestinationDataOutput output = destinationMapper.toDestinationDataOutput(listOutputDestination.get(i));
             output.setDestinationType(listOutputDestination.get(i).getDestinationType());
             output.setAddress(listOutputDestination.get(i).getAddress());
+            List<ImageDestination> imageDestinations = imageDestinationRepository.findAllByDestination(listOutputDestination.get(i));
+            List<String> imageDestinationOutputs = new ArrayList<>();
+            for (ImageDestination imageDestination : imageDestinations) {
+                String imageDestinationOutput = imageDestination.getLink();
+                imageDestinationOutputs.add(imageDestinationOutput);
+            }
+            output.setImages(imageDestinationOutputs);
             outputs.add(output);
         }
         RecommendItineraryOutput recommendItineraryOutput = new RecommendItineraryOutput(addressCenter, outputs,
