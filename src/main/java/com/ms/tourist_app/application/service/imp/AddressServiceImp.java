@@ -82,7 +82,9 @@ public class AddressServiceImp implements AddressService {
         address.setLongitude(latLng.lng);
         address.setLatitude(latLng.lat);
         address.setProvince(province.get());
-        address.setCreateBy(jwtUtil.getUserIdFromToken());
+        if (jwtUtil.getUserIdFromToken() != null) {
+            address.setCreateBy(jwtUtil.getUserIdFromToken());
+        }
         address.setSlug(slugify.slugify(input.getDetailAddress()));
         address.setSlugWithSpace(Convert.withSpace(slugify.slugify(input.getDetailAddress())));
         address.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(input.getDetailAddress())));
@@ -119,7 +121,9 @@ public class AddressServiceImp implements AddressService {
         }
         Address address = addressMapper.toAddress(input, id);
         address.setProvince(province.get());
-        address.setUpdateBy(jwtUtil.getUserIdFromToken());
+        if (jwtUtil.getUserIdFromToken()!=null){
+            address.setUpdateBy(jwtUtil.getUserIdFromToken());
+        }
         address.setSlugWithSpace(Convert.withSpace(slugify.slugify(input.getDetailAddress())));
         address.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(input.getDetailAddress())));
         addressRepository.save(address);

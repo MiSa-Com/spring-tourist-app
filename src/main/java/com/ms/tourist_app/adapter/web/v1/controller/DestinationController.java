@@ -41,6 +41,7 @@ public class DestinationController {
         return ResponseUtil.restSuccess(dataOutput);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping(UrlConst.Destination.getDestinationId)
     public ResponseEntity<?> editDestination(@PathVariable(UrlConst.id) Long id, @Valid DestinationDataParameter parameter) {
         DestinationDataInput dataInput = destinationMapper.createDestinationInput(parameter);
@@ -48,6 +49,7 @@ public class DestinationController {
         return ResponseUtil.restSuccess(dataOutput);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping(UrlConst.Destination.destinationByUser)
     public ResponseEntity<?> getListDestinationByUser(@PathVariable(UrlConst.id) Long id) {
         List<DestinationDataOutput> dataOutputs = destinationService.getListDestinationByCreateBy(id);
@@ -61,7 +63,6 @@ public class DestinationController {
         return ResponseUtil.restSuccess(destinationDataOutput);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping(UrlConst.Destination.destinationFilter)
     public ResponseEntity<?> getListDestinationByProvince(@Valid GetListDestinationByProvinceParameter parameter) {
         GetListDestinationByProvinceInput input = new GetListDestinationByProvinceInput(parameter.getPage(), parameter.getSize(), parameter.getIdProvince());
@@ -69,7 +70,6 @@ public class DestinationController {
         return ResponseUtil.restSuccess(outputs);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping(UrlConst.Destination.destination)
     public ResponseEntity<?> getListDestinationFilter(@Valid GetListDestinationByKeywordParameter parameter) {
         GetListDestinationByKeywordInput input = new GetListDestinationByKeywordInput(parameter.getKeyword(), parameter.getPage(), parameter.getSize());

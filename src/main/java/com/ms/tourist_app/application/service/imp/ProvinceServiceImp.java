@@ -77,7 +77,9 @@ public class ProvinceServiceImp implements ProvinceService {
         }
         Province province = provinceMapper.toProvince(provinceDataInput, id);
         provinceRepository.save(province);
-        province.setUpdateBy(jwtUtil.getUserIdFromToken());
+        if (jwtUtil.getUserIdFromToken()!=null){
+            province.setUpdateBy(jwtUtil.getUserIdFromToken());
+        }
         province.setSlugWithSpace(Convert.withSpace(slugify.slugify(provinceDataInput.getName())));
         province.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(provinceDataInput.getName())));
         return provinceMapper.toProvinceDataOutput(province);
