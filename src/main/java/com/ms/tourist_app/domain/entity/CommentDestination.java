@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = AppStr.CommentDestination.tableCommentDestination)
+@Table(name = AppStr.CommentDestination.tableCommentDestination,uniqueConstraints = @UniqueConstraint(columnNames = AppStr.CommentDestination.idCommentDestination))
 public class CommentDestination {
     @EmbeddedId
     private CommentDestinationId commentDestinationId;

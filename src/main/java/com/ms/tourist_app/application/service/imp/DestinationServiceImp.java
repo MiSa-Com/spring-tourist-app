@@ -71,7 +71,7 @@ public class DestinationServiceImp implements DestinationService {
         }
         List<CommentDestinationDataOutput> commentDestinationDataOutputs = new ArrayList<>();
         for (CommentDestination commentDestination : commentDestinations) {
-            CommentDestinationDataOutput dataOutput = new CommentDestinationDataOutput(commentDestination.getUser().getId(), commentDestination.getDestination().getId(), commentDestination.getContent(), commentDestination.getRating());
+            CommentDestinationDataOutput dataOutput = new CommentDestinationDataOutput(commentDestination.getUser().getId(), commentDestination.getUser().getFirstName()+AppStr.Base.whiteSpace+commentDestination.getUser().getLastName(),commentDestination.getDestination().getId(), commentDestination.getContent(), commentDestination.getRating());
             commentDestinationDataOutputs.add(dataOutput);
         }
         output.setCommentDestinations(commentDestinationDataOutputs);
@@ -95,7 +95,7 @@ public class DestinationServiceImp implements DestinationService {
                 List<CommentDestination> commentDestinations = commentDestinationRepository.findAllByDestination(destination);
                 List<CommentDestinationDataOutput> commentDestinationDataOutputs = new ArrayList<>();
                 for (CommentDestination commentDestination : commentDestinations) {
-                    CommentDestinationDataOutput dataOutput = new CommentDestinationDataOutput(commentDestination.getUser().getId(), commentDestination.getDestination().getId(), commentDestination.getContent(), commentDestination.getRating());
+                    CommentDestinationDataOutput dataOutput = new CommentDestinationDataOutput(commentDestination.getUser().getId(), commentDestination.getUser().getFirstName()+commentDestination.getUser().getLastName(),commentDestination.getDestination().getId(), commentDestination.getContent(), commentDestination.getRating());
                     commentDestinationDataOutputs.add(dataOutput);
                 }
                 DestinationDataOutput destinationDataOutput = destinationMapper.toDestinationDataOutput(destination);
@@ -155,7 +155,7 @@ public class DestinationServiceImp implements DestinationService {
                     List<CommentDestination> commentDestinations = commentDestinationRepository.findAllByDestination(destination);
                     List<CommentDestinationDataOutput> commentDestinationDataOutputs = new ArrayList<>();
                     for (CommentDestination commentDestination : commentDestinations) {
-                        CommentDestinationDataOutput dataOutput = new CommentDestinationDataOutput(commentDestination.getUser().getId(), commentDestination.getDestination().getId(), commentDestination.getContent(), commentDestination.getRating());
+                        CommentDestinationDataOutput dataOutput = new CommentDestinationDataOutput(commentDestination.getUser().getId(), commentDestination.getUser().getFirstName()+commentDestination.getUser().getLastName(),commentDestination.getDestination().getId(), commentDestination.getContent(), commentDestination.getRating());
                         commentDestinationDataOutputs.add(dataOutput);
                     }
                     DestinationDataOutput destinationDataOutput = destinationMapper.toDestinationDataOutput(destination);
@@ -174,6 +174,23 @@ public class DestinationServiceImp implements DestinationService {
         return destinationDataOutputs;
     }
 
+    @Override
+    public List<DestinationDataOutput> getListDestinationByCreateBy(Long id) {
+        List<DestinationDataOutput> outputs = new ArrayList<>();
+        List<Destination> destinations = destinationRepository.findAllByCreateBy(id);
+        for (Destination destination: destinations){
+            DestinationDataOutput output = destinationMapper.toDestinationDataOutput(destination);
+            List<ImageDestination> imageDestinations = imageDestinationRepository.findAllByDestination(destination);
+            List<String> imageDestinationOutputs = new ArrayList<>();
+            for (ImageDestination imageDestination : imageDestinations) {
+                String imageDestinationOutput = imageDestination.getLink();
+                imageDestinationOutputs.add(imageDestinationOutput);
+            }
+            output.setImages(imageDestinationOutputs);
+            outputs.add(output);
+        }
+        return outputs;
+    }
 
 
     @Override
@@ -220,8 +237,45 @@ public class DestinationServiceImp implements DestinationService {
     }
 
     @Override
-    public DestinationDataInput editDestination(DestinationDataInput input, Long id) {
-        return null;
+    public DestinationDataOutput editDestination(DestinationDataInput input, Long id) {
+        Destination destination = destinationMapper.toDestination(input, id);
+        Optional<DestinationType> destinationType = destinationTypeRepository.findById(input.getIdDestinationType());
+        if (destinationType.isEmpty()) {
+            throw new NotFoundException(AppStr.DestinationType.destinationType + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
+        }
+        Optional<Address> address = addressRepository.findById(input.getIdAddress());
+        if (address.isEmpty()) {
+            throw new NotFoundException(AppStr.Address.address + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
+        }
+        destination.setDestinationType(destinationType.get());
+        destination.setAddress(address.get());
+        destination.setSlug(slugify.slugify(input.getName()));
+        destination.setSlugWithSpace(Convert.withSpace(slugify.slugify(input.getName())));
+        destination.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(input.getName())));
+        destination.setCreateBy(jwtUtil.getUserIdFromToken());
+        List<ImageDestination> imageDestinations = new ArrayList<>();
+        if (input.getImages().size() > 1) {
+            List<String> links = uploadFile.getMultiUrl(input.getImages());
+            for (String link : links) {
+                ImageDestination imageDestination = new ImageDestination();
+                imageDestination.setLink(link);
+                imageDestination.setDestination(destination);
+                imageDestinations.add(imageDestination);
+            }
+        }
+        destination.setImageDestinations(imageDestinations);
+        destinationRepository.save(destination);
+        imageDestinationRepository.saveAll(imageDestinations);
+        DestinationDataOutput output = destinationMapper.toDestinationDataOutput(destination);
+        output.setDestinationType(destination.getDestinationType());
+        output.setAddress(destination.getAddress());
+        List<String> linkImageDestination = new ArrayList<>();
+        List<ImageDestination> imageDestinationList = imageDestinationRepository.findAllByDestination(destination);
+        for (ImageDestination imageDestination : imageDestinationList) {
+            linkImageDestination.add(imageDestination.getLink());
+        }
+        output.setImages(linkImageDestination);
+        return output;
     }
 
     @Override
@@ -256,12 +310,13 @@ public class DestinationServiceImp implements DestinationService {
         }
         Optional<User> user = userRepository.findById(idUser);
 
-        CommentDestination commentDestination = new CommentDestination(new CommentDestinationId(idUser, idDestination), user.get(), destination.get(), input.getContent(), input.getRating());
+        CommentDestinationId commentDestinationId = new CommentDestinationId(idUser, idDestination);
+        CommentDestination commentDestination = new CommentDestination(commentDestinationId, user.get(), destination.get(), input.getContent(), input.getRating());
         commentDestinationRepository.save(commentDestination);
         List<CommentDestination> commentDestinations = commentDestinationRepository.findAllByDestination(destination.get());
         commentDestinations.add(commentDestination);
         user.get().setCommentDestinations(commentDestinations);
-        return new CommentDestinationDataOutput(idUser, idDestination, input.getContent(), input.getRating());
+        return new CommentDestinationDataOutput(idUser,commentDestination.getUser().getFirstName()+commentDestination.getUser().getLastName(), idDestination, input.getContent(), input.getRating());
     }
 
     @Override
@@ -275,7 +330,7 @@ public class DestinationServiceImp implements DestinationService {
         List<CommentDestination> commentDestinations = commentDestinationRepository.findAllByDestination(destination.get());
         commentDestinations.add(commentDestination.get());
         user.get().setCommentDestinations(commentDestinations);
-        return new CommentDestinationDataOutput(commentDestinationId.getIdUser(), commentDestinationId.getIdDestination(), input.getContent(), input.getRating());
+        return new CommentDestinationDataOutput(commentDestinationId.getIdUser(), commentDestination.get().getUser().getFirstName()+commentDestination.get().getUser().getLastName(),commentDestinationId.getIdDestination(), input.getContent(), input.getRating());
     }
 
     @Override
@@ -286,7 +341,7 @@ public class DestinationServiceImp implements DestinationService {
             List<CommentDestination> commentDestinations = commentDestinationRepository.findAllByDestination(destination);
             List<CommentDestinationDataOutput> commentDestinationDataOutputs = new ArrayList<>();
             for (CommentDestination commentDestination : commentDestinations) {
-                CommentDestinationDataOutput dataOutput = new CommentDestinationDataOutput(commentDestination.getUser().getId(), commentDestination.getDestination().getId(), commentDestination.getContent(), commentDestination.getRating());
+                CommentDestinationDataOutput dataOutput = new CommentDestinationDataOutput(commentDestination.getUser().getId(),commentDestination.getUser().getFirstName()+commentDestination.getUser().getLastName(), commentDestination.getDestination().getId(), commentDestination.getContent(), commentDestination.getRating());
                 commentDestinationDataOutputs.add(dataOutput);
             }
             DestinationDataOutput destinationDataOutput = destinationMapper.toDestinationDataOutput(destination);
