@@ -8,6 +8,7 @@ import com.ms.tourist_app.application.input.destinations.*;
 import com.ms.tourist_app.application.mapper.DestinationMapper;
 import com.ms.tourist_app.application.output.destinations.CommentDestinationDataOutput;
 import com.ms.tourist_app.application.output.destinations.DestinationDataOutput;
+import com.ms.tourist_app.application.output.destinations.GetListDestinationCenterRadiusOutput;
 import com.ms.tourist_app.application.service.DestinationService;
 import com.ms.tourist_app.application.utils.Convert;
 import com.ms.tourist_app.application.utils.GoogleMapApi;
@@ -116,7 +117,7 @@ public class DestinationServiceImp implements DestinationService {
 
     @Override
     @Transactional
-    public List<DestinationDataOutput> getListDestinationCenterRadius(GetListDestinationCenterRadiusInput input) {
+    public GetListDestinationCenterRadiusOutput getListDestinationCenterRadius(GetListDestinationCenterRadiusInput input) {
         List<Destination> allDestinations = destinationRepository.findAll();
         LatLng center = GoogleMapApi.getLatLng(input.getKeyword());
         List<Destination> destinationsInCircle = new ArrayList<>();
@@ -127,9 +128,12 @@ public class DestinationServiceImp implements DestinationService {
             }
         }
         List<Destination> searchDestinations = new ArrayList<>();
+        List<Double> listDistance = new ArrayList<>();
         for (int i = 0; i < destinationsInCircle.size(); i++) {
             if (i >= input.getPage() * input.getSize() && i < (input.getPage()+1) * input.getSize()) {
                 searchDestinations.add(destinationsInCircle.get(i));
+                LatLng destinationLatLng = new LatLng(destinationsInCircle.get(i).getAddress().getLatitude(), destinationsInCircle.get(i).getAddress().getLongitude());
+                listDistance.add(GoogleMapApi.getFlightDistanceInKm(center, destinationLatLng));
             }
         }
         List<DestinationDataOutput> destinationDataOutputs = new ArrayList<>();
@@ -138,7 +142,8 @@ public class DestinationServiceImp implements DestinationService {
             DestinationDataOutput destinationDataOutput = destinationMapper.toDestinationDataOutput(destination);
             destinationDataOutputs.add(destinationDataOutput);
         }
-        return destinationDataOutputs;
+        GetListDestinationCenterRadiusOutput output = new GetListDestinationCenterRadiusOutput(destinationDataOutputs, listDistance);
+        return output;
     }
 
     @Override

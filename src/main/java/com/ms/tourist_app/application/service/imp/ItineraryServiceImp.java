@@ -13,9 +13,13 @@ import com.ms.tourist_app.application.dai.UserRepository;
 import com.ms.tourist_app.application.input.destinations.GetListDestinationCenterRadiusInput;
 import com.ms.tourist_app.application.input.itineraries.FindBestItineraryFromHotelInput;
 import com.ms.tourist_app.application.input.itineraries.ItineraryDataInput;
+import com.ms.tourist_app.application.mapper.AddressMapper;
 import com.ms.tourist_app.application.mapper.DestinationMapper;
+import com.ms.tourist_app.application.mapper.HotelMapper;
 import com.ms.tourist_app.application.mapper.ItineraryMapper;
+import com.ms.tourist_app.application.output.addresses.AddressDataOutput;
 import com.ms.tourist_app.application.output.destinations.DestinationDataOutput;
+import com.ms.tourist_app.application.output.hotels.HotelDataOutput;
 import com.ms.tourist_app.application.output.itineraries.FindBestItineraryFromHotelOutput;
 import com.ms.tourist_app.application.output.itineraries.ItineraryDataOutput;
 import com.ms.tourist_app.application.output.itineraries.RecommendItineraryOutput;
@@ -45,6 +49,8 @@ public class ItineraryServiceImp implements ItineraryService {
     private final JwtUtil jwtUtil;
     private final ItineraryMapper itineraryMapper = Mappers.getMapper(ItineraryMapper.class);
     private final DestinationMapper destinationMapper = Mappers.getMapper(DestinationMapper.class);
+    private final AddressMapper addressMapper = Mappers.getMapper(AddressMapper.class);
+    private final HotelMapper hotelMapper = Mappers.getMapper(HotelMapper.class);
 
     public ItineraryServiceImp(ItineraryRepository itineraryRepository, DestinationRepository destinationRepository,
                                HotelRepository hotelRepository, UserRepository userRepository, JwtUtil jwtUtil) {
@@ -132,7 +138,13 @@ public class ItineraryServiceImp implements ItineraryService {
         List<Double> listDistance = new ArrayList<>();
         List<Destination> listOutputDestination = findItinerarySolution(graph, listDestination,
                                                                 listTime, listDistance);
-        FindBestItineraryFromHotelOutput findBestItineraryFromHotelOutput = new FindBestItineraryFromHotelOutput(hotel, listOutputDestination,
+        HotelDataOutput hotelDataOutput = hotelMapper.toHotelDataOutput(hotel);
+        List<DestinationDataOutput> listOutputDestinationDataOutput = new ArrayList<>();
+        for (Destination dest : listOutputDestination) {
+            DestinationDataOutput destOutput = destinationMapper.toDestinationDataOutput(dest);
+            listOutputDestinationDataOutput.add(destOutput);
+        }
+        FindBestItineraryFromHotelOutput findBestItineraryFromHotelOutput = new FindBestItineraryFromHotelOutput(hotelDataOutput, listOutputDestinationDataOutput,
                                 findBestItineraryFromHotelInput.getTravelMode(), listTime, listDistance);
         return findBestItineraryFromHotelOutput;
     }
@@ -179,6 +191,7 @@ public class ItineraryServiceImp implements ItineraryService {
         List<Double> listDistance = new ArrayList<>();
         List<Destination> listOutputDestination = findItinerarySolution(graph, searchDestinations,
                                 listTime, listDistance);
+        AddressDataOutput addressCenterDataOutput = addressMapper.toAddressDataOutput(addressCenter);
         List<DestinationDataOutput> outputs = new ArrayList<>();
         for (int i = 0; i < listOutputDestination.size(); i++) {
             DestinationDataOutput output = destinationMapper.toDestinationDataOutput(listOutputDestination.get(i));
@@ -186,7 +199,7 @@ public class ItineraryServiceImp implements ItineraryService {
             output.setAddress(listOutputDestination.get(i).getAddress());
             outputs.add(output);
         }
-        RecommendItineraryOutput recommendItineraryOutput = new RecommendItineraryOutput(addressCenter, outputs,
+        RecommendItineraryOutput recommendItineraryOutput = new RecommendItineraryOutput(addressCenterDataOutput, outputs,
                                 listTime, listDistance, travelModeEnum);
         return recommendItineraryOutput;
     }
