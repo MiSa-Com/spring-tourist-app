@@ -8,6 +8,7 @@ import com.ms.tourist_app.application.input.destinations.*;
 import com.ms.tourist_app.application.mapper.DestinationMapper;
 import com.ms.tourist_app.application.output.destinations.CommentDestinationDataOutput;
 import com.ms.tourist_app.application.output.destinations.DestinationDataOutput;
+import com.ms.tourist_app.application.output.destinations.GetListDestinationCenterRadiusOutput;
 import com.ms.tourist_app.application.service.DestinationService;
 import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.domain.entity.id.CommentDestinationId;
@@ -80,8 +81,9 @@ public class DestinationController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping(UrlConst.Destination.destinationRadius)
     public ResponseEntity<?> getListDestinationCenterRadius(@Valid GetListDestinationCenterRadiusParameter parameter) {
-        GetListDestinationCenterRadiusInput input = new GetListDestinationCenterRadiusInput(parameter.getPage(), parameter.getSize(), parameter.getKeyword(), parameter.getRadius());
-        List<DestinationDataOutput> outputs = destinationService.getListDestinationCenterRadius(input);
+        GetListDestinationCenterRadiusInput input = new GetListDestinationCenterRadiusInput(parameter.getPage(),parameter.getSize(), parameter.getKeyword(),
+                                            parameter.getRadius());
+        GetListDestinationCenterRadiusOutput outputs = destinationService.getListDestinationCenterRadius(input);
         return ResponseUtil.restSuccess(outputs);
     }
 

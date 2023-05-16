@@ -1,6 +1,8 @@
 package com.ms.tourist_app.application.output.itineraries;
 
 import com.google.maps.model.TravelMode;
+import com.ms.tourist_app.application.output.destinations.DestinationDataOutput;
+import com.ms.tourist_app.application.output.hotels.HotelDataOutput;
 import com.ms.tourist_app.domain.entity.Destination;
 import com.ms.tourist_app.domain.entity.Hotel;
 import lombok.AllArgsConstructor;
@@ -15,8 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FindBestItineraryFromHotelOutput {
-    private Hotel hotel;
-    private List<Destination> listDestination;
+    private HotelDataOutput hotelDataOutput;
+    private List<DestinationDataOutput> listDestinationDataOutput;
     private TravelMode travelMode;
     private List<Double> listTime;
     private List<Double> listDistance;
