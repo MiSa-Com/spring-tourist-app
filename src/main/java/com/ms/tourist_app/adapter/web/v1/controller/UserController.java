@@ -68,7 +68,6 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<?> deleteUser(@PathVariable(UrlConst.id)Long id){
         UserDataOutput userDataOutput = userService.deleteUser(id);
-        System.out.println(userDataOutput);
         return ResponseUtil.restSuccess(userDataOutput);
     }
 
