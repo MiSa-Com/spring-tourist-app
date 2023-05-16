@@ -133,13 +133,21 @@ public class DestinationServiceImp implements DestinationService {
             if (i >= input.getPage() * input.getSize() && i < (input.getPage()+1) * input.getSize()) {
                 searchDestinations.add(destinationsInCircle.get(i));
                 LatLng destinationLatLng = new LatLng(destinationsInCircle.get(i).getAddress().getLatitude(), destinationsInCircle.get(i).getAddress().getLongitude());
-                listDistance.add(GoogleMapApi.getFlightDistanceInKm(center, destinationLatLng));
+                 listDistance.add(GoogleMapApi.getFlightDistanceInKm(center, destinationLatLng));
             }
         }
         List<DestinationDataOutput> destinationDataOutputs = new ArrayList<>();
 
         for (Destination destination : searchDestinations) {
             DestinationDataOutput destinationDataOutput = destinationMapper.toDestinationDataOutput(destination);
+
+            List<ImageDestination> imageDestinations = imageDestinationRepository.findAllByDestination(destination);
+            List<String> imageDestinationOutputs = new ArrayList<>();
+            for (ImageDestination imageDestination : imageDestinations) {
+                String imageDestinationOutput = imageDestination.getLink();
+                imageDestinationOutputs.add(imageDestinationOutput);
+            }
+            destinationDataOutput.setImages(imageDestinationOutputs);
             destinationDataOutputs.add(destinationDataOutput);
         }
         GetListDestinationCenterRadiusOutput output = new GetListDestinationCenterRadiusOutput(destinationDataOutputs, listDistance);
@@ -210,7 +218,9 @@ public class DestinationServiceImp implements DestinationService {
         destination.setSlug(slugify.slugify(input.getName()));
         destination.setSlugWithSpace(Convert.withSpace(slugify.slugify(input.getName())));
         destination.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(input.getName())));
-        destination.setCreateBy(jwtUtil.getUserIdFromToken());
+        if(jwtUtil.getUserIdFromToken()!=null){
+            destination.setCreateBy(jwtUtil.getUserIdFromToken());
+        }
         List<ImageDestination> imageDestinations = new ArrayList<>();
         if (input.getImages().size() > 1) {
             List<String> links = uploadFile.getMultiUrl(input.getImages());
@@ -252,7 +262,9 @@ public class DestinationServiceImp implements DestinationService {
         destination.setSlug(slugify.slugify(input.getName()));
         destination.setSlugWithSpace(Convert.withSpace(slugify.slugify(input.getName())));
         destination.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(input.getName())));
-        destination.setCreateBy(jwtUtil.getUserIdFromToken());
+        if(jwtUtil.getUserIdFromToken()!=null){
+            destination.setCreateBy(jwtUtil.getUserIdFromToken());
+        }
         List<ImageDestination> imageDestinations = new ArrayList<>();
         if (input.getImages().size() > 1) {
             List<String> links = uploadFile.getMultiUrl(input.getImages());

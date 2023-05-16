@@ -217,7 +217,9 @@ public class ItineraryServiceImp implements ItineraryService {
         }
         User user = optionalUser.get();
         Itinerary itinerary = new Itinerary(itineraryDataInput.getItinerary(), user, itineraryDataInput.getTravelMode());
-        itinerary.setCreateBy(jwtUtil.getUserIdFromToken());
+        if (jwtUtil.getUserIdFromToken()!=null){
+            itinerary.setCreateBy(jwtUtil.getUserIdFromToken());
+        }
         itineraryRepository.save(itinerary);
         ItineraryDataOutput itineraryDataOutput = itineraryMapper.toItineraryDataOutput(itinerary);
         return itineraryDataOutput;
