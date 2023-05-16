@@ -51,7 +51,7 @@ public class JwtUtil {
     }
 
     public Long getUserIdFromToken() {
-        if (httpServletRequest.getHeader(AppStr.Auth.authorization).replace(AppStr.Auth.bearer.concat(AppStr.Base.whiteSpace), "").length() > 6) {
+        if (httpServletRequest.getHeader(AppStr.Auth.authorization)!=null&&httpServletRequest.getHeader(AppStr.Auth.authorization).replace(AppStr.Auth.bearer.concat(AppStr.Base.whiteSpace), "").length() > 6) {
             String jwt = httpServletRequest.getHeader(AppStr.Auth.authorization).replace(AppStr.Auth.bearer.concat(AppStr.Base.whiteSpace), "");
             Claims claims = Jwts.parser().setSigningKey(AppEnv.jwtConfigSecretKey).parseClaimsJws(jwt).getBody();
             return Long.parseLong(claims.get("id").toString());

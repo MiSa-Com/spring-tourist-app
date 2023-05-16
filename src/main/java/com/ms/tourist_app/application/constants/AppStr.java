@@ -9,6 +9,7 @@ public class AppStr {
     public static final class Exception {
         public static final String duplicate = "Duplicate";
         public static final String notFound = "Not found";
+        public static final String forbidden = "You are not logged in";
 
         public Exception() {
         }
