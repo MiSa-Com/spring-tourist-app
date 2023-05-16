@@ -1,10 +1,7 @@
 package com.ms.tourist_app.application.service.imp;
 
 import com.ms.tourist_app.application.constants.AppStr;
-import com.ms.tourist_app.application.dai.AddressRepository;
-import com.ms.tourist_app.application.dai.DestinationRepository;
-import com.ms.tourist_app.application.dai.ImageDestinationRepository;
-import com.ms.tourist_app.application.dai.UserRepository;
+import com.ms.tourist_app.application.dai.*;
 import com.ms.tourist_app.application.input.users.AddFavoriteDestinationInput;
 import com.ms.tourist_app.application.input.users.UserDataInput;
 import com.ms.tourist_app.application.input.users.GetListUserInput;
@@ -17,10 +14,7 @@ import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.config.exception.BadRequestException;
 import com.ms.tourist_app.config.exception.ForbiddenException;
 import com.ms.tourist_app.config.exception.NotFoundException;
-import com.ms.tourist_app.domain.entity.Address;
-import com.ms.tourist_app.domain.entity.Destination;
-import com.ms.tourist_app.domain.entity.ImageDestination;
-import com.ms.tourist_app.domain.entity.User;
+import com.ms.tourist_app.domain.entity.*;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -38,15 +32,17 @@ public class UserServiceImp implements UserService {
     private final AddressRepository addressRepository;
     private final DestinationRepository destinationRepository;
 
+    private final RoleRepository roleRepository;
     private final ImageDestinationRepository imageDestinationRepository;
     private final JwtUtil jwtUtil;
     private final DestinationMapper destinationMapper = Mappers.getMapper(DestinationMapper.class);
 
     public UserServiceImp(UserRepository userRepository, AddressRepository addressRepository,
-                          DestinationRepository destinationRepository, ImageDestinationRepository imageDestinationRepository, JwtUtil jwtUtil) {
+                          DestinationRepository destinationRepository, RoleRepository roleRepository, ImageDestinationRepository imageDestinationRepository, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
         this.destinationRepository = destinationRepository;
+        this.roleRepository = roleRepository;
         this.imageDestinationRepository = imageDestinationRepository;
         this.jwtUtil = jwtUtil;
     }
@@ -144,6 +140,10 @@ public class UserServiceImp implements UserService {
         if (!checkUserExists(id)) {
             throw new NotFoundException(AppStr.User.user + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
         }
+        for (Role role : user.get().getRoles()) {
+            role.getUsers().remove(user.get());
+        }
+        user.get().getRoles().clear();
         userRepository.delete(user.get());
         UserDataOutput userDataOutput = userMapper.toUserDataOutput(user.get());
         Address address = user.get().getAddress();
