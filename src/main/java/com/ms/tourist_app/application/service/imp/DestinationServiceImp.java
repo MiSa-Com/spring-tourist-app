@@ -133,7 +133,7 @@ public class DestinationServiceImp implements DestinationService {
             if (i >= input.getPage() * input.getSize() && i < (input.getPage()+1) * input.getSize()) {
                 searchDestinations.add(destinationsInCircle.get(i));
                 LatLng destinationLatLng = new LatLng(destinationsInCircle.get(i).getAddress().getLatitude(), destinationsInCircle.get(i).getAddress().getLongitude());
-                listDistance.add(GoogleMapApi.getFlightDistanceInKm(center, destinationLatLng));
+                 listDistance.add(GoogleMapApi.getFlightDistanceInKm(center, destinationLatLng));
             }
         }
         List<DestinationDataOutput> destinationDataOutputs = new ArrayList<>();
