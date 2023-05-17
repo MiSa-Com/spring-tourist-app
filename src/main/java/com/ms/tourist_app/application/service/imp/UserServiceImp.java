@@ -172,7 +172,9 @@ public class UserServiceImp implements UserService {
         newFavDestination.add(destination.get());
         user.setFavoriteDestination(newFavDestination);
         userRepository.save(user);
+        System.out.println(1);
         DestinationDataOutput output = destinationMapper.toDestinationDataOutput(destination.get());
+        System.out.println(2);
         return output;
     }
 
