@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
+import org.mapstruct.control.MappingControl;
 
 import javax.persistence.*;
 import java.util.List;
@@ -58,6 +59,11 @@ public class Destination extends BaseEntity {
     @OneToMany(mappedBy = AppStr.Destination.tableDestination)
     @JsonIgnore
     private List<CommentDestination> commentDestinations;
+
+    @ManyToMany
+    @JoinTable(name = AppStr.Destination.joinTableDestinationUser)
+    @JsonIgnore
+    private List<User> favoriteUsers;
 
 
 }
