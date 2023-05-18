@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
-import org.mapstruct.control.MappingControl;
 
 import javax.persistence.*;
 import java.util.List;
