@@ -78,7 +78,8 @@ public class User extends BaseEntity {
     @JsonIgnore
     private List<Itinerary> favoriteItinerary;
 
-    @OneToMany(targetEntity = Destination.class)
+    @ManyToMany(mappedBy = AppStr.User.favoriteUser)
+    @JsonIgnore
     private List<Destination> favoriteDestination;
 
     public User(String email, String password, List<Role> roles) {

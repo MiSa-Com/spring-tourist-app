@@ -61,5 +61,10 @@ public class Destination extends BaseEntity {
     @JsonIgnore
     private List<CommentDestination> commentDestinations;
 
+    @ManyToMany
+    @JoinTable(name = AppStr.Destination.joinTableDestinationUser)
+    @JsonIgnore
+    private List<User> favoriteUsers;
+
 
 }

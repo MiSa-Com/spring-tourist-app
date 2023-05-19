@@ -168,6 +168,12 @@ public class UserServiceImp implements UserService {
             DestinationDataOutput output = destinationMapper.toDestinationDataOutput(destination.get());
             return output;
         }
+        List<User> listFavUsers = destination.getFavoriteUsers();
+        List<User> newFavUsers = new ArrayList<>(listFavUsers);
+        newFavUsers.add(user);
+        destination.setFavoriteUsers(newFavUsers);
+        destinationRepository.save(destination);
+
         List<Destination> newFavDestination = new ArrayList<>(favoriteDest);
         newFavDestination.add(destination.get());
         user.setFavoriteDestination(newFavDestination);
@@ -220,6 +226,11 @@ public class UserServiceImp implements UserService {
         if (!listFavDests.contains(destinationToDelete.get())) {
             throw new BadRequestException(AppStr.User.notFoundFavoriteDestination);
         }
+        List<User> listFavUsers = destinationToDelete.getFavoriteUsers();
+        List<User> newFavUsers = new ArrayList<>(listFavUsers);
+        newFavUsers.remove(user);
+        destinationToDelete.setFavoriteUsers(newFavUsers);
+        destinationRepository.save(destinationToDelete);
         List<Destination> newFavDestination = new ArrayList<>(listFavDests);
         newFavDestination.remove(destinationToDelete.get());
         user.get().setFavoriteDestination(newFavDestination);

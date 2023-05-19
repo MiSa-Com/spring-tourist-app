@@ -42,8 +42,10 @@ public class AppStr {
         public static final String telephone = "telephone";
         public static final String email = "email";
         public static final String password = "password";
+        public static final String favoriteUser = "favoriteUsers";
         public static final String joinTableUser = "user";
         public static final String idAddress = "id_address";
+        public static final String idDestination = "id_destination";
         public static final String userFavDestination = "This destination already existed in your list of favorite";
         public static final String notFoundFavoriteDestination = "This destination" + AppStr.Base.whiteSpace + AppStr.Exception.notFound + AppStr.Base.whiteSpace + "in your list of favorite";
     }
@@ -176,6 +178,7 @@ public class AppStr {
         public static final String address = "address";
         public static final String description = "description";
         public static final String tableDestination = "destination";
+        public static final String joinTableDestinationUser = "destination_favorite_users";
         public static final String idAddress = "id_address";
         public static final String slug = "slug";
         public static final String idTypeDestination = "id_type_destination";
