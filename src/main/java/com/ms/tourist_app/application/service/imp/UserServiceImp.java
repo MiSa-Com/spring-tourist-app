@@ -82,7 +82,6 @@ public class UserServiceImp implements UserService {
         List<User> users = new ArrayList<>();
         if(input.getKeyword().trim().isBlank()) {
             users = userRepository.findAll(PageRequest.of(input.getPage(), input.getSize())).getContent();
-            System.out.println(users);
         }
         if(!input.getKeyword().trim().isBlank()){
             users = userRepository.search(input.getKeyword().trim(),PageRequest.of(input.getPage(), input.getSize()));

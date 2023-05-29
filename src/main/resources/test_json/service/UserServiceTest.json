@@ -1,0 +1,15 @@
+[
+  {
+    "testCase": "createUser_Success",
+    "inputData": {
+      "firstName": "firstName",
+      "lastName": "lastName",
+      "dateOfBirth": "2020-01-01",
+      "idAddress": 1,
+      "telephone": "0123",
+      "email": "abc@gmail.com",
+      "password": "123456"
+    },
+    "expectedResult": "2020-01-01"
+  }
+]
