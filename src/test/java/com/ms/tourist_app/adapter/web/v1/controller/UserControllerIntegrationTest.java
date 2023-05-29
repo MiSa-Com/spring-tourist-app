@@ -7,15 +7,13 @@ import com.ms.tourist_app.application.output.users.UserDataOutput;
 import com.ms.tourist_app.application.service.UserService;
 import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.domain.entity.User;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -25,9 +23,8 @@ import java.util.List;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
-public class UserControllerTest {
+public class UserControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -37,12 +34,12 @@ public class UserControllerTest {
     @MockBean
     private UserRepository userRepository;
 
-//    @MockBean
-//    private JwtUtil jwtUtil;
+    @MockBean
+    private JwtUtil jwtUtil;
 
     private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
     }
