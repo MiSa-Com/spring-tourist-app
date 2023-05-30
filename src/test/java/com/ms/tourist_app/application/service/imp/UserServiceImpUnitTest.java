@@ -45,6 +45,14 @@ class UserServiceImpUnitTest {
         userDeserializer.setPathFile("src/main/resources/test_json/service/UserServiceTest.json");
     }
 
+    Object deserializeInputData(JsonNode tree) throws Exception {
+        JsonNode inputDataNode = tree.get("inputData");
+        String inputClassName = inputDataNode.get("class").toString().replaceAll("\"", "");
+        Class inputClass = Class.forName(inputClassName);
+        Object objectInput = userDeserializer.deserialize(inputDataNode, "data", inputClass);
+        return objectInput;
+    }
+
     @TestConfiguration
     static class UserServiceImpTestContextConfiguration {
         @Bean
@@ -70,10 +78,7 @@ class UserServiceImpUnitTest {
         JsonNode jsonNode = userDeserializer.retrieveTree();
 
         // retrieve Nodes of test case
-        JsonNode inputDataNode = jsonNode.get("inputData");
-        String inputClassName = inputDataNode.get("class").toString().replaceAll("\"", "");
-        Class inputClass = Class.forName(inputClassName);
-        Object objectInput = userDeserializer.deserialize(inputDataNode, "data", inputClass);
+        Object objectInput = deserializeInputData(jsonNode);
 
         JsonNode expectedResultNode = jsonNode.get("expectedResult");
         String expectedData = expectedResultNode.get("data").toString().replaceAll("\"", "");
@@ -114,10 +119,7 @@ class UserServiceImpUnitTest {
         JsonNode jsonNode = userDeserializer.retrieveTree();
 
         // retrieve Nodes of test case
-        JsonNode inputDataNode = jsonNode.get("inputData");
-        String inputClassName = inputDataNode.get("class").toString().replaceAll("\"", "");
-        Class inputClass = Class.forName(inputClassName);
-        Object objectInput = userDeserializer.deserialize(inputDataNode, "data", inputClass);
+        Object objectInput = deserializeInputData(jsonNode);
 
         JsonNode expectedResultNode = jsonNode.get("expectedResult");
         String expectedClassName = expectedResultNode.get("class").toString().replaceAll("\"", "");
@@ -138,10 +140,7 @@ class UserServiceImpUnitTest {
         JsonNode jsonNode = userDeserializer.retrieveTree();
 
         // retrieve Nodes of test case
-        JsonNode inputDataNode = jsonNode.get("inputData");
-        String inputClassName = inputDataNode.get("class").toString().replaceAll("\"", "");
-        Class inputClass = Class.forName(inputClassName);
-        Object objectInput = userDeserializer.deserialize(inputDataNode, "data", inputClass);
+        Object objectInput = deserializeInputData(jsonNode);
 
         JsonNode expectedResultNode = jsonNode.get("expectedResult");
         String expectedClassName = expectedResultNode.get("class").toString().replaceAll("\"", "");
