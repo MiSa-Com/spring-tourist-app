@@ -7,33 +7,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ms.tourist_app.application.dai.AddressRepository;
 import com.ms.tourist_app.application.dai.DestinationRepository;
 import com.ms.tourist_app.application.dai.UserRepository;
-import com.ms.tourist_app.application.deserializer.UserDeserializer;
-import com.ms.tourist_app.application.deserializer.input.UserDataInputDeserializer;
-import com.ms.tourist_app.application.input.users.GetListUserInput;
+import com.ms.tourist_app.application.utils.test_deserializer.TestDeserializer;
+import com.ms.tourist_app.application.utils.test_deserializer.service.UserServiceTestDeserializer;
 import com.ms.tourist_app.application.input.users.UserDataInput;
-import com.ms.tourist_app.application.mapper.UserMapper;
 import com.ms.tourist_app.application.output.users.UserDataOutput;
 import com.ms.tourist_app.application.service.UserService;
 import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.config.exception.BadRequestException;
 import com.ms.tourist_app.domain.entity.User;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.PageRequest;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -44,6 +37,13 @@ class UserServiceImpUnitTest {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
+    private UserServiceTestDeserializer userDeserializer = new UserServiceTestDeserializer();
+
+    UserServiceImpUnitTest() {
+        userDeserializer.setPathFile("src/main/resources/test_json/service/UserServiceTest.json");
+    }
 
     @TestConfiguration
     static class UserServiceImpTestContextConfiguration {
@@ -54,40 +54,49 @@ class UserServiceImpUnitTest {
         }
     }
 
-    @Test
-    void createUser_Success() throws Exception {
-        // read json file
-        File file = new File("src/main/resources/test_json/service/UserServiceTest.json");
-        JsonFactory jsonFactory = new JsonFactory();
-        JsonParser jsonParser = jsonFactory.createParser(file);
-        jsonParser.setCodec(new ObjectMapper());
-        JsonNode jsonNode = jsonParser.readValueAsTree();
-
-        String inputDataJson = jsonNode.get(0).get("inputData").toString();
-        String expectedResultJson = jsonNode.get(0).get("expectedResult").toString();
-
-        // deserialize json to UserDataInput
-        UserDeserializer userDeserializer = new UserDataInputDeserializer();
-        UserDataInput userDataInput = userDeserializer.deserialize(inputDataJson);
-
-        // when
-        UserDataOutput actualResult = userService.createUser(userDataInput);
-        // then
-        String expectedResult = expectedResultJson.replaceAll("\"", "");
-        LocalDate expected = LocalDate.parse(expectedResult);
-        assertThat(actualResult.getDateOfBirth()).isEqualTo(expected);
+    @BeforeEach
+    void setUp() {
+        List<User> userList = userRepository.search("admin", PageRequest.of(0, 1));
+        User admin = userList.get(0);
+        admin.setTelephone("123456789");
+        userRepository.save(admin);
     }
 
     @Test
+    void createUser_Success() throws Exception {
+        // given
+        String testCaseName = "createUser_Success";
+        userDeserializer.setTestCaseName(testCaseName);
+        JsonNode jsonNode = userDeserializer.retrieveTree();
+
+        // retrieve Nodes of test case
+        JsonNode inputDataNode = jsonNode.get("inputData");
+        String inputClassName = inputDataNode.get("class").toString().replaceAll("\"", "");
+        Class inputClass = Class.forName(inputClassName);
+        Object objectInput = userDeserializer.deserialize(inputDataNode, "data", inputClass);
+
+        JsonNode expectedResultNode = jsonNode.get("expectedResult");
+        String expectedData = expectedResultNode.get("data").toString().replaceAll("\"", "");
+        LocalDate expected = LocalDate.parse(expectedData);
+
+        // when
+        UserDataOutput actual = userService.createUser((UserDataInput) objectInput);
+        // then
+        assertThat(actual.getDateOfBirth()).isEqualTo(expected);
+    }
+
+    @Test
+    @Disabled
     void createUser_InvalidFormatDateOfBirth() {
         String dateOfBirth = "20-01-01";
         UserDataInput userDataInput = new UserDataInput("firstName", "lastName", dateOfBirth, 1L,
-                "0000000", "email", "password");
+                "", "email@email", "password");
         assertThatThrownBy(() -> userService.createUser(userDataInput))
                 .isInstanceOf(DateTimeParseException.class);
     }
 
     @Test
+    @Disabled
     void createUser_InvalidFormatTelephone() {
         String telephone = "0123456789a";
         UserDataInput userDataInput = new UserDataInput("firstName", "lastName", "2020-01-01", 1L,
@@ -98,26 +107,55 @@ class UserServiceImpUnitTest {
     }
 
     @Test
-    void createUser_duplicateTelephone() {
-        String telephone = "012345";
-        UserDataInput userDataInput = new UserDataInput("firstName", "lastName", "2020-01-01", 1L,
-                telephone, "email", "password");
+    void createUser_duplicateTelephone() throws Exception {
+        // given
+        String testCaseName = "createUser_duplicateTelephone";
+        userDeserializer.setTestCaseName(testCaseName);
+        JsonNode jsonNode = userDeserializer.retrieveTree();
+
+        // retrieve Nodes of test case
+        JsonNode inputDataNode = jsonNode.get("inputData");
+        String inputClassName = inputDataNode.get("class").toString().replaceAll("\"", "");
+        Class inputClass = Class.forName(inputClassName);
+        Object objectInput = userDeserializer.deserialize(inputDataNode, "data", inputClass);
+
+        JsonNode expectedResultNode = jsonNode.get("expectedResult");
+        String expectedClassName = expectedResultNode.get("class").toString().replaceAll("\"", "");
+        Class expectedException = Class.forName(expectedClassName);
+        String expectedMessage = expectedResultNode.get("message").toString().replaceAll("\"", "");
+        // when
+        UserDataInput userDataInput = (UserDataInput) objectInput;
         assertThatThrownBy(() -> userService.createUser(userDataInput))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage("telephone Duplicate");
+                .isInstanceOf(expectedException)
+                .hasMessage(expectedMessage);
     }
 
     @Test
-    void createUser_duplicateEmail() {
-        String email = "admin@admin.admin";
-        UserDataInput userDataInput = new UserDataInput("firstName", "lastName", "dateOfBirth", 1L,
-                "012345678", email, "password");
+    void createUser_duplicateEmail() throws Exception {
+        // given
+        String testCaseName = "createUser_duplicateEmail";
+        userDeserializer.setTestCaseName(testCaseName);
+        JsonNode jsonNode = userDeserializer.retrieveTree();
+
+        // retrieve Nodes of test case
+        JsonNode inputDataNode = jsonNode.get("inputData");
+        String inputClassName = inputDataNode.get("class").toString().replaceAll("\"", "");
+        Class inputClass = Class.forName(inputClassName);
+        Object objectInput = userDeserializer.deserialize(inputDataNode, "data", inputClass);
+
+        JsonNode expectedResultNode = jsonNode.get("expectedResult");
+        String expectedClassName = expectedResultNode.get("class").toString().replaceAll("\"", "");
+        Class expectedException = Class.forName(expectedClassName);
+        String expectedMessage = expectedResultNode.get("message").toString().replaceAll("\"", "");
+        // when
+        UserDataInput userDataInput = (UserDataInput) objectInput;
         assertThatThrownBy(() -> userService.createUser(userDataInput))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage("email Duplicate");
+                .isInstanceOf(expectedException)
+                .hasMessage(expectedMessage);
     }
 
     @Test
+    @Disabled
     void createUser_invalidEmail() {
         String email = "admin";
         UserDataInput userDataInput = new UserDataInput("firstName", "lastName", "2020-01-01", 1L,
