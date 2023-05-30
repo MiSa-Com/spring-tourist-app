@@ -51,7 +51,6 @@ public class UserServiceImp implements UserService {
     private boolean checkUserEmailExists(String email) {
         User user = userRepository.findByEmail(email);
         return user != null;
-
     }
 
     private boolean checkUserTelephoneExists(String telephone) {
@@ -82,9 +81,8 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public List<UserDataOutput> getListUserOutPut(GetListUserInput input) {
-
         List<User> users = new ArrayList<>();
-        if(input.getKeyword().trim().isBlank()){
+        if(input.getKeyword().trim().isBlank()) {
             users = userRepository.findAll(PageRequest.of(input.getPage(), input.getSize())).getContent();
         }
         if(!input.getKeyword().trim().isBlank()){

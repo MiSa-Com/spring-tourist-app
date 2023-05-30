@@ -11,8 +11,8 @@ spring:
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     url: jdbc:sqlserver://${DB_HOST}:${DB_PORT};databaseName=${DB_NAME};encrypt=true;trustServerCertificate=true;
-#    username: sa
-#    password: Abc123!@#
+    #    username: sa
+    #    password: Abc123!@#
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     tomcat:
@@ -47,5 +47,3 @@ logging:
 cloudinary:
   max-file-size: 20MB
   max-image-width: 5000
-
-

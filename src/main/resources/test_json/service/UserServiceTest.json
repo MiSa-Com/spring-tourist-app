@@ -1,0 +1,62 @@
+[
+  {
+    "testCase": "createUser_Success",
+    "inputData": {
+      "class": "com.ms.tourist_app.application.input.users.UserDataInput",
+      "data": {
+        "firstName": "firstName",
+        "lastName": "lastName",
+        "dateOfBirth": "2020-01-01",
+        "idAddress": 1,
+        "telephone": "",
+        "email": "abc@gmail.com",
+        "password": "123456"
+      }
+    },
+    "expectedResult": {
+      "class": "java.time.LocalDate",
+      "data": "2020-01-01",
+      "message": ""
+    }
+  },
+  {
+    "testCase": "createUser_duplicateEmail",
+    "inputData": {
+      "class": "com.ms.tourist_app.application.input.users.UserDataInput",
+      "data": {
+        "firstName": "firstName",
+        "lastName": "lastName",
+        "dateOfBirth": "2020-01-01",
+        "idAddress": 1,
+        "telephone": "000000",
+        "email": "admin@admin.admin",
+        "password": "123456"
+      }
+    },
+    "expectedResult": {
+      "class": "com.ms.tourist_app.config.exception.BadRequestException",
+      "data": "",
+      "message": "email Duplicate"
+    }
+  },
+  {
+    "testCase": "createUser_duplicateTelephone",
+    "inputData": {
+      "class": "com.ms.tourist_app.application.input.users.UserDataInput",
+      "data": {
+        "firstName": "firstName",
+        "lastName": "lastName",
+        "dateOfBirth": "2020-01-01",
+        "idAddress": 1,
+        "telephone": "123456789",
+        "email": "",
+        "password": "12345"
+      }
+    },
+    "expectedResult": {
+      "class": "com.ms.tourist_app.config.exception.BadRequestException",
+      "data": "",
+      "message": "telephone Duplicate"
+    }
+  }
+]
