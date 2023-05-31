@@ -1,18 +1,14 @@
 package com.ms.tourist_app.application.service.imp;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ms.tourist_app.application.dai.AddressRepository;
 import com.ms.tourist_app.application.dai.DestinationRepository;
 import com.ms.tourist_app.application.dai.UserRepository;
-import com.ms.tourist_app.application.utils.test_deserializer.TestDeserializer;
-import com.ms.tourist_app.application.utils.test_deserializer.service.UserServiceTestDeserializer;
 import com.ms.tourist_app.application.input.users.UserDataInput;
 import com.ms.tourist_app.application.output.users.UserDataOutput;
 import com.ms.tourist_app.application.service.UserService;
 import com.ms.tourist_app.application.utils.JwtUtil;
+import com.ms.tourist_app.application.utils.test_deserializer.TestDeserializer;
 import com.ms.tourist_app.config.exception.BadRequestException;
 import com.ms.tourist_app.domain.entity.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +26,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 class UserServiceImpUnitTest {
@@ -39,18 +34,10 @@ class UserServiceImpUnitTest {
     private UserService userService;
     @Autowired
     private UserRepository userRepository;
-    private UserServiceTestDeserializer userDeserializer = new UserServiceTestDeserializer();
+    private TestDeserializer userTestDeserializer = new TestDeserializer();
 
     UserServiceImpUnitTest() {
-        userDeserializer.setPathFile("src/main/resources/test_json/service/UserServiceTest.json");
-    }
-
-    Object deserializeInputData(JsonNode tree) throws Exception {
-        JsonNode inputDataNode = tree.get("inputData");
-        String inputClassName = inputDataNode.get("class").toString().replaceAll("\"", "");
-        Class inputClass = Class.forName(inputClassName);
-        Object objectInput = userDeserializer.deserialize(inputDataNode, "data", inputClass);
-        return objectInput;
+        userTestDeserializer.setPathFile("src/main/resources/test_json/service/UserServiceTest.json");
     }
 
     @TestConfiguration
@@ -74,11 +61,11 @@ class UserServiceImpUnitTest {
     void createUser_Success() throws Exception {
         // given
         String testCaseName = "createUser_Success";
-        userDeserializer.setTestCaseName(testCaseName);
-        JsonNode jsonNode = userDeserializer.retrieveTree();
+        userTestDeserializer.setTestCaseName(testCaseName);
+        JsonNode jsonNode = userTestDeserializer.retrieveTree();
 
         // retrieve Nodes of test case
-        Object objectInput = deserializeInputData(jsonNode);
+        Object objectInput = userTestDeserializer.deserializeInputData(jsonNode);
 
         JsonNode expectedResultNode = jsonNode.get("expectedResult");
         String expectedData = expectedResultNode.get("data").toString().replaceAll("\"", "");
@@ -115,16 +102,14 @@ class UserServiceImpUnitTest {
     void createUser_duplicateTelephone() throws Exception {
         // given
         String testCaseName = "createUser_duplicateTelephone";
-        userDeserializer.setTestCaseName(testCaseName);
-        JsonNode jsonNode = userDeserializer.retrieveTree();
+        userTestDeserializer.setTestCaseName(testCaseName);
+        JsonNode jsonNode = userTestDeserializer.retrieveTree();
 
         // retrieve Nodes of test case
-        Object objectInput = deserializeInputData(jsonNode);
+        Object objectInput = userTestDeserializer.deserializeInputData(jsonNode);
 
-        JsonNode expectedResultNode = jsonNode.get("expectedResult");
-        String expectedClassName = expectedResultNode.get("class").toString().replaceAll("\"", "");
-        Class expectedException = Class.forName(expectedClassName);
-        String expectedMessage = expectedResultNode.get("message").toString().replaceAll("\"", "");
+        Class expectedException = userTestDeserializer.deserializeException(jsonNode);
+        String expectedMessage = userTestDeserializer.getMessageException(jsonNode);
         // when
         UserDataInput userDataInput = (UserDataInput) objectInput;
         assertThatThrownBy(() -> userService.createUser(userDataInput))
@@ -136,16 +121,14 @@ class UserServiceImpUnitTest {
     void createUser_duplicateEmail() throws Exception {
         // given
         String testCaseName = "createUser_duplicateEmail";
-        userDeserializer.setTestCaseName(testCaseName);
-        JsonNode jsonNode = userDeserializer.retrieveTree();
+        userTestDeserializer.setTestCaseName(testCaseName);
+        JsonNode jsonNode = userTestDeserializer.retrieveTree();
 
         // retrieve Nodes of test case
-        Object objectInput = deserializeInputData(jsonNode);
+        Object objectInput = userTestDeserializer.deserializeInputData(jsonNode);
 
-        JsonNode expectedResultNode = jsonNode.get("expectedResult");
-        String expectedClassName = expectedResultNode.get("class").toString().replaceAll("\"", "");
-        Class expectedException = Class.forName(expectedClassName);
-        String expectedMessage = expectedResultNode.get("message").toString().replaceAll("\"", "");
+        Class expectedException = userTestDeserializer.deserializeException(jsonNode);
+        String expectedMessage = userTestDeserializer.getMessageException(jsonNode);
         // when
         UserDataInput userDataInput = (UserDataInput) objectInput;
         assertThatThrownBy(() -> userService.createUser(userDataInput))
