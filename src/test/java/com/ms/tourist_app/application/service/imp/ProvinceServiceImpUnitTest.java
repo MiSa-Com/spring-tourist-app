@@ -9,6 +9,7 @@ import com.ms.tourist_app.application.mapper.ProvinceMapper;
 import com.ms.tourist_app.application.output.provinces.ProvinceDataOutput;
 import com.ms.tourist_app.application.service.ProvinceService;
 import com.ms.tourist_app.application.utils.JwtUtil;
+import com.ms.tourist_app.config.exception.BadRequestException;
 import com.ms.tourist_app.domain.entity.Province;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,9 +25,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProvinceServiceImpUnitTest {
@@ -77,5 +79,20 @@ class ProvinceServiceImpUnitTest {
         Province province = provinceArgumentCaptor.getValue();
         ProvinceDataOutput expected = provinceMapper.toProvinceDataOutput(province);
         assertThat(actual.getId()).isEqualTo(expected.getId());
+    }
+
+    @Test
+    void cannotAddProvince() {
+        // given
+        ProvinceDataInput input = new ProvinceDataInput("Hà Nội");
+        given(provinceRepository.findByNameContainingIgnoreCase(input.getName())).willReturn(new Province());
+        // when
+
+        // then
+        assertThatThrownBy(() -> provinceService.createProvince(input))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("province Duplicate");
+
+        verify(provinceRepository, never()).save(any());
     }
 }
