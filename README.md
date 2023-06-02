@@ -1,51 +1,77 @@
-<h1>MiSa-Tech: TouristApp</h1>
+# MiSa-Tech: TouristApp
 
-<h2>I. Các package</h2>
-<h3>1. adapter: cho web, app...</h3>
-<p>- Chứa các base và các version của ứng dụng</p>
-<p>1.1: base: chứa các annotation, class, interface base cho toàn bộ version</p>
-<p>1.2: v1: Chứa code điều kiển hoặc đầu vào của version 1, có thể phát triển thêm nhiều version</p>
-<p>1.3: transfer -> chứa các parameter, response</p>
+This is a simple app that allows you to search for places of interest in a city. It uses the Google Places API to search for places and the Google Maps API to display the results on a map.
 
-<h3>2. application</h3>
-<p>Chứa các class, interface như: annotation, constants, repository, input, output, service, mapper, util...</p>
+## Getting Started
 
-<h3>3. config</h3>
-<p>Chứa các config của ứng dụng, exception...</p>
+### Prerequisites
+Make sure you have the following installed:
+* [JDK 11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+* [Maven](https://maven.apache.org/download.cgi)
+* [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+* Recommended: [IntelliJ IDEA](https://www.jetbrains.com/idea/download/#section=windows)
+* Recommended: [Postman](https://www.postman.com/downloads/)
+* Recommended: [DBeaver](https://dbeaver.io/download/)
 
-<h3>4. domain</h3>
-<p>Chứa các class dto, entity, object trong entity, dto...</p>
+### Installation
+1. Clone the repo
+```sh
+git clone https://github.com/MiSa-Tech/spring-tourist-app.git
+```
+2. Open the project in IntelliJ IDEA
+3. Open the Maven tool window (View -> Tool Windows -> Maven)
+4. Click the refresh button to load the project's dependencies
+5. Open the Database tool window (View -> Tool Windows -> Database)
+6. Click the plus button and select Data Source -> SQL Server
+7. If you don't have the SQL Server driver installed, click the download link and follow the instructions
+8. Enter the following details:
+    * Host: localhost
+    * Port: 1433
+    * Database: TouristApp
+    * User: sa
+    * Password: Password123
+9. Click Test Connection to make sure the connection is working
+10. Click Apply and OK
+11. Open the Maven tool window again and run the following commands:
+    * `mvn clean install`
+    * `mvn spring-boot:run`
+    * `mvn spring-boot:run -Dspring-boot.run.profiles=dev,prod,test,local,dev-remote`
+    * `mvn spring-boot:run -Dspring-boot.run.profiles=dev,prod,test,local,dev-remote -Dspring-boot.run.arguments=--server.port=8081`
+12. Open Postman and import the collection from the `postman` folder
+13. Run the `Create User` request
+14. Run the `Login` request
+15. Copy the token from the response
+16. Click the `Authorization` tab
+17. Select `Bearer Token` from the Type dropdown
+18. Paste the token into the Token field
+19. Run the `Get Places` request
 
-<h2>II. Resources</h2>
-<h3>1. config</h3>
-<p>- Config connect database...</p>
-<p>- Config mybatis</p>
+## API Documentation
+The API documentation is available at http://localhost:8080/swagger-ui.html
 
-<h3>2. i18n</h3>
-<p>- Chứa file message.properties config nội dung message của cả ứng dụng</p>
+## Usage
+The app has main features:
+* Search for places of interest in a city
+* Save places to a list
+* View saved places on a map
+* Delete saved places
+* View the weather forecast for a city
+* View the weather forecast for a saved place
+* View the weather forecast for a city on a map
+* View the weather forecast for a saved place on a map
+* View the weather forecast for a city on a map for a specific date
+* View the weather forecast for a saved place on a map for a specific date
+* View the hotels in a city
+* View the restaurants in a city
+* Recommend a hotel in a city
+* Recommend a restaurant in a city
+* Recommend an itinerary for a city
+* Recommend an itinerary for a saved place
 
-<h3>3. static</h3>
-<p>- Chứa các file tĩnh: simple data, css, js</p>
+## Contact
+* [MiSa-Tech](https://github.com/MiSa-Tech)
+* [Minh NGO](mailto:ngocminhk62@gmail.com)
+* [Ngoc Sang NGO](mailto:ngocsangair01@gmail.com)
 
-<h3>4. templates</h3>
-<p>- Chứa các file code như html....</p>
-
-<h3>5. repository (nếu có)</h3>
-<p>- Dùng để chứa các file mapper với mybatis...</p>
-
-<h2>III. Luồng hoạt động</h2>
-<p>Bước 1: Định nghĩa entity, liên kết bảng...</p>
-<p>Bước 2: Tạo các repository cho các entity</p>
-<p>Bước 3: Tạo parameter, body cho từng endpoint</p>
-<p>Bước 4: Tạo class input cho endpoint, được map từ parameter</p>
-<p>Bước 5: Tạo class output cho endpoint, hứng output của service</p>
-<p>Bước 6: Tạo class service, xử lý logic tại đây. Đầu vào là class input, đầu ra là class output</p>
-<p>Bước 7. Tạo class controller, nhận parameter, body... Biến đổi parameter -> input => service => output -> return 
-output</p>
-
-<h2>IV. Lưu ý để dễ bảo trì</h2>
-<p>- Tạo class constant định nghĩa các quá trị String, number để tránh hardcode</p>
-<p>- Các message định nghĩa trong file application để tránh phải sửa nhiều chỗ</p>
-<p>- Tạo các annotation validate param</p>
-<p>- Đoạn nào xử lý logic nhiều class dùng lại thì cho vào util</p>
-<p>- Dùng map struct để map các class</p>
+## Acknowledgements
+* [GitHub Pages](https://pages.github.com)

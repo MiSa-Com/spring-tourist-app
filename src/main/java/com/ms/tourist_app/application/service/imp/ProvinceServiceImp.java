@@ -27,14 +27,14 @@ import java.util.Optional;
 @Service
 public class ProvinceServiceImp implements ProvinceService {
     private final Slugify slugify;
-
     private final ProvinceMapper provinceMapper = Mappers.getMapper(ProvinceMapper.class);
     private final ProvinceRepository provinceRepository;
     private final AddressRepository addressRepository;
     private final JwtUtil jwtUtil;
 
-    public ProvinceServiceImp(Slugify slugify, ProvinceRepository provinceRepository, AddressRepository addressRepository, JwtUtil jwtUtil) {
-        this.slugify = slugify.withTransliterator(true);
+    public ProvinceServiceImp(ProvinceRepository provinceRepository, AddressRepository addressRepository, JwtUtil jwtUtil) {
+        this.slugify = new Slugify();
+        slugify.withTransliterator(true);
         this.provinceRepository = provinceRepository;
         this.addressRepository = addressRepository;
         this.jwtUtil = jwtUtil;
@@ -61,7 +61,6 @@ public class ProvinceServiceImp implements ProvinceService {
     public List<ProvinceDataOutput> getListProvinceDataOutput(GetListProvinceDataInput getListProvinceDataInput) {
         List<ProvinceDataOutput> provinceDataOutputs = new ArrayList<>();
         List<Province> provinces = provinceRepository.findAllByNameContainingIgnoreCase(getListProvinceDataInput.getKeyword(), PageRequest.of(getListProvinceDataInput.getPage(), getListProvinceDataInput.getSize()));
-        System.out.println(provinces.size());
         for (Province province : provinces) {
             ProvinceDataOutput provinceDataOutput = provinceMapper.toProvinceDataOutput(province);
             provinceDataOutputs.add(provinceDataOutput);
