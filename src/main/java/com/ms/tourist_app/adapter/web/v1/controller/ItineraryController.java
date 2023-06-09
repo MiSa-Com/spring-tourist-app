@@ -35,10 +35,9 @@ public class ItineraryController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    @PostMapping(UrlConst.Itinerary.getByIdUser)
-    public ResponseEntity<?> saveItinerary(@Valid @RequestBody ItineraryDataParameter parameter,
-                                        @PathVariable(value = UrlConst.id) Long idUser){
-        ItineraryDataInput itineraryDataInput = itineraryService.toItineraryDataInput(parameter, idUser);
+    @PostMapping(UrlConst.Itinerary.itinerary)
+    public ResponseEntity<?> saveItinerary(@Valid @RequestBody ItineraryDataParameter parameter){
+        ItineraryDataInput itineraryDataInput = itineraryService.toItineraryDataInput(parameter);
         ItineraryDataOutput itineraryDataOutput = itineraryService.saveItinerary(itineraryDataInput);
         return ResponseUtil.restSuccess(itineraryDataOutput);
     }
