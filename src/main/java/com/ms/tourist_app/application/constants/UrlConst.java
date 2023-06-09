@@ -32,9 +32,8 @@ public class UrlConst {
     }
     public static final class Itinerary {
         public static final String itinerary = "/itineraries";
-        public static final String getByIdUser = itinerary + idLink;
-        public static final String bestItinerary = "/best-itinerary";
-        public static final String recommendItinerary = "/recommend-itinerary";
+        public static final String bestItinerary = itinerary + "/best-itinerary";
+        public static final String recommendItinerary = itinerary + "/recommend-itinerary";
     }
     public static final class DestinationType{
         public static final String destinationType = "/destination-types";

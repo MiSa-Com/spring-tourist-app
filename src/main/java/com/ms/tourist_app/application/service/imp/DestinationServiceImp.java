@@ -21,7 +21,10 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -222,7 +225,7 @@ public class DestinationServiceImp implements DestinationService {
             destination.setCreateBy(jwtUtil.getUserIdFromToken());
         }
         List<ImageDestination> imageDestinations = new ArrayList<>();
-        if (input.getImages().size() > 1) {
+        if (input.getImages().size() > 0) {
             List<String> links = uploadFile.getMultiUrl(input.getImages());
             for (String link : links) {
                 ImageDestination imageDestination = new ImageDestination();
@@ -247,26 +250,31 @@ public class DestinationServiceImp implements DestinationService {
     }
 
     @Override
-    public DestinationDataOutput editDestination(DestinationDataInput input, Long id) {
-        Destination destination = destinationMapper.toDestination(input, id);
-        Optional<DestinationType> destinationType = destinationTypeRepository.findById(input.getIdDestinationType());
-        if (destinationType.isEmpty()) {
+    public DestinationDataOutput editDestination(Long id, DestinationDataInput input) {
+        Optional<Destination> optionalDestination = destinationRepository.findById(id);
+        if (optionalDestination.isEmpty()) {
+            throw new NotFoundException(AppStr.Destination.tableDestination + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
+        }
+        Optional<DestinationType> optionalDestinationType = destinationTypeRepository.findById(input.getIdDestinationType());
+        if (optionalDestinationType.isEmpty()) {
             throw new NotFoundException(AppStr.DestinationType.destinationType + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
         }
-        Optional<Address> address = addressRepository.findById(input.getIdAddress());
-        if (address.isEmpty()) {
+        Optional<Address> optionalAddress = addressRepository.findById(input.getIdAddress());
+        if (optionalAddress.isEmpty()) {
             throw new NotFoundException(AppStr.Address.address + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
         }
-        destination.setDestinationType(destinationType.get());
-        destination.setAddress(address.get());
-        destination.setSlug(slugify.slugify(input.getName()));
-        destination.setSlugWithSpace(Convert.withSpace(slugify.slugify(input.getName())));
-        destination.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(input.getName())));
-        if(jwtUtil.getUserIdFromToken()!=null){
-            destination.setCreateBy(jwtUtil.getUserIdFromToken());
-        }
+        Destination destination = optionalDestination.get();
+        DestinationType destinationType = optionalDestinationType.get();
+        Address address = optionalAddress.get();
+        destination.setName(input.getName());
+        destination.setDescription(input.getDescription());
+        destination.setDestinationType(destinationType);
+        destination.setAddress(address);
+        destination.setUpdateBy(jwtUtil.getUserIdFromToken());
+        LocalDateTime localDateTime = LocalDateTime.now();
+        destination.setUpdateAt(localDateTime);
         List<ImageDestination> imageDestinations = new ArrayList<>();
-        if (input.getImages().size() > 1) {
+        if (input.getImages().size() > 0) {
             List<String> links = uploadFile.getMultiUrl(input.getImages());
             for (String link : links) {
                 ImageDestination imageDestination = new ImageDestination();

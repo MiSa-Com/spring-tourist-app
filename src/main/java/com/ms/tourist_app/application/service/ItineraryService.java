@@ -14,6 +14,6 @@ public interface ItineraryService {
     FindBestItineraryFromHotelOutput findBestItineraryFromHotel(FindBestItineraryFromHotelInput findBestItineraryFromHotelInput);
     ItineraryDataOutput saveItinerary(ItineraryDataInput itineraryDataInput);
     FindBestItineraryFromHotelInput createItineraryInput(FindBestItineraryFromHotelParameter parameter);
-    ItineraryDataInput toItineraryDataInput(ItineraryDataParameter parameter, Long idUser);
+    ItineraryDataInput toItineraryDataInput(ItineraryDataParameter parameter);
     RecommendItineraryOutput recommendItinerary(GetListDestinationCenterRadiusInput input, String travelMode);
 }

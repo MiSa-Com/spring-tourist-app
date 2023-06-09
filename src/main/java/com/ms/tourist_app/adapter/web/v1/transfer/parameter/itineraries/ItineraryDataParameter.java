@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItineraryDataParameter {
+    private Long idUser;
     private Long idHotel;
     private List<Long> listIdDestination;
     private List<Double> listTime;

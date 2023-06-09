@@ -255,7 +255,7 @@ public class ItineraryServiceImp implements ItineraryService {
     }
 
     @Override
-    public ItineraryDataInput toItineraryDataInput(ItineraryDataParameter parameter, Long idUser) {
+    public ItineraryDataInput toItineraryDataInput(ItineraryDataParameter parameter) {
         String itinerary = "Hotel " + parameter.getIdHotel() + " - " + parameter.getListTime().get(0) + " - " +
                                     parameter.getListDistance().get(0) + " | ";
         for (int i = 0 ; i < parameter.getListIdDestination().size() ; i++) {
@@ -263,6 +263,7 @@ public class ItineraryServiceImp implements ItineraryService {
                             " - " + parameter.getListDistance().get(i+1) + " | ");
         }
         ItineraryDataInput itineraryDataInput = new ItineraryDataInput();
+        Long idUser = parameter.getIdUser();
         itineraryDataInput.setIdUser(idUser);
         itineraryDataInput.setItinerary(itinerary);
         String travelMode = parameter.getTravelMode();

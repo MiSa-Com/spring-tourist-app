@@ -15,7 +15,7 @@ public interface DestinationService {
     List<DestinationDataOutput> getListDestinationByKeyword(GetListDestinationByKeywordInput input);
     List<DestinationDataOutput> getListDestinationByCreateBy(Long id);
     DestinationDataOutput createDestination(DestinationDataInput input);
-    DestinationDataOutput editDestination(DestinationDataInput input,Long id);
+    DestinationDataOutput editDestination(Long id, DestinationDataInput input);
     DestinationDataOutput deleteDestination(Long id);
     CommentDestinationDataOutput createComment(Long idDestination, CommentDestinationDataInput input);
     CommentDestinationDataOutput editComment(CommentDestinationId commentDestinationId,CommentDestinationDataInput input);
