@@ -14,7 +14,7 @@ public interface DestinationService {
     GetListDestinationCenterRadiusOutput getListDestinationCenterRadius(GetListDestinationCenterRadiusInput input);
     List<DestinationDataOutput> getListDestinationByKeyword(GetListDestinationByKeywordInput input);
     DestinationDataOutput createDestination(DestinationDataInput input);
-    DestinationDataInput editDestination(DestinationDataInput input,Long id);
+    DestinationDataOutput editDestination(Long id, DestinationDataInput input);
     DestinationDataOutput deleteDestination(Long id);
     CommentDestinationDataOutput createComment(Long idDestination, CommentDestinationDataInput input);
     CommentDestinationDataOutput editComment(CommentDestinationId commentDestinationId,CommentDestinationDataInput input);

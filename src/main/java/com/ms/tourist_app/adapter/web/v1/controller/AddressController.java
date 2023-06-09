@@ -50,7 +50,7 @@ public class AddressController {
     @PutMapping(UrlConst.Address.getAddressId)
     public ResponseEntity<?> editAddress(@PathVariable(UrlConst.id)Long id, @Valid @RequestBody AddressDataParameter parameter){
         AddressDataInput addressDataInput = addressMapper.createAddressInput(parameter);
-        AddressDataOutput addressDataOutput = addressService.editAddress(id,addressDataInput);
+        AddressDataOutput addressDataOutput = addressService.editAddress(id, addressDataInput);
         return ResponseUtil.restSuccess(addressDataOutput);
     }
 

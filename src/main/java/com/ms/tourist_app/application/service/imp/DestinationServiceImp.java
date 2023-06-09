@@ -21,7 +21,10 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -195,7 +198,7 @@ public class DestinationServiceImp implements DestinationService {
         destination.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(input.getName())));
         destination.setCreateBy(jwtUtil.getUserIdFromToken());
         List<ImageDestination> imageDestinations = new ArrayList<>();
-        if (input.getImages().size() > 1) {
+        if (input.getImages().size() > 0) {
             List<String> links = uploadFile.getMultiUrl(input.getImages());
             for (String link : links) {
                 ImageDestination imageDestination = new ImageDestination();
@@ -220,8 +223,52 @@ public class DestinationServiceImp implements DestinationService {
     }
 
     @Override
-    public DestinationDataInput editDestination(DestinationDataInput input, Long id) {
-        return null;
+    public DestinationDataOutput editDestination(Long id, DestinationDataInput input) {
+        Optional<Destination> optionalDestination = destinationRepository.findById(id);
+        if (optionalDestination.isEmpty()) {
+            throw new NotFoundException(AppStr.Destination.tableDestination + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
+        }
+        Optional<DestinationType> optionalDestinationType = destinationTypeRepository.findById(input.getIdDestinationType());
+        if (optionalDestinationType.isEmpty()) {
+            throw new NotFoundException(AppStr.DestinationType.destinationType + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
+        }
+        Optional<Address> optionalAddress = addressRepository.findById(input.getIdAddress());
+        if (optionalAddress.isEmpty()) {
+            throw new NotFoundException(AppStr.Address.address + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
+        }
+        Destination destination = optionalDestination.get();
+        DestinationType destinationType = optionalDestinationType.get();
+        Address address = optionalAddress.get();
+        destination.setName(input.getName());
+        destination.setDescription(input.getDescription());
+        destination.setDestinationType(destinationType);
+        destination.setAddress(address);
+        destination.setUpdateBy(jwtUtil.getUserIdFromToken());
+        LocalDateTime localDateTime = LocalDateTime.now();
+        destination.setUpdateAt(localDateTime);
+        List<ImageDestination> imageDestinations = new ArrayList<>();
+        if (input.getImages().size() > 0) {
+            List<String> links = uploadFile.getMultiUrl(input.getImages());
+            for (String link : links) {
+                ImageDestination imageDestination = new ImageDestination();
+                imageDestination.setLink(link);
+                imageDestination.setDestination(destination);
+                imageDestinations.add(imageDestination);
+            }
+        }
+        destination.setImageDestinations(imageDestinations);
+        destinationRepository.save(destination);
+        imageDestinationRepository.saveAll(imageDestinations);
+        DestinationDataOutput output = destinationMapper.toDestinationDataOutput(destination);
+        output.setDestinationType(destination.getDestinationType());
+        output.setAddress(destination.getAddress());
+        List<String> linkImageDestination = new ArrayList<>();
+        List<ImageDestination> imageDestinationList = imageDestinationRepository.findAllByDestination(destination);
+        for (ImageDestination imageDestination : imageDestinationList) {
+            linkImageDestination.add(imageDestination.getLink());
+        }
+        output.setImages(linkImageDestination);
+        return output;
     }
 
     @Override

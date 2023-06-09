@@ -15,10 +15,7 @@ import com.ms.tourist_app.domain.entity.id.CommentDestinationId;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -46,6 +43,19 @@ public class DestinationController {
     public ResponseEntity<?> viewDestinationDetail(@PathVariable("id") Long idDestination){
         DestinationDataOutput destinationDataOutput = destinationService.getDestinationDetail(idDestination);
         return ResponseUtil.restSuccess(destinationDataOutput);
+    }
+
+    @PutMapping(UrlConst.Destination.getDestinationId)
+    public ResponseEntity<?> editDestination(@PathVariable("id") Long idDestination, @Valid DestinationDataParameter parameter){
+        DestinationDataInput dataInput = destinationMapper.createDestinationInput(parameter);
+        DestinationDataOutput dataOutput = destinationService.editDestination(idDestination, dataInput);
+        return ResponseUtil.restSuccess(dataOutput);
+    }
+
+    @DeleteMapping(UrlConst.Destination.getDestinationId)
+    public ResponseEntity<?> deleteDestination(@PathVariable("id") Long idDestination){
+        destinationService.deleteDestination(idDestination);
+        return ResponseUtil.restSuccess("Delete Destination Success");
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
