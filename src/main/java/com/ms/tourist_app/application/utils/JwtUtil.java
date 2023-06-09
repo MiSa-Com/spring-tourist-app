@@ -51,9 +51,13 @@ public class JwtUtil {
     }
 
     public Long getUserIdFromToken() {
-        String jwt = httpServletRequest.getHeader(AppStr.Auth.authorization).replace(AppStr.Auth.bearer.concat(AppStr.Base.whiteSpace), "");
-        Claims claims = Jwts.parser().setSigningKey(AppEnv.jwtConfigSecretKey).parseClaimsJws(jwt).getBody();
-        return Long.parseLong(claims.get("id").toString());
+        if (httpServletRequest.getHeader(AppStr.Auth.authorization)!=null&&httpServletRequest.getHeader(AppStr.Auth.authorization).replace(AppStr.Auth.bearer.concat(AppStr.Base.whiteSpace), "").length() > 6) {
+            String jwt = httpServletRequest.getHeader(AppStr.Auth.authorization).replace(AppStr.Auth.bearer.concat(AppStr.Base.whiteSpace), "");
+            Claims claims = Jwts.parser().setSigningKey(AppEnv.jwtConfigSecretKey).parseClaimsJws(jwt).getBody();
+            return Long.parseLong(claims.get("id").toString());
+        } else {
+            return null;
+        }
     }
 
     public String generateToken(UserDetails userDetails) {
@@ -62,10 +66,6 @@ public class JwtUtil {
         User user = userRepository.findByEmail(userDetails.getUsername());
         claim.put(AppStr.AuthorityConstant.claimUUID, userDetails.getUsername());
         claim.put(AppStr.AuthorityConstant.claimId, user.getId());
-        return Jwts.builder().setSubject(userDetails.getUsername())
-                .setClaims(claim)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TIME_EXPIRATION))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+        return Jwts.builder().setSubject(userDetails.getUsername()).setClaims(claim).setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(new Date(System.currentTimeMillis() + TIME_EXPIRATION)).signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 }

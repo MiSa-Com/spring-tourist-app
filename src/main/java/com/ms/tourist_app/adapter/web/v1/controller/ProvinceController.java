@@ -39,7 +39,6 @@ public class ProvinceController {
         return ResponseUtil.restSuccess(provinceDataOutput);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping(UrlConst.Province.province)
     public ResponseEntity<?> getListProvince(@Valid GetListProvinceDataParameter parameter){
         GetListProvinceDataInput dataInput = new GetListProvinceDataInput(parameter.getKeyword(),parameter.getPage(),parameter.getSize());
@@ -61,7 +60,6 @@ public class ProvinceController {
         ProvinceDataOutput provinceDataOutput = provinceService.deleteProvince(id);
         return ResponseUtil.restSuccess(provinceDataOutput);
     }
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping(UrlConst.Province.provinceLtLng)
     public ResponseEntity<?> getProvinceByLatLng(@Valid GetProvinceByCoordinateDataParameter parameter){
         GetProvinceByCoordinateDataInput input = new GetProvinceByCoordinateDataInput(parameter.getLon(), parameter.getLat());

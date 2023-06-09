@@ -30,7 +30,6 @@ public class AddressController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping(UrlConst.Address.address)
     public ResponseEntity<?> createAddress(@Valid @RequestBody AddressDataParameter parameter){
         AddressDataInput addressDataInput = addressMapper.createAddressInput(parameter);
@@ -38,7 +37,6 @@ public class AddressController {
         return ResponseUtil.restSuccess(addressDataOutput);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping(UrlConst.Address.address)
     public ResponseEntity<?> getListAddress(@Valid GetListAddressParameter parameter){
         GetListAddressInput getListAddressInput = new GetListAddressInput(parameter.getPage(), parameter.getSize(), parameter.getIdProvince(), parameter.getKeyword());
@@ -46,7 +44,6 @@ public class AddressController {
         return ResponseUtil.restSuccess(addressDataOutput);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping(UrlConst.Address.getAddressId)
     public ResponseEntity<?> editAddress(@PathVariable(UrlConst.id)Long id, @Valid @RequestBody AddressDataParameter parameter){
         AddressDataInput addressDataInput = addressMapper.createAddressInput(parameter);
@@ -54,14 +51,12 @@ public class AddressController {
         return ResponseUtil.restSuccess(addressDataOutput);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping(UrlConst.Address.getAddressId)
     public ResponseEntity<?> getAddressData(@PathVariable(UrlConst.id)Long id){
         AddressDataOutput addressDataOutput = addressService.viewDataAddress(id);
         return ResponseUtil.restSuccess(addressDataOutput);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @DeleteMapping(UrlConst.Address.getAddressId)
     public ResponseEntity<?> deleteAddress(@PathVariable(UrlConst.id)Long id){
         AddressDataOutput addressDataOutput = addressService.deleteAddress(id);

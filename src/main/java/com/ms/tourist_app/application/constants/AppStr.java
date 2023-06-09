@@ -9,6 +9,7 @@ public class AppStr {
     public static final class Exception {
         public static final String duplicate = "Duplicate";
         public static final String notFound = "Not found";
+        public static final String forbidden = "You are not logged in";
 
         public Exception() {
         }
@@ -129,6 +130,7 @@ public class AppStr {
         public static final String link = "link";
         public static final String idUser = "id_user";
         public static final String idDestination = "id_destination";
+        public static final String idCommentDestination = "id_comment_destination";
     }
 
     public static final class ImageCommentHotel {
@@ -231,6 +233,7 @@ public class AppStr {
         public static final String commentDestination = "commentDestination";
         public static final String content = "content";
         public static final String rating = "rating";
+        public static final String idCommentDestination = "id";
     }
 
     public static final class CommentHotel {

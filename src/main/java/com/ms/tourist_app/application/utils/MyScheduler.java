@@ -15,12 +15,12 @@ public class MyScheduler {
         this.weatherService = weatherService;
     }
 
-    @Scheduled(cron = "0 0 0,6,12,18,22 * * *")
+    @Scheduled(cron = "0 0 0,3,6,9,12,15,18,21 * * *")
     public void runJobAt6() throws IOException {
         weatherService.chargeCurrentWeatherIntoDatabase();
     }
 
-    @Scheduled(cron = "0 10 0,6,12,18,22 * * *")
+    @Scheduled(cron = "0 10 0,3,6,9,12,15,18,21 * * *")
     public void runJob() throws IOException {
         weatherService.chargeWeatherForeCastIntoDatabase();
     }
