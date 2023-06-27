@@ -183,19 +183,6 @@ public class AddressServiceImp implements AddressService {
         if (address.isEmpty()) {
             throw new NotFoundException(AppStr.Address.address + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
         }
-        //Sửa user khi delete address
-        List<User> users = userRepository.findAllByAddress(address.get());
-        for (User u :
-                users) {
-            UserDataInput userDataInput = new UserDataInput(u.getFirstName(), u.getLastName(), u.getDateOfBirth().toString(), null, u.getTelephone(), u.getEmail(), u.getPassword());
-            userService.editUser(u.getId(), userDataInput);
-        }
-        List<Destination> destinations = destinationRepository.findAllByAddress(address.get());
-        for (Destination d :
-                destinations) {
-            d.setAddress(null);
-        }
-        //=======
         addressRepository.delete(address.get());
         AddressDataOutput addressDataOutput = addressMapper.toAddressDataOutput(address.get());
         return addressDataOutput;
