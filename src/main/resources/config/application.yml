@@ -1,4 +1,7 @@
 spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/changelog-master.xml
   jackson:
     time-zone: GMT+7
   servlet:

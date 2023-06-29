@@ -1,9 +1,7 @@
 package com.ms.tourist_app.application.service.imp;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.ms.tourist_app.application.dai.AddressRepository;
-import com.ms.tourist_app.application.dai.DestinationRepository;
-import com.ms.tourist_app.application.dai.UserRepository;
+import com.ms.tourist_app.application.dai.*;
 import com.ms.tourist_app.application.input.users.UserDataInput;
 import com.ms.tourist_app.application.output.users.UserDataOutput;
 import com.ms.tourist_app.application.service.UserService;
@@ -44,8 +42,9 @@ class UserServiceImpUnitTest {
     static class UserServiceImpTestContextConfiguration {
         @Bean
         public UserService userService(UserRepository userRepository, AddressRepository addressRepository,
-                                       DestinationRepository destinationRepository, JwtUtil jwtUtil) {
-            return new UserServiceImp(userRepository, addressRepository, destinationRepository, jwtUtil);
+                                       DestinationRepository destinationRepository,
+                                       ImageDestinationRepository imageDestinationRepository, JwtUtil jwtUtil) {
+            return new UserServiceImp(userRepository, addressRepository, destinationRepository, imageDestinationRepository, jwtUtil);
         }
     }
 

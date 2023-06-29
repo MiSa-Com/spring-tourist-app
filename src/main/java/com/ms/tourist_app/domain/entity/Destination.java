@@ -9,7 +9,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.List;
@@ -42,6 +45,7 @@ public class Destination extends BaseEntity {
     @Length(max = 200000)
     private String description;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     @JoinColumn(name = AppStr.Destination.idTypeDestination)
     @JsonIgnore
@@ -65,6 +69,4 @@ public class Destination extends BaseEntity {
     @JoinTable(name = AppStr.Destination.joinTableDestinationUser)
     @JsonIgnore
     private List<User> favoriteUsers;
-
-
 }

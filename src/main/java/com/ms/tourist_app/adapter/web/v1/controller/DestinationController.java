@@ -43,7 +43,7 @@ public class DestinationController {
     @PutMapping(UrlConst.Destination.getDestinationId)
     public ResponseEntity<?> editDestination(@PathVariable(UrlConst.id) Long id, @Valid DestinationDataParameter parameter) {
         DestinationDataInput dataInput = destinationMapper.createDestinationInput(parameter);
-        DestinationDataOutput dataOutput = destinationService.editDestination(dataInput, id);
+        DestinationDataOutput dataOutput = destinationService.editDestination(id, dataInput);
         return ResponseUtil.restSuccess(dataOutput);
     }
 
@@ -59,14 +59,6 @@ public class DestinationController {
     public ResponseEntity<?> viewDestinationDetail(@PathVariable("id") Long idDestination) {
         DestinationDataOutput destinationDataOutput = destinationService.getDestinationDetail(idDestination);
         return ResponseUtil.restSuccess(destinationDataOutput);
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    @PutMapping(UrlConst.Destination.getDestinationId)
-    public ResponseEntity<?> editDestination(@PathVariable("id") Long idDestination, @Valid DestinationDataParameter parameter){
-        DestinationDataInput dataInput = destinationMapper.createDestinationInput(parameter);
-        DestinationDataOutput dataOutput = destinationService.editDestination(idDestination, dataInput);
-        return ResponseUtil.restSuccess(dataOutput);
     }
   
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
