@@ -5,9 +5,15 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="1" author="Dickson the developer">
-        alter table drop constraint
-        <dropForeignKeyConstraint baseTableName="user"
-                                  constraintName="fk_user_role"/>
+    <changeSet id="1" author="Minh">
+        <dropForeignKeyConstraint baseTableName="destination" constraintName="FK_destination_address" />
+        <addForeignKeyConstraint baseTableName="destination"
+                                baseColumnNames="id_address"
+                                referencedTableName="addresses"
+                                referencedColumnNames="id" constraintName="FK_destination_address"
+                                onDelete="SET NULL" />
+        <dropForeignKeyConstraint baseTableName="users" constraintName="FK_user_address" />
+        <addForeignKeyConstraint baseTableName="users" baseColumnNames="id_address" constraintName="FK_user_address" referencedTableName="addresses"
+                                 referencedColumnNames="id" onDelete="SET NULL" />
     </changeSet>
 </databaseChangeLog>
