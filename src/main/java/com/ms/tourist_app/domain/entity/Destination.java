@@ -69,9 +69,4 @@ public class Destination extends BaseEntity {
     @JoinTable(name = AppStr.Destination.joinTableDestinationUser)
     @JsonIgnore
     private List<User> favoriteUsers;
-
-    @PreRemove
-    private void setNullAddress() {
-        this.address = null;
-    }
 }
