@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  tourist-db:
+    container_name: tourist-db
+    image: mcmoe/mssqldocker
+    build:
+      context: ./
+      dockerfile: db.Dockerfile
+    environment:
+      ACCEPT_EULA: true
+      SA_PASSWORD: mypass1.
+      MSSQL_DB: TestDb
+      MSSQL_USER: asmws
+      MSSQL_PASSWORD: mypass1.
+    ports:
+      - "1433:1433"
+
+  tourist-api:
+    container_name: tourist-api
+    build:
+      context: ./
+      dockerfile: api.Dockerfile
+    depends_on:
+      - tourist-db
+    env_file:
+      - ./.env.dev
+    ports:
+      - "8080:8080"
