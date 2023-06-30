@@ -44,4 +44,8 @@ public interface DestinationRepository extends JpaRepository<Destination, Long> 
             "OR LOWER(p.slugWithSpace) LIKE lower(concat('%', :name, '%')) " +
             "OR LOWER(p.slugWithoutSpace) LIKE lower(concat('%', :name, '%')) ")
     List<Destination> filter(@Param("name") String name, Pageable pageable);
+
+
+    @Query("select d from Destination d where d.createBy = ?1")
+    List<Destination> findAllByCreateBy(Long idUser);
 }

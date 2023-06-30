@@ -24,7 +24,8 @@ public interface ProvinceMapper {
             @Mapping(target = "name",source = "name"),
             @Mapping(target = "divisionType",source = "divisionType"),
             @Mapping(target = "longitude",source = "longitude"),
-            @Mapping(target = "latitude",source = "latitude")
+            @Mapping(target = "latitude",source = "latitude"),
+            @Mapping(target = "nameShort",source = "slugWithoutSpace")
     })
     ProvinceDataOutput toProvinceDataOutput(Province province);
 }

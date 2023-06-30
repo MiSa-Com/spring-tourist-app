@@ -15,10 +15,7 @@ import com.ms.tourist_app.domain.entity.id.CommentDestinationId;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -36,30 +33,52 @@ public class DestinationController {
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping(UrlConst.Destination.destination)
-    public ResponseEntity<?> createDestination(@Valid DestinationDataParameter parameter){
+    public ResponseEntity<?> createDestination(@Valid DestinationDataParameter parameter) {
         DestinationDataInput dataInput = destinationMapper.createDestinationInput(parameter);
         DestinationDataOutput dataOutput = destinationService.createDestination(dataInput);
         return ResponseUtil.restSuccess(dataOutput);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PutMapping(UrlConst.Destination.getDestinationId)
+    public ResponseEntity<?> editDestination(@PathVariable(UrlConst.id) Long id, @Valid DestinationDataParameter parameter) {
+        DestinationDataInput dataInput = destinationMapper.createDestinationInput(parameter);
+        DestinationDataOutput dataOutput = destinationService.editDestination(id, dataInput);
+        return ResponseUtil.restSuccess(dataOutput);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @GetMapping(UrlConst.Destination.destinationByUser)
+    public ResponseEntity<?> getListDestinationByUser(@PathVariable(UrlConst.id) Long id) {
+        List<DestinationDataOutput> dataOutputs = destinationService.getListDestinationByCreateBy(id);
+        return ResponseUtil.restSuccess(dataOutputs);
+
+    }
+
     @GetMapping(UrlConst.Destination.getDestinationId)
-    public ResponseEntity<?> viewDestinationDetail(@PathVariable("id") Long idDestination){
+    public ResponseEntity<?> viewDestinationDetail(@PathVariable("id") Long idDestination) {
         DestinationDataOutput destinationDataOutput = destinationService.getDestinationDetail(idDestination);
         return ResponseUtil.restSuccess(destinationDataOutput);
+    }
+  
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @DeleteMapping(UrlConst.Destination.getDestinationId)
+    public ResponseEntity<?> deleteDestination(@PathVariable("id") Long idDestination){
+        destinationService.deleteDestination(idDestination);
+        return ResponseUtil.restSuccess("Delete Destination Success");
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping(UrlConst.Destination.destinationFilter)
-    public ResponseEntity<?>  getListDestinationByProvince(@Valid GetListDestinationByProvinceParameter parameter){
-        GetListDestinationByProvinceInput input = new GetListDestinationByProvinceInput(parameter.getPage(), parameter.getSize(),parameter.getIdProvince());
+    public ResponseEntity<?> getListDestinationByProvince(@Valid GetListDestinationByProvinceParameter parameter) {
+        GetListDestinationByProvinceInput input = new GetListDestinationByProvinceInput(parameter.getPage(), parameter.getSize(), parameter.getIdProvince());
         List<DestinationDataOutput> outputs = destinationService.getListDestinationByProvince(input);
         return ResponseUtil.restSuccess(outputs);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping(UrlConst.Destination.destination)
-    public ResponseEntity<?>  getListDestinationFilter(@Valid GetListDestinationByKeywordParameter parameter){
-        GetListDestinationByKeywordInput input = new GetListDestinationByKeywordInput(parameter.getKeyword(),parameter.getPage(), parameter.getSize());
+    public ResponseEntity<?> getListDestinationFilter(@Valid GetListDestinationByKeywordParameter parameter) {
+        GetListDestinationByKeywordInput input = new GetListDestinationByKeywordInput(parameter.getKeyword(), parameter.getPage(), parameter.getSize());
         List<DestinationDataOutput> outputs = destinationService.getListDestinationByKeyword(input);
         return ResponseUtil.restSuccess(outputs);
     }
@@ -75,7 +94,7 @@ public class DestinationController {
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping(UrlConst.Destination.commentDestination)
-    public ResponseEntity<?> createCommentDestination(@Valid CommentDestinationDataParameter parameter){
+    public ResponseEntity<?> createCommentDestination(@Valid CommentDestinationDataParameter parameter) {
         CommentDestinationDataInput input = new CommentDestinationDataInput(parameter.getIdDestination(), parameter.getContent(), parameter.getRating());
         CommentDestinationDataOutput output = destinationService.createComment(input.getIdDestination(), input);
         return ResponseUtil.restSuccess(output);
@@ -84,15 +103,15 @@ public class DestinationController {
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping(UrlConst.Destination.commentDestination)
-    public ResponseEntity<?> editCommentDestination(@Valid CommentDestinationDataParameter parameter){
+    public ResponseEntity<?> editCommentDestination(@Valid CommentDestinationDataParameter parameter) {
         CommentDestinationDataInput input = new CommentDestinationDataInput(parameter.getIdDestination(), parameter.getContent(), parameter.getRating());
-        CommentDestinationDataOutput output = destinationService.editComment(new CommentDestinationId(jwtUtil.getUserIdFromToken(), input.getIdDestination()),input);
+        CommentDestinationDataOutput output = destinationService.editComment(new CommentDestinationId(jwtUtil.getUserIdFromToken(), input.getIdDestination()), input);
         return ResponseUtil.restSuccess(output);
     }
 
     @GetMapping(UrlConst.Destination.topDestination)
-    public ResponseEntity<?> getListDestinationNearest(@Valid SelectTopCreateAtParameter parameter){
-        SelectTopCreateAtInput input = new SelectTopCreateAtInput(parameter.getPage(),parameter.getSize());
+    public ResponseEntity<?> getListDestinationNearest(@Valid SelectTopCreateAtParameter parameter) {
+        SelectTopCreateAtInput input = new SelectTopCreateAtInput(parameter.getPage(), parameter.getSize());
         List<DestinationDataOutput> outputs = destinationService.selectTopCreateAt(input);
         return ResponseUtil.restSuccess(outputs);
     }

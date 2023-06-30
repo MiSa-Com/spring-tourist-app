@@ -29,14 +29,12 @@ public class ProvinceServiceImp implements ProvinceService {
     private final Slugify slugify;
     private final ProvinceMapper provinceMapper = Mappers.getMapper(ProvinceMapper.class);
     private final ProvinceRepository provinceRepository;
-    private final AddressRepository addressRepository;
     private final JwtUtil jwtUtil;
 
-    public ProvinceServiceImp(ProvinceRepository provinceRepository, AddressRepository addressRepository, JwtUtil jwtUtil) {
+    public ProvinceServiceImp(ProvinceRepository provinceRepository, JwtUtil jwtUtil) {
         this.slugify = new Slugify();
         slugify.withTransliterator(true);
         this.provinceRepository = provinceRepository;
-        this.addressRepository = addressRepository;
         this.jwtUtil = jwtUtil;
     }
 
@@ -76,7 +74,9 @@ public class ProvinceServiceImp implements ProvinceService {
         }
         Province province = provinceMapper.toProvince(provinceDataInput, id);
         provinceRepository.save(province);
-        province.setUpdateBy(jwtUtil.getUserIdFromToken());
+        if (jwtUtil.getUserIdFromToken()!=null){
+            province.setUpdateBy(jwtUtil.getUserIdFromToken());
+        }
         province.setSlugWithSpace(Convert.withSpace(slugify.slugify(provinceDataInput.getName())));
         province.setSlugWithoutSpace(Convert.withoutSpace(slugify.slugify(provinceDataInput.getName())));
         return provinceMapper.toProvinceDataOutput(province);
@@ -87,12 +87,6 @@ public class ProvinceServiceImp implements ProvinceService {
         Optional<Province> province = provinceRepository.findById(id);
         if (province.isEmpty()) {
             throw new BadRequestException(AppStr.Province.tableProvince + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
-        }
-        List<Address> addresses = addressRepository.findAllByProvince(province.get());
-        for (Address address : addresses) {
-            address.setProvince(null);
-            address.setId(address.getId());
-            addressRepository.save(address);
         }
         provinceRepository.delete(province.get());
         return provinceMapper.toProvinceDataOutput(province.get());

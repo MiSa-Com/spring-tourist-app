@@ -46,4 +46,9 @@ public class Address extends BaseEntity {
     @JoinColumn(name = AppStr.Address.idProvince)
     @JsonIgnore
     private Province province;
+
+    @PreRemove
+    private void setNullProvince(){
+        this.province = null;
+    }
 }

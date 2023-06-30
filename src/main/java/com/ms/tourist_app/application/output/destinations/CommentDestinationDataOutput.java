@@ -13,6 +13,8 @@ public class CommentDestinationDataOutput {
 
     private Long idUser;
 
+    private String nameUser;
+
     private Long idDestination;
 
     private String content;

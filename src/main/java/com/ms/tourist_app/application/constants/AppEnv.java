@@ -30,7 +30,7 @@ public class AppEnv {
     }
 
     @Value("${cloudinary.cloud.name}")
-    public void setCloudinaryCloudName(String value){
+    public void setCloudinaryCloudName(String value) {
         cloudinaryCloudName = value;
     }
 
@@ -55,8 +55,6 @@ public class AppEnv {
     public void setJwtConfigTimeExpiration(Integer jwtConfigTimeExpiration) {
         AppEnv.jwtConfigTimeExpiration = jwtConfigTimeExpiration;
     }
-
-
 
 
     public static final class Swagger {

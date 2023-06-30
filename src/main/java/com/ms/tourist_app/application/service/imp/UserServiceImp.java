@@ -1,9 +1,7 @@
 package com.ms.tourist_app.application.service.imp;
 
 import com.ms.tourist_app.application.constants.AppStr;
-import com.ms.tourist_app.application.dai.AddressRepository;
-import com.ms.tourist_app.application.dai.DestinationRepository;
-import com.ms.tourist_app.application.dai.UserRepository;
+import com.ms.tourist_app.application.dai.*;
 import com.ms.tourist_app.application.input.users.AddFavoriteDestinationInput;
 import com.ms.tourist_app.application.input.users.UserDataInput;
 import com.ms.tourist_app.application.input.users.GetListUserInput;
@@ -14,10 +12,9 @@ import com.ms.tourist_app.application.output.users.UserDataOutput;
 import com.ms.tourist_app.application.service.UserService;
 import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.config.exception.BadRequestException;
+import com.ms.tourist_app.config.exception.ForbiddenException;
 import com.ms.tourist_app.config.exception.NotFoundException;
-import com.ms.tourist_app.domain.entity.Address;
-import com.ms.tourist_app.domain.entity.Destination;
-import com.ms.tourist_app.domain.entity.User;
+import com.ms.tourist_app.domain.entity.*;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -34,14 +31,16 @@ public class UserServiceImp implements UserService {
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
     private final DestinationRepository destinationRepository;
+    private final ImageDestinationRepository imageDestinationRepository;
     private final JwtUtil jwtUtil;
     private final DestinationMapper destinationMapper = Mappers.getMapper(DestinationMapper.class);
 
     public UserServiceImp(UserRepository userRepository, AddressRepository addressRepository,
-                          DestinationRepository destinationRepository, JwtUtil jwtUtil) {
+                          DestinationRepository destinationRepository, ImageDestinationRepository imageDestinationRepository, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
         this.destinationRepository = destinationRepository;
+        this.imageDestinationRepository = imageDestinationRepository;
         this.jwtUtil = jwtUtil;
     }
 
@@ -136,6 +135,10 @@ public class UserServiceImp implements UserService {
         if (!checkUserExists(id)) {
             throw new NotFoundException(AppStr.User.user + AppStr.Base.whiteSpace + AppStr.Exception.notFound);
         }
+        for (Role role : user.get().getRoles()) {
+            role.getUsers().remove(user.get());
+        }
+        user.get().getRoles().clear();
         userRepository.delete(user.get());
         UserDataOutput userDataOutput = userMapper.toUserDataOutput(user.get());
         Address address = user.get().getAddress();
@@ -146,12 +149,20 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public DestinationDataOutput addFavoriteDestination(AddFavoriteDestinationInput input) {
+        if (jwtUtil.getUserIdFromToken() == null){
+            throw new ForbiddenException(AppStr.Exception.forbidden);
+        }
         Long userId = jwtUtil.getUserIdFromToken();
         User user = userRepository.findById(userId).get();
         List<Destination> favoriteDest = user.getFavoriteDestination();
-        Destination destination = destinationRepository.findById(input.getDestinationId()).get();
+        Optional<Destination> optionalDestination = destinationRepository.findById(input.getDestinationId());
+        if (optionalDestination.isEmpty()){
+            throw new NotFoundException(AppStr.Exception.notFound+AppStr.Base.whiteSpace+AppStr.Destination.tableDestination);
+        }
+        Destination destination = optionalDestination.get();
         if (favoriteDest.contains(destination)) {
-            throw new BadRequestException(AppStr.User.userFavDestination);
+            DestinationDataOutput output = destinationMapper.toDestinationDataOutput(destination);
+            return output;
         }
         List<User> listFavUsers = destination.getFavoriteUsers();
         List<User> newFavUsers = new ArrayList<>(listFavUsers);
@@ -170,12 +181,22 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public List<DestinationDataOutput> viewFavoriteDestinations() {
+        if (jwtUtil.getUserIdFromToken() == null){
+            throw new ForbiddenException(AppStr.Exception.forbidden);
+        }
         Long userId = jwtUtil.getUserIdFromToken();
         User user = userRepository.findById(userId).get();
         List<Destination> listFavDests = user.getFavoriteDestination();
         List<DestinationDataOutput> outputs = new ArrayList<>();
         for (Destination dest : listFavDests) {
             DestinationDataOutput output = destinationMapper.toDestinationDataOutput(dest);
+            List<ImageDestination> imageDestinations = imageDestinationRepository.findAllByDestination(dest);
+            List<String> imageDestinationOutputs = new ArrayList<>();
+            for (ImageDestination imageDestination : imageDestinations) {
+                String imageDestinationOutput = imageDestination.getLink();
+                imageDestinationOutputs.add(imageDestinationOutput);
+            }
+            output.setImages(imageDestinationOutputs);
             outputs.add(output);
         }
         return outputs;
@@ -184,23 +205,34 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public DestinationDataOutput deleteFavoriteDestination(Long id) {
+        if (jwtUtil.getUserIdFromToken() == null){
+            throw new ForbiddenException(AppStr.Exception.forbidden);
+        }
         Long userId = jwtUtil.getUserIdFromToken();
-        User user = userRepository.findById(userId).get();
-        List<Destination> listFavDests = user.getFavoriteDestination();
-        Destination destinationToDelete = destinationRepository.findById(id).get();
-        if (!listFavDests.contains(destinationToDelete)) {
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isEmpty()){
+            throw new NotFoundException(AppStr.Exception.notFound+AppStr.Base.whiteSpace+AppStr.User.user);
+        }
+        List<Destination> listFavDests = user.get().getFavoriteDestination();
+
+        Optional<Destination> destinationToDelete = destinationRepository.findById(id);
+        if(destinationToDelete.isEmpty()){
+            throw new NotFoundException(AppStr.Exception.notFound+AppStr.Base.whiteSpace+AppStr.User.user);
+        }
+        Destination destination = destinationToDelete.get();
+        if (!listFavDests.contains(destination)) {
             throw new BadRequestException(AppStr.User.notFoundFavoriteDestination);
         }
-        List<User> listFavUsers = destinationToDelete.getFavoriteUsers();
+        List<User> listFavUsers = destination.getFavoriteUsers();
         List<User> newFavUsers = new ArrayList<>(listFavUsers);
         newFavUsers.remove(user);
-        destinationToDelete.setFavoriteUsers(newFavUsers);
-        destinationRepository.save(destinationToDelete);
+        destination.setFavoriteUsers(newFavUsers);
+        destinationRepository.save(destination);
         List<Destination> newFavDestination = new ArrayList<>(listFavDests);
-        newFavDestination.remove(destinationToDelete);
-        user.setFavoriteDestination(newFavDestination);
-        userRepository.save(user);
-        DestinationDataOutput output = destinationMapper.toDestinationDataOutput(destinationToDelete);
+        newFavDestination.remove(destination);
+        user.get().setFavoriteDestination(newFavDestination);
+        userRepository.save(user.get());
+        DestinationDataOutput output = destinationMapper.toDestinationDataOutput(destination);
         return output;
     }
 }

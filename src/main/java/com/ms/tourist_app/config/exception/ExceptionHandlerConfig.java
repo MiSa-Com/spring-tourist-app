@@ -36,6 +36,16 @@ public class ExceptionHandlerConfig {
     }
 
 
+    @ExceptionHandler(value = {ForbiddenException.class})
+    protected ResponseEntity<RestData<?>> handleForbiddenException(ForbiddenException ex) {
+        LOG.error(ex.getMessage(), ex);
+        String message = ex.getMessage();
+        List<String> messages = new ArrayList<>();
+        messages.add(message);
+        return ResponseUtil.error(HttpStatus.FORBIDDEN,messages);
+    }
+
+
     @ExceptionHandler(value = {BadRequestException.class})
     protected ResponseEntity<RestData<?>> handleBadRequestException(BadRequestException ex) {
         List<String> messages = new ArrayList<>();

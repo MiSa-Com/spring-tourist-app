@@ -6,9 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
 @Setter
@@ -17,9 +18,18 @@ import java.io.Serializable;
 @Embeddable
 public class CommentDestinationId implements Serializable {
 
+    @Column(name = AppStr.CommentDestination.idCommentDestination)
+    private Long id = ThreadLocalRandom.current().nextLong(Long.MAX_VALUE);
+
+
     @Column(name = AppStr.CommentDestination.idUser)
     private Long idUser;
 
     @Column(name = AppStr.CommentDestination.idDestination)
     private Long idDestination;
+
+    public CommentDestinationId(Long idUser, Long idDestination) {
+        this.idUser = idUser;
+        this.idDestination = idDestination;
+    }
 }
