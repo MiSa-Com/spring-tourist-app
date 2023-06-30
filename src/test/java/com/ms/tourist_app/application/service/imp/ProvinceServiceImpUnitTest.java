@@ -35,8 +35,6 @@ class ProvinceServiceImpUnitTest {
     @Mock
     private ProvinceRepository provinceRepository;
     @Mock
-    private AddressRepository addressRepository;
-    @Mock
     private JwtUtil jwtUtil;
 
     private final ProvinceMapper provinceMapper = Mappers.getMapper(ProvinceMapper.class);
@@ -44,7 +42,7 @@ class ProvinceServiceImpUnitTest {
     private ProvinceService provinceService;
     @BeforeEach
     void setUp() {
-        provinceService = new ProvinceServiceImp(provinceRepository, addressRepository, jwtUtil);
+        provinceService = new ProvinceServiceImp(provinceRepository, jwtUtil);
     }
 
     @AfterEach
