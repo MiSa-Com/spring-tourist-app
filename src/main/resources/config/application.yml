@@ -13,9 +13,9 @@ spring:
       matching-strategy: ant_path_matcher
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://${DB_HOST}:${DB_PORT};databaseName=${DB_NAME};encrypt=true;trustServerCertificate=true;
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:sqlserver://localhost;databaseName=TestDb;
+    username: sa
+    password: mypass1.
     tomcat:
       connection-properties: useUnicode=true
       characterEncoding: utf-8
