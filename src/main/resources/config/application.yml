@@ -12,10 +12,10 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://${DB_HOST}:${DB_PORT};databaseName=${DB_NAME};encrypt=true;trustServerCertificate=true;
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/dulich
+    username: postgres
+    password: 123
     tomcat:
       connection-properties: useUnicode=true
       characterEncoding: utf-8
@@ -32,7 +32,7 @@ spring:
         format_sql: true
         globally_quoted_identifiers: true
         enable_lazy_load_no_trans: true
-        dialect: org.hibernate.dialect.SQLServer2012Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 logging:
   level:
     org:
