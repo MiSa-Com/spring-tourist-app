@@ -17,11 +17,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = AppStr.Weather.tableCurrentWeather)
-@Entity
 
 public class CurrentWeather {
 
-    @Id
     private Long id;
 
     @Column(name = AppStr.Weather.idProvince)

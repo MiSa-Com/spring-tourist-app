@@ -15,12 +15,9 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@MappedSuperclass
 public class BaseEntity implements Serializable {
 
     @JsonProperty(AppStr.Base.id)
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JsonProperty(AppStr.Base.createBy)

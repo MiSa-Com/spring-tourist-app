@@ -212,6 +212,8 @@ public class AppStr {
     }
 
     public static final class Booking {
+        public static final String booking = "booking";
+
         public static final String idUser = "id_user";
         public static final String idRoom = "id_room";
         public static final String idUserElement = "idUser";

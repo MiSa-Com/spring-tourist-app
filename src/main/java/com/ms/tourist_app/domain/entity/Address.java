@@ -15,8 +15,6 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = AppStr.Address.tableAddress)
 public class Address extends BaseEntity {
 
     @Column(name = AppStr.Address.detailAddress)

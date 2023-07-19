@@ -15,8 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "booking")
+@Table(name = AppStr.Booking.booking)
 public class Booking {
     @EmbeddedId
     private BookingId bookingId;
