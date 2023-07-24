@@ -4,7 +4,6 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
 import com.ms.tourist_app.application.constants.AppStr;
-import com.ms.tourist_app.config.exception.UploadImageException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 

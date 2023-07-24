@@ -7,7 +7,6 @@ import com.ms.tourist_app.application.output.users.UserDataOutput;
 import com.ms.tourist_app.application.service.UserService;
 import com.ms.tourist_app.application.utils.JwtUtil;
 import com.ms.tourist_app.application.utils.test_deserializer.TestDeserializer;
-import com.ms.tourist_app.config.exception.BadRequestException;
 import com.ms.tourist_app.domain.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;

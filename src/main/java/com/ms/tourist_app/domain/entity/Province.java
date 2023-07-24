@@ -16,33 +16,21 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = AppStr.Province.tableProvince)
 public class Province extends BaseEntity {
 
-    @Column(name = AppStr.Province.name)
-    @Nationalized
     private String name;
 
-    @Column(name = AppStr.Province.slug)
     private String slug;
 
-    @Column(name = AppStr.Province.slugWithSpace)
     private String slugWithSpace;
 
-    @Column(name = AppStr.Province.slugWithoutSpace)
     private String slugWithoutSpace;
 
-    @OneToMany(mappedBy = AppStr.Province.tableProvince)
-    @JsonIgnore
     private List<Address> addresses;
 
-    @Column(name = AppStr.Province.divisionType)
     private String divisionType; // "city" or "province"
 
-    @Column(name = AppStr.Province.longitude)
     private Double longitude;
 
-    @Column(name = AppStr.Province.latitude)
     private Double latitude;
 }

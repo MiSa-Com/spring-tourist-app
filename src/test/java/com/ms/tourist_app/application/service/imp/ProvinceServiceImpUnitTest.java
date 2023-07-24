@@ -1,6 +1,5 @@
 package com.ms.tourist_app.application.service.imp;
 
-import com.github.slugify.Slugify;
 import com.ms.tourist_app.application.dai.AddressRepository;
 import com.ms.tourist_app.application.dai.ProvinceRepository;
 import com.ms.tourist_app.application.input.provinces.GetListProvinceDataInput;
@@ -9,7 +8,6 @@ import com.ms.tourist_app.application.mapper.ProvinceMapper;
 import com.ms.tourist_app.application.output.provinces.ProvinceDataOutput;
 import com.ms.tourist_app.application.service.ProvinceService;
 import com.ms.tourist_app.application.utils.JwtUtil;
-import com.ms.tourist_app.config.exception.BadRequestException;
 import com.ms.tourist_app.domain.entity.Province;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,12 +19,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 

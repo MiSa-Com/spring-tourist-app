@@ -14,17 +14,12 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = AppStr.Itinerary.tableItinerary)
+
 public class Itinerary extends BaseEntity {
-    @Column(name = AppStr.Itinerary.itinerary)
-    @Nationalized
     private String itinerary;
-    @ManyToOne
-    @JoinColumn(name = AppStr.Itinerary.idUser)
+
     private User user;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = AppStr.Itinerary.travelMode)
     private TravelMode travelMode;
 }

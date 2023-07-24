@@ -15,15 +15,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = AppStr.Role.tableRole)
+
 public class Role extends BaseEntity {
-    @Column(name = AppStr.Role.name)
     private String name;
 
-    @ManyToMany
-    @JoinTable(name = AppStr.Role.joinTableUserRole)
-    @JsonIgnore
     private List<User> users;
 
     public Role(String name) {

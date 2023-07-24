@@ -19,15 +19,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = AppStr.DestinationType.tableTypeDestination)
 public class DestinationType extends BaseEntity {
 
-    @Column(name = AppStr.DestinationType.name)
-    @Nationalized
     private String name;
 
-    @OneToMany(mappedBy = AppStr.DestinationType.destinationType)
-    @JsonIgnore
     private List<Destination> destinations;
 }

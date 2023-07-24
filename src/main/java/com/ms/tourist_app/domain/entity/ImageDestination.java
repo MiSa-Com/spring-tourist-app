@@ -16,16 +16,9 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = AppStr.ImageDestination.tableImageDestination)
 public class ImageDestination extends BaseEntity {
-    @Column(name = AppStr.ImageDestination.link)
-    @Length(max = 200000)
     private String link;
 
 
-    @ManyToOne
-    @JoinColumn(name = AppStr.ImageDestination.idDestination)
-    @JsonIgnore
     private Destination destination;
 }

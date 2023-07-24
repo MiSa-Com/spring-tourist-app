@@ -16,43 +16,28 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = AppStr.Weather.tableCurrentWeather)
-
 public class CurrentWeather {
 
     private Long id;
 
-    @Column(name = AppStr.Weather.idProvince)
     private Long idProvince;
 
-    @Column(name = AppStr.Weather.province)
-    @Nationalized
     private String province;
 
-    @Column(name = AppStr.Weather.dateTime)
     private String dateTime;
 
-    @Column(name = AppStr.Weather.temp)
     private Float temp;
 
-    @Column(name = AppStr.Weather.feelLike)
     private Float feelsLike;
 
-    @Column(name = AppStr.Weather.tempMin)
     private Float tempMin;
 
-    @Column(name = AppStr.Weather.tempMax)
     private Float tempMax;
 
-    @Column(name = AppStr.Weather.humidity)
     private Integer humidity;
 
-    @Column(name = AppStr.Weather.main)
-    @Nationalized
     private String main;
 
-    @Column(name = AppStr.Weather.description)
-    @Nationalized
     private String description;
 
     @PrePersist

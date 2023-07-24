@@ -1,7 +1,5 @@
 package com.ms.tourist_app.adapter.web.v1.controller;
 
-import com.ms.tourist_app.adapter.web.base.ResponseUtil;
-import com.ms.tourist_app.adapter.web.base.RestApiV1;
 import com.ms.tourist_app.adapter.web.v1.transfer.parameter.user.AddFavoriteDestinationParameter;
 import com.ms.tourist_app.adapter.web.v1.transfer.parameter.user.UserDataParameter;
 import com.ms.tourist_app.adapter.web.v1.transfer.parameter.user.GetAllUserParameter;
@@ -11,7 +9,6 @@ import com.ms.tourist_app.application.input.users.UserDataInput;
 import com.ms.tourist_app.application.input.users.GetListUserInput;
 import com.ms.tourist_app.application.mapper.UserMapper;
 import com.ms.tourist_app.application.output.destinations.DestinationDataOutput;
-import com.ms.tourist_app.application.output.type_destination.DestinationTypeDataOutput;
 import com.ms.tourist_app.application.output.users.UserDataOutput;
 import com.ms.tourist_app.application.service.UserService;
 import org.mapstruct.factory.Mappers;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@RestApiV1
 public class UserController {
     private final UserMapper userMapper = Mappers.getMapper(UserMapper.class);
     private final UserService userService;

@@ -21,52 +21,29 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = AppStr.Destination.tableDestination)
 public class Destination extends BaseEntity {
 
 
-    @Column(name = AppStr.Destination.name)
-    @Nationalized
     private String name;
 
 
-    @Column(name = AppStr.Destination.slug)
     private String slug;
 
-    @Column(name = AppStr.Destination.slugWithSpace)
     private String slugWithSpace;
 
-    @Column(name = AppStr.Destination.slugWithoutSpace)
     private String slugWithoutSpace;
 
-    @Column(name = AppStr.Destination.description)
-    @Nationalized
-    @Length(max = 200000)
     private String description;
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToOne
-    @JoinColumn(name = AppStr.Destination.idTypeDestination)
-    @JsonIgnore
     private DestinationType destinationType;
 
 
-    @OneToMany(mappedBy = AppStr.Destination.tableDestination)
     private List<ImageDestination> imageDestinations;
 
 
-    @ManyToOne
-    @JoinColumn(name = AppStr.Destination.idAddress)
-    @JsonIgnore
     private Address address;
 
-    @OneToMany(mappedBy = AppStr.Destination.tableDestination)
-    @JsonIgnore
     private List<CommentDestination> commentDestinations;
 
-    @ManyToMany
-    @JoinTable(name = AppStr.Destination.joinTableDestinationUser)
-    @JsonIgnore
     private List<User> favoriteUsers;
 }

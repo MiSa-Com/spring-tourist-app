@@ -15,15 +15,10 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = AppStr.ImageHotel.tableImageHotel)
+
 public class ImageHotel extends BaseEntity {
-    @Column(name = AppStr.ImageDestination.link)
     private String link;
 
 
-    @ManyToOne
-    @JoinColumn(name = AppStr.ImageHotel.idHotel)
-    @JsonIgnore
     private Hotel hotel;
 }

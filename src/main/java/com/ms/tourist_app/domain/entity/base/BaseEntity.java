@@ -17,8 +17,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class BaseEntity implements Serializable {
 
-    @JsonProperty(AppStr.Base.id)
-    private Long id;
 
     @JsonProperty(AppStr.Base.createBy)
     private Long createBy ;

@@ -15,18 +15,9 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = AppStr.ImageCommentHotel.tableImageComment)
 public class ImageCommentHotel extends BaseEntity {
-    @Column(name = AppStr.ImageCommentHotel.link)
     private String link;
 
 
-    @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = AppStr.ImageCommentHotel.idUser),
-            @JoinColumn(name = AppStr.ImageCommentHotel.idHotel),
-    })
-    @JsonIgnore
     private CommentHotel commentHotel;
 }
