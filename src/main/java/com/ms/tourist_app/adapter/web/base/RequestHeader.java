@@ -1,9 +1,9 @@
 package com.ms.tourist_app.adapter.web.base;
 
-import com.hit.classservice.application.constant.AuthorityConstant;
-import com.hit.classservice.application.constant.HeaderConstant;
-import com.hit.classservice.application.constant.UserMessageConstant;
-import com.hit.classservice.config.exception.VsException;
+import com.ms.tourist_app.application.constants.AuthorityConstant;
+import com.ms.tourist_app.application.constants.HeaderConstant;
+import com.ms.tourist_app.application.constants.UserMessageConstant;
+import com.ms.tourist_app.config.exception.VsException;
 import com.nimbusds.jwt.SignedJWT;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;

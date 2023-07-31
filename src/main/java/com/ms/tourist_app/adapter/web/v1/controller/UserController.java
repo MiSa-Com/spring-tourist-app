@@ -1,5 +1,6 @@
 package com.ms.tourist_app.adapter.web.v1.controller;
 
+import com.ms.tourist_app.adapter.web.base.VsResponseUtil;
 import com.ms.tourist_app.adapter.web.v1.transfer.parameter.user.AddFavoriteDestinationParameter;
 import com.ms.tourist_app.adapter.web.v1.transfer.parameter.user.UserDataParameter;
 import com.ms.tourist_app.adapter.web.v1.transfer.parameter.user.GetAllUserParameter;
@@ -34,7 +35,7 @@ public class UserController {
 
         UserDataOutput output = userService.createUser(input);
 
-        return ResponseUtil.restSuccess(output);
+        return VsResponseUtil.ok(output);
     }
 
     @GetMapping(UrlConst.User.users)
@@ -42,14 +43,14 @@ public class UserController {
     public ResponseEntity<?> getAllUser(@Valid GetAllUserParameter parameter){
         GetListUserInput input = new GetListUserInput(parameter.getPage(), parameter.getSize(),parameter.getKeyword());
         List<UserDataOutput> output = userService.getListUserOutPut(input);
-        return ResponseUtil.restSuccess(output);
+        return VsResponseUtil.ok(output);
     }
 
     @GetMapping(UrlConst.User.getUserById)
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<?> getUserData(@PathVariable(UrlConst.id)Long id){
         UserDataOutput userDataOutput = userService.getUserDataOutput(id);
-        return ResponseUtil.restSuccess(userDataOutput);
+        return VsResponseUtil.ok(userDataOutput);
     }
 
     @PutMapping(UrlConst.User.getUserById)
@@ -57,37 +58,37 @@ public class UserController {
     public ResponseEntity<?> updateUser(@PathVariable(UrlConst.id)Long id,@Valid @RequestBody UserDataParameter parameter){
         UserDataInput input = userMapper.createUserInput(parameter);
         UserDataOutput userDataOutput = userService.editUser(id,input);
-        return ResponseUtil.restSuccess(userDataOutput);
+        return VsResponseUtil.ok(userDataOutput);
     }
 
     @DeleteMapping(UrlConst.User.getUserById)
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<?> deleteUser(@PathVariable(UrlConst.id)Long id){
         UserDataOutput userDataOutput = userService.deleteUser(id);
-        return ResponseUtil.restSuccess(userDataOutput);
+        return VsResponseUtil.ok(userDataOutput);
     }
 
-    @PostMapping(UrlConst.User.addFavoriteDestination)
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public ResponseEntity<?> addFavoriteDestination(@Valid AddFavoriteDestinationParameter parameter){
-        AddFavoriteDestinationInput input = userMapper.toAddFavoriteDestinationInput(parameter);
-        DestinationDataOutput output = userService.addFavoriteDestination(input);
-        return ResponseUtil.restSuccess(output);
-    }
+//    @PostMapping(UrlConst.User.addFavoriteDestination)
+//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+//    public ResponseEntity<?> addFavoriteDestination(@Valid AddFavoriteDestinationParameter parameter){
+//        AddFavoriteDestinationInput input = userMapper.toAddFavoriteDestinationInput(parameter);
+//        DestinationDataOutput output = userService.addFavoriteDestination(input);
+//        return ResponseUtil.restSuccess(output);
+//    }
+//
+//    @GetMapping(UrlConst.User.viewFavoriteDestination)
+//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+//    public ResponseEntity<?> viewFavoriteDestination(){
+//        List<DestinationDataOutput> output = userService.viewFavoriteDestinations();
+//        return ResponseUtil.restSuccess(output);
+//    }
 
-    @GetMapping(UrlConst.User.viewFavoriteDestination)
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public ResponseEntity<?> viewFavoriteDestination(){
-        List<DestinationDataOutput> output = userService.viewFavoriteDestinations();
-        return ResponseUtil.restSuccess(output);
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    @DeleteMapping(UrlConst.User.deleteFavoriteDestination)
-    public ResponseEntity<?> deleteFavoriteDestination(@PathVariable(UrlConst.id) Long id) {
-        DestinationDataOutput output = userService.deleteFavoriteDestination(id);
-        return ResponseUtil.restSuccess(output);
-    }
+//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+//    @DeleteMapping(UrlConst.User.deleteFavoriteDestination)
+//    public ResponseEntity<?> deleteFavoriteDestination(@PathVariable(UrlConst.id) Long id) {
+//        DestinationDataOutput output = userService.deleteFavoriteDestination(id);
+//        return ResponseUtil.restSuccess(output);
+//    }
 }
 
 

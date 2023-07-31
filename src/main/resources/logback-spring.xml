@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <property name="LOGS" value="./tomcat/logs"/>
+    <property name="SERVICE" value="class-service"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{"yyyy-MM-dd HH:mm:ss,SSS"} %green([%thread]) %blue([%X{Slf4jMDCFilter.UUID}
+                %X{Slf4jMDCFilter.HttpMethod} %X{Slf4jMDCFilter.HttpUri}]) %highlight%logger{36} - %msg%n%xEx
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="daily" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOGS}/${SERVICE}.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}/archived/${SERVICE}-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- set max file is 1GB -->
+                <maxFileSize>1GB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{"yyyy-MM-dd HH:mm:ss,SSS"} [%thread] %logger{36} - %msg%n%xEx</pattern>
+        </encoder>
+    </appender>
+
+    <springProfile name="dev | default">
+        <logger name="com.hit.classservice" level="ALL"/>
+        <root level="INFO">
+            <appender-ref ref="stdout"/>
+            <appender-ref ref="daily"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="!dev &amp; !default">
+        <logger name="com.hit.classservice" level="INFO"/>
+        <root level="INFO">
+            <appender-ref ref="daily"/>
+        </root>
+    </springProfile>
+</configuration>

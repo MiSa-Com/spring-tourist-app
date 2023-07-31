@@ -19,7 +19,7 @@ public interface UserMapper {
             @Mapping(target = "dateOfBirth",source = "input.dateOfBirth"),
             @Mapping(target = "telephone",source = "input.telephone"),
             @Mapping(target = "email",source = "input.email"),
-            @Mapping(target = "id",source = "id")
+            @Mapping(target = "id",source = "input.id")
     })
     User toUser(UserDataInput input, Long id);
 
@@ -37,8 +37,8 @@ public interface UserMapper {
     })
     UserDataOutput toUserDataOutput(User user);
 
-    @Mappings({
-            @Mapping(target = "destinationId", source = "destinationId")
-    })
-    AddFavoriteDestinationInput toAddFavoriteDestinationInput(AddFavoriteDestinationParameter parameter);
+//    @Mappings({
+//            @Mapping(target = "destinationId", source = "destinationId")
+//    })
+//    AddFavoriteDestinationInput toAddFavoriteDestinationInput(AddFavoriteDestinationParameter parameter);
 }

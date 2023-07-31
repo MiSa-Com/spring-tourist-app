@@ -20,6 +20,8 @@ import java.util.List;
 
 public class User extends BaseEntity {
 
+    private Long id;
+
     private String firstName;
 
 
