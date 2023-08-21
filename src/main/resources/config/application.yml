@@ -48,3 +48,5 @@ logging:
 cloudinary:
   max-file-size: 20MB
   max-image-width: 5000
+server:
+  port: 5000
